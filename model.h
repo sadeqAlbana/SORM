@@ -2,6 +2,8 @@
 #define MODEL_H
 #include <QString>
 #include <QVariant>
+#include "builder.h"
+class Collection;
 class Model
 {
 public:
@@ -10,15 +12,20 @@ public:
     QVariant get(QString key);
     bool save();
 
-    static QString table(){return _table;}
+    static Collection all();
+    static Model find(const QVariant &id);
+    static Collection where(const QString &key, const QVariant &value);
+
+    virtual QString table() const {return QString();}
 
     QDateTime created_at();
     QDateTime updated_at();
 
-
+    bool exists(){return _exists;}
 
     QString _table;
     QMap<QString, QVariant> data;
+    bool _exists;
 
 
 };

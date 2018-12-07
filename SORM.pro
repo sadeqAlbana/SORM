@@ -18,9 +18,11 @@ SOURCES += \
         main.cpp \
     builder.cpp \
     model.cpp \
-    collection.cpp
+    collection.cpp \
+    db.cpp
 
 HEADERS += \
     builder.h \
     model.h \
-    collection.h
+    collection.h \
+    db.h
