@@ -1,6 +1,7 @@
 #include "builder.h"
 #include "collection.h"
 #include <QDebug>
+#include <QSqlRecord>
 Builder::Builder(const QString &table) :
 _table(table),
   _columns("*"),
@@ -36,6 +37,23 @@ Collection Builder::get()
     if(_limit)
         qry.append(QString(" limit %1").arg(_limit));
     qDebug()<<qry;
+
+    QSqlQuery query(qry);
+    if(query.exec())
+    {
+        Collection collection;
+        QSqlRecord record=query.record();
+        while (query.next()) {
+            Model m;
+            for(int i=0; i<record.count(); i++)
+            {
+                m.set(record.fieldName(i),query.value(i));
+            }
+            collection << m;
+
+        }
+        return collection;
+    }
     return Collection();
 }
 

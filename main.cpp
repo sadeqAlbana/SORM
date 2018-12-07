@@ -15,7 +15,9 @@ int main(int argc, char *argv[])
     db.open();
 
 
-    DB::table("users").select("id","name").where("id","1").limit(1).get();
+    Collection result=DB::table("users").select("id","name").get();
+
+    qDebug()<<result.first().get("name");
 
     return a.exec();
 }
