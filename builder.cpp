@@ -1,15 +1,42 @@
 #include "builder.h"
 #include "collection.h"
+#include <QDebug>
 Builder::Builder(const QString &table) :
 _table(table),
-  _columns("*")
+  _columns("*"),
+  _limit(0)
 {
 
 }
 
+Builder &Builder::where(QString key, QVariant value)
+{
+    if(!_where.size())
+        _where.append(QString(" where %1 = %2").arg(key).arg(value.toString()));
+
+    return *this;
+}
+
+Builder &Builder::where(QString clause)
+{
+
+    _where="+"+clause+"+";
+
+    return *this;
+}
+
+
+
 Collection Builder::get()
 {
     QString qry=QString("select %1 from %2").arg(_columns).arg(_table);
+
+    if(_where.size())
+        qry.append(_where);
+    if(_limit)
+        qry.append(QString(" limit %1").arg(_limit));
+    qDebug()<<qry;
+    return Collection();
 }
 
 Builder &Builder::select()
@@ -19,9 +46,17 @@ Builder &Builder::select()
     return *this;
 }
 
-Builder &Builder::select(QStringList columns)
+Builder &Builder::select(QStringList args)
 {
+    if(args.size())
+    {
+        if(_columns=="*")
+            _columns.clear();
 
+        for(int i=0; i<args.size()-1; i++)
+            _columns.append(QString(" %1,").arg(args.at(i)));
+        _columns.append(QString(" %1").arg(args.at(args.size()-1)));
+    }
     return *this;
 }
 

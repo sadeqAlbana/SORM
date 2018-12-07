@@ -7,5 +7,5 @@ DB::DB()
 
 Builder DB::table(const QString &table)
 {
-    Builder builder(table);
+    return Builder(table);
 }

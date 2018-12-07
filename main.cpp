@@ -1,6 +1,8 @@
 #include <QCoreApplication>
 #include <QSqlDatabase>
 #include <QDebug>
+#include "db.h"
+#include "collection.h"
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
@@ -12,6 +14,8 @@ int main(int argc, char *argv[])
     db.setPassword("root");
     db.open();
 
+
+    DB::table("users").select("id","name").where("id","1").limit(1).get();
 
     return a.exec();
 }
