@@ -24,6 +24,7 @@ public:
     bool exists(){return _exists;}
 
     QString _table;
+    QString _primaryKey;
     QMap<QString, QVariant> data;
     bool _exists;
 

@@ -1,5 +1,5 @@
 #include "model.h"
-
+#include "collection.h"
 Model::Model()
 {
 
@@ -20,4 +20,5 @@ bool Model::save()
 {
 
 }
+
 

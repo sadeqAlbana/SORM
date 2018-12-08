@@ -3,8 +3,8 @@
 #include <QDebug>
 #include <QSqlRecord>
 Builder::Builder(const QString &table) :
-_table(table),
-  _columns("*"),
+tableClause(table),
+  columnsClause("*"),
   _limit(0)
 {
 
@@ -12,8 +12,8 @@ _table(table),
 
 Builder &Builder::where(QString key, QVariant value)
 {
-    if(!_where.size())
-        _where.append(QString(" where %1 = %2").arg(key).arg(value.toString()));
+    if(!whereClause.size())
+        whereClause.append(QString(" where %1 = %2").arg(key).arg(value.toString()));
 
     return *this;
 }
@@ -21,7 +21,7 @@ Builder &Builder::where(QString key, QVariant value)
 Builder &Builder::where(QString clause)
 {
 
-    _where="+"+clause+"+";
+    whereClause="+"+clause+"+";
 
     return *this;
 }
@@ -30,10 +30,10 @@ Builder &Builder::where(QString clause)
 
 Collection Builder::get()
 {
-    QString qry=QString("select %1 from %2").arg(_columns).arg(_table);
+    QString qry=QString("select %1 from %2").arg(columnsClause).arg(tableClause);
 
-    if(_where.size())
-        qry.append(_where);
+    if(whereClause.size())
+        qry.append(whereClause);
     if(_limit)
         qry.append(QString(" limit %1").arg(_limit));
     qDebug()<<qry;
@@ -59,8 +59,8 @@ Collection Builder::get()
 
 Builder &Builder::select()
 {
-    if(_columns.at(_columns.size()-1)==",")
-        _columns.remove(_columns.size()-1,1);
+    if(columnsClause.at(columnsClause.size()-1)==",")
+        columnsClause.remove(columnsClause.size()-1,1);
     return *this;
 }
 
@@ -68,12 +68,12 @@ Builder &Builder::select(QStringList args)
 {
     if(args.size())
     {
-        if(_columns=="*")
-            _columns.clear();
+        if(columnsClause=="*")
+            columnsClause.clear();
 
         for(int i=0; i<args.size()-1; i++)
-            _columns.append(QString(" %1,").arg(args.at(i)));
-        _columns.append(QString(" %1").arg(args.at(args.size()-1)));
+            columnsClause.append(QString(" %1,").arg(args.at(i)));
+        columnsClause.append(QString(" %1").arg(args.at(args.size()-1)));
     }
     return *this;
 }

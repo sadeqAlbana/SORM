@@ -21,20 +21,20 @@ public:
     template<typename First, typename ... Strings>
     Builder & select(First arg, const Strings&... rest)
     {
-        if(_columns=="*")
-            _columns.clear();
+        if(columnsClause=="*")
+            columnsClause.clear();
 
-        _columns.append(QString(" %1,").arg(arg));
+        columnsClause.append(QString(" %1,").arg(arg));
 
         return select(rest...);
     }
 
 private:
-    QString _table;
-    QString _columns;
-    QString _orderBy;
-    QString _where;
-    QString _groupBy;
+    QString tableClause;
+    QString columnsClause;
+    QString orderByClause;
+    QString whereClause;
+    QString groupByClause;
     int _limit;
 
 };

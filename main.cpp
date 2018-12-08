@@ -15,9 +15,9 @@ int main(int argc, char *argv[])
     db.open();
 
 
-    Collection result=DB::table("users").select("id","name").get();
+    Model m=DB::table("users").select("id","name").get().first();
 
-    qDebug()<<result.first().get("name");
+    qDebug()<<m.get("name");
 
     return a.exec();
 }
