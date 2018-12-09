@@ -2,6 +2,7 @@
 #define BUILDER_H
 #include <QSqlQuery>
 #include <QSqlRelation>
+#include "model.h"
 class Collection;
 class Builder
 {
@@ -28,6 +29,13 @@ public:
 
         return select(rest...);
     }
+
+
+    bool insert(Model &model);
+    bool update(Model &model);
+
+
+
 
 private:
     QString tableClause;

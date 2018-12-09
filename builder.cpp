@@ -2,6 +2,7 @@
 #include "collection.h"
 #include <QDebug>
 #include <QSqlRecord>
+#include <QDateTime>
 Builder::Builder(const QString &table) :
 tableClause(table),
   columnsClause("*"),
@@ -76,6 +77,26 @@ Builder &Builder::select(QStringList args)
         columnsClause.append(QString(" %1").arg(args.at(args.size()-1)));
     }
     return *this;
+}
+
+bool Builder::insert(Model &model)
+{
+    if(model.usesTimestamps())
+    {
+        QDateTime now=QDateTime::currentDateTime();
+        model.set("created_at",now);
+        model.set("updated_at",now);
+    }
+
+    QString values;
+
+
+    QString qry=QString("insert into %1 values %1").arg(tableClause).arg(values);
+}
+
+bool Builder::update(Model &model)
+{
+
 }
 
 

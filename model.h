@@ -2,19 +2,19 @@
 #define MODEL_H
 #include <QString>
 #include <QVariant>
-#include "builder.h"
+class Builder;
 class Collection;
 class Model
 {
 public:
     Model();
     void set(QString key, QVariant value);
-    QVariant get(QString key);
+    QVariant get(QString key) const;
     bool save();
-
-    static Collection all();
-    static Model find(const QVariant &id);
-    static Collection where(const QString &key, const QVariant &value);
+    QStringList keys(){return data.keys();}
+//    static Collection all();
+//    static Model find(const QVariant &id);
+//    static Collection where(const QString &key, const QVariant &value);
 
     virtual QString table() const {return QString();}
 
@@ -27,6 +27,8 @@ public:
     QString _primaryKey;
     QMap<QString, QVariant> data;
     bool _exists;
+
+    bool usesTimestamps();
 
 
 };

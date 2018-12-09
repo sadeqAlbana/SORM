@@ -8,6 +8,8 @@ class Collection : public QList<Model>
 public:
     Collection();
     operator bool();
+    operator QJsonArray();
+
 };
 
 #endif // COLLECTION_H
