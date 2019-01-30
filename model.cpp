@@ -6,6 +6,11 @@ Model::Model()
 
 }
 
+Model::~Model()
+{
+
+}
+
 void Model::set(QString key, QVariant value)
 {
     data.insert(key,value);

@@ -88,10 +88,12 @@ bool Builder::insert(Model &model)
         model.set("updated_at",now);
     }
 
-    QString values;
+    QStringList columns, values;
 
 
-    QString qry=QString("insert into %1 values %1").arg(tableClause).arg(values);
+
+
+    //QString qry=QString("insert into %1  (%2) values (%3)").arg(tableClause).arg(columns).arg(values);
 }
 
 bool Builder::update(Model &model)

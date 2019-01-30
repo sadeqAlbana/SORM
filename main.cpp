@@ -15,7 +15,8 @@ int main(int argc, char *argv[])
     db.open();
 
 
-    Model m=DB::table("users").select("id","name").get().first();
+    Model m=DB::table("users").select("id","name").where("id",2).get().first();
+
 
     qDebug()<<m.get("name");
 
