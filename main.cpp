@@ -3,6 +3,7 @@
 #include <QDebug>
 #include "db.h"
 #include "collection.h"
+#include "user.h"
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
@@ -17,8 +18,12 @@ int main(int argc, char *argv[])
 
     Model m=DB::table("users").select("id","name").where("id",2).get().first();
 
+    User user=User::all().first();
 
-    qDebug()<<m.get("name");
+
+
+
+    qDebug()<<user.get("name");
 
     return a.exec();
 }

@@ -6,6 +6,10 @@ Model::Model()
 
 }
 
+Model::Model(const QMap<QString, QVariant> &map) : data(map)
+{
+
+}
 Model::~Model()
 {
 

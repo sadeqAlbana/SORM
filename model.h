@@ -8,6 +8,7 @@ class Model
 {
 public:
     Model();
+    Model(const QMap<QString, QVariant> &map);
     ~Model();
     void set(QString key, QVariant value);
     QVariant get(QString key) const;
@@ -26,7 +27,7 @@ public:
     bool exists(){return _exists;}
 
     //QString _table;
-    QString _primaryKey;
+    //QString _primaryKey;
     QMap<QString, QVariant> data;
     QMap<QString, QVariant> original;
     bool _exists;
@@ -36,4 +37,5 @@ public:
 
 };
 
+#include "eloquentmodel.h"
 #endif // MODEL_H

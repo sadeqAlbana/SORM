@@ -25,4 +25,6 @@ HEADERS += \
     builder.h \
     model.h \
     collection.h \
-    db.h
+    db.h \
+    eloquentmodel.h \
+    user.h
