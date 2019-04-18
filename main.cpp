@@ -16,9 +16,10 @@ int main(int argc, char *argv[])
     db.open();
 
 
-    Model m=DB::table("users").select("id","name").where("id",2).get().first();
+    //Model m=DB::table("users").select("id","name").where("id",2).get().first();
 
-    User user=User::all().first();
+    //User user=User::all().first();
+    User user=User::where("id",1).first();
 
 
 

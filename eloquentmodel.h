@@ -16,5 +16,7 @@
     {return Builder(T::table()).where(foreignKey,get(localKey)).get();} \
     template<class T> T hasOne(const QString foreignKey = QString("%1_%2").arg(className()).arg(primaryKey()), const QString localKey=primaryKey())\
     {return T::where(foreignKey,get(localKey)).value(0);} \
+    static Builder where(const QString key, const QVariant value) \
+    {return Builder(table()).where(key,value);} \
     private:
 #endif // ELOQUENTMODEL_H

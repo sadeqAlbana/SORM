@@ -13,7 +13,10 @@ public:
     Builder &groupBy(QString key);
     Builder &orderBy(QString key);
     Builder & join(QSqlRelation relation);
-    Builder & limit(int l){_limit=l; return *this;}
+    Builder & take(int l){_limit=l; return *this;}
+    Builder &skip(int offset);
+    Builder &paginate(int page, int count);
+    Model first();
 
     Collection get();
     Builder &select();
@@ -44,6 +47,7 @@ private:
     QString whereClause;
     QString groupByClause;
     int _limit;
+    int offset;
 
 };
 

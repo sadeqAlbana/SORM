@@ -27,6 +27,24 @@ Builder &Builder::where(QString clause)
     return *this;
 }
 
+Builder &Builder::skip(int offset)
+{
+    this->offset = offset;
+    return *this;
+}
+
+Builder &Builder::paginate(int page, int count)
+{
+    if(!(page==1))
+        skip(page*count);
+    take(count);
+    return *this;
+}
+
+Model Builder::first()
+{
+    return take(1).get().value(0);
+}
 
 
 Collection Builder::get()
