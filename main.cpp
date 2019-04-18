@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 
 
 
-    qDebug()<<user.get("name");
+    qDebug()<<user["name"];
 
     return a.exec();
 }

@@ -36,4 +36,9 @@ bool Model::usesTimestamps()
     return true;
 }
 
+QVariant Model::operator[](const QString key)
+{
+    return get(key);
+}
+
 

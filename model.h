@@ -34,6 +34,8 @@ public:
 
     bool usesTimestamps();
 
+    QVariant operator[](const QString key);
+
 
 };
 
