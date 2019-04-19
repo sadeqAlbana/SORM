@@ -1,8 +1,10 @@
 #ifndef BUILDER_H
 #define BUILDER_H
-#include <QSqlQuery>
-#include <QSqlRelation>
-#include "model.h"
+#include <QString>
+class QVariant;
+class QStringList;
+class QSqlRelation;
+class Model;
 class Collection;
 class Builder
 {

@@ -4,6 +4,7 @@
 #include <QSqlRecord>
 #include <QDateTime>
 #include <QSqlError>
+#include <QSqlQuery>
 Builder::Builder(const QString &table) :
 tableClause(table),
   columnsClause("*"),
@@ -56,7 +57,6 @@ Collection Builder::get()
         qry.append(whereClause);
     if(_limit)
         qry.append(QString(" limit %1").arg(_limit));
-    qDebug()<<qry;
 
     QSqlQuery query(qry);
     if(query.exec())
@@ -128,8 +128,6 @@ bool Builder::insert(Model &model)
     }
 
     return qry.exec();
-
-    //QString qry=QString("insert into %1  (%2) values (%3)").arg(tableClause).arg(columns).arg(values);
 }
 
 bool Builder::update(Model &model)
@@ -151,7 +149,6 @@ bool Builder::update(Model &model)
 
     if(!whereClause.isEmpty())
         qryStr.append(whereClause);
-    qDebug()<<qryStr;
     qry.prepare(qryStr);
     for(const QString &key : model.dirtyKeys())
     {

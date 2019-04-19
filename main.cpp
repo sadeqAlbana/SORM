@@ -1,8 +1,6 @@
 #include <QCoreApplication>
 #include <QSqlDatabase>
 #include <QDebug>
-#include "db.h"
-#include "collection.h"
 #include "user.h"
 int main(int argc, char *argv[])
 {
