@@ -15,7 +15,7 @@ tableClause(table),
 Builder &Builder::where(QString key, QVariant value)
 {
     if(!whereClause.size())
-        whereClause.append(QString(" where %1 = %2").arg(key).arg(value.toString()));
+        whereClause.append(QString(" where %1 = %2").arg(key).arg(QString("'%1'").arg(value.toString())));
 
     return *this;
 }
@@ -68,6 +68,7 @@ Collection Builder::get()
             for(int i=0; i<record.count(); i++)
             {
                 m.set(record.fieldName(i),query.value(i));
+                m.setSaved();
             }
             collection << m;
 
@@ -133,7 +134,32 @@ bool Builder::insert(Model &model)
 
 bool Builder::update(Model &model)
 {
+    if(model.usesTimestamps())
+    {
+        QDateTime now=QDateTime::currentDateTime();
+        model.set("updated_at",now);
+    }
 
+
+    QStringList assignments;
+
+    for(const QString &key : model.dirtyKeys())
+        assignments << QString("%1=%2").arg(escapeKey(key)).arg(QString(":%1").arg(key));
+
+    QSqlQuery qry;
+    QString qryStr=QString("update %1 set %2 ").arg(tableClause).arg(assignments.join(","));
+
+    if(!whereClause.isEmpty())
+        qryStr.append(whereClause);
+    qDebug()<<qryStr;
+    qry.prepare(qryStr);
+    for(const QString &key : model.dirtyKeys())
+    {
+        qry.bindValue(QString(":%1").arg(key),model[key]);
+    }
+
+
+    return qry.exec();
 }
 
 QString Builder::escapeKey(const QString &key) const

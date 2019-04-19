@@ -18,7 +18,6 @@ Model::~Model()
 void Model::set(QString key, QVariant value)
 {
     data.insert(key,value);
-
 }
 
 QVariant Model::get(QString key) const
@@ -26,9 +25,11 @@ QVariant Model::get(QString key) const
     return data.value(key);
 }
 
-bool Model::save()
-{
 
+void Model::setSaved()
+{
+    _exists=true;
+    original=data;
 }
 
 bool Model::usesTimestamps()
@@ -39,6 +40,16 @@ bool Model::usesTimestamps()
 QVariant Model::operator[](const QString key)
 {
     return get(key);
+}
+
+QStringList Model::dirtyKeys() const
+{
+    QStringList dirtyKeys;
+    for (const QString &key : keys()) {
+     if((original[key]!=data[key]) || original.count(key) == 0)
+         dirtyKeys << key;
+    }
+    return dirtyKeys;
 }
 
 
