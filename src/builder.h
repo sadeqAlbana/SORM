@@ -38,6 +38,7 @@ public:
 
     bool insert(Model &model);
     bool update(Model &model);
+    bool remove();
 
 
 

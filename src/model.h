@@ -21,7 +21,7 @@ public:
     bool usesTimestamps();
     QVariant operator[](const QString key);
 
-private:
+protected:
     bool _exists;
     void setSaved();
     QMap<QString, QVariant> data;

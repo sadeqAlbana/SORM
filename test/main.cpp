@@ -17,10 +17,10 @@ int main(int argc, char *argv[])
     //Model m=DB::table("users").select("id","name").where("id",2).get().first();
 
     //User user=User::all().first();
-    User user=User::where("id",1).first();
+    User user=User::where("id",3).first();
     qDebug()<<"exists: " << user.exists();
     user.set("name","test_update2");
-    user.save();
+    user.remove();
 
 
     qDebug()<<user["name"];

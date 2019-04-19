@@ -159,6 +159,17 @@ bool Builder::update(Model &model)
     return qry.exec();
 }
 
+bool Builder::remove()
+{
+    QString qryStr=QString("delete from %1 ").arg(escapeTable());
+
+    if(!whereClause.isEmpty())
+        qryStr.append(whereClause);
+
+    QSqlQuery qry;
+    return qry.exec(qryStr);
+}
+
 QString Builder::escapeKey(const QString &key) const
 {
     return QString("`%1`.`%2`").arg(tableClause).arg(key);

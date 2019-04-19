@@ -19,5 +19,7 @@
     static Builder where(const QString key, const QVariant value) \
     {return Builder(table()).where(key,value);} \
     bool save(){return exists() ? Builder(table()).where(primaryKey(),get(primaryKey())).update(*this) : Builder(table()).insert(*this);} \
+    bool remove(){_exists=false; \
+    return Builder(table()).where(primaryKey(),get(primaryKey())).remove();} \
     private:
 #endif // ELOQUENTMODEL_H
