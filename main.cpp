@@ -21,7 +21,10 @@ int main(int argc, char *argv[])
     //User user=User::all().first();
     User user=User::where("id",1).first();
 
-
+    User user2;
+    user2.set("name","sadeq2");
+    user2.set("password","tst");
+    user2.save();
 
 
     qDebug()<<user["name"];

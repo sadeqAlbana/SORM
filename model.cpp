@@ -1,12 +1,12 @@
 #include "model.h"
 #include "collection.h"
 #include "builder.h"
-Model::Model()
+Model::Model() : _exists(false)
 {
 
 }
 
-Model::Model(const QMap<QString, QVariant> &map) : data(map)
+Model::Model(const QMap<QString, QVariant> &map) : _exists(false),data(map)
 {
 
 }

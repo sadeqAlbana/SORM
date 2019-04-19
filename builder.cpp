@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QSqlRecord>
 #include <QDateTime>
+#include <QSqlError>
 Builder::Builder(const QString &table) :
 tableClause(table),
   columnsClause("*"),
@@ -106,10 +107,26 @@ bool Builder::insert(Model &model)
         model.set("updated_at",now);
     }
 
-    QStringList columns, values;
+    QStringList columns, bindValues;
+
+    for(const QString &key : model.keys())
+    {
+        columns << escapeKey(key);
+        bindValues << QString(":%1").arg(key);
+    }
+
+    QSqlQuery qry;
+    QString qryStr=QString("insert into %1 (%2) values(%3);").arg(tableClause).
+            arg(columns.join(",")).
+            arg(bindValues.join(","));;
 
 
+    for(const QString &key : model.keys())
+    {
+        qry.bindValue(QString(":%1").arg(key),model[key]);
+    }
 
+    return qry.exec();
 
     //QString qry=QString("insert into %1  (%2) values (%3)").arg(tableClause).arg(columns).arg(values);
 }
@@ -118,6 +135,18 @@ bool Builder::update(Model &model)
 {
 
 }
+
+QString Builder::escapeKey(const QString &key) const
+{
+    return QString("`%1`.`%2`").arg(tableClause).arg(key);
+}
+
+QString Builder::escapeTable() const
+{
+    return QString ("`%1`").arg(tableClause);
+}
+
+
 
 
 

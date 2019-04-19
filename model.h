@@ -25,16 +25,19 @@ public:
     QDateTime updated_at();
 
     bool exists(){return _exists;}
-
+    bool usesTimestamps();
     //QString _table;
     //QString _primaryKey;
-    QMap<QString, QVariant> data;
-    QMap<QString, QVariant> original;
-    bool _exists;
-
-    bool usesTimestamps();
 
     QVariant operator[](const QString key);
+private:
+    bool _exists;
+    QMap<QString, QVariant> data;
+    QMap<QString, QVariant> original;
+
+
+
+
 
 
 };

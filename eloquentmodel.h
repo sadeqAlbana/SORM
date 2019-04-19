@@ -18,5 +18,6 @@
     {return T::where(foreignKey,get(localKey)).value(0);} \
     static Builder where(const QString key, const QVariant value) \
     {return Builder(table()).where(key,value);} \
+    bool save(){return Builder(table()).insert(*this);} \
     private:
 #endif // ELOQUENTMODEL_H
