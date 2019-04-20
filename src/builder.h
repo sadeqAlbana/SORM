@@ -12,8 +12,8 @@ public:
     Builder(const QString &table);
     Builder &where(QString key, QVariant value);
     Builder &where(QString clause);
-    Builder &groupBy(QString key);
-    Builder &orderBy(QString key);
+    Builder &groupBy(QString column);
+    Builder &orderBy(QString column);
     Builder & join(QSqlRelation relation);
     Builder & take(int l){_limit=l; return *this;}
     Builder &skip(int offset);

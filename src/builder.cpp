@@ -30,6 +30,18 @@ Builder &Builder::where(QString clause)
     return *this;
 }
 
+Builder &Builder::groupBy(QString column)
+{
+    groupByClause=column;
+    return *this;
+}
+
+Builder &Builder::orderBy(QString column)
+{
+    orderByClause=column;
+    return *this;
+}
+
 Builder &Builder::skip(int offset)
 {
     this->offset = offset;
@@ -56,6 +68,10 @@ Collection Builder::get()
 
     if(whereClause.size())
         qry.append(whereClause);
+    if(groupByClause.size())
+        qry.append(QString(" group by %1").arg(groupByClause));
+    if(orderByClause.size())
+        qry.append(QString(" order by %1").arg(orderByClause));
     if(_limit)
         qry.append(QString(" limit %1").arg(_limit));
 
