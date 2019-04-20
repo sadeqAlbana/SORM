@@ -5,6 +5,7 @@
 #include <QDateTime>
 #include <QSqlError>
 #include <QSqlQuery>
+#include "model.h"
 Builder::Builder(const QString &table) :
 tableClause(table),
   columnsClause("*"),

@@ -1,7 +1,7 @@
 #ifndef DB_H
 #define DB_H
-#include "builder.h"
-
+class Builder;
+class QString;
 class DB
 {
 public:

@@ -1,7 +1,8 @@
 #ifndef COLLECTION_H
 #define COLLECTION_H
 #include <QList>
-#include "model.h"
+#include <QJsonArray>
+class Model;
 
 class Collection : public QList<Model>
 {

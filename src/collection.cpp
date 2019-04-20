@@ -1,7 +1,6 @@
 #include "collection.h"
-#include <QJsonArray>
 #include <QJsonObject>
-
+#include "model.h"
 Collection::Collection()
 {
 
