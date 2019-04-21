@@ -27,3 +27,4 @@
     return Builder(table()).where(primaryKey(),get(primaryKey())).remove();} \
     private:
 #endif // ELOQUENTMODEL_H
+    //template<class T> static _class with()
