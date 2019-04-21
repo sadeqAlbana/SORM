@@ -16,6 +16,8 @@
     {return Builder(T::table()).where(foreignKey,get(localKey)).get();} \
     template<class T> T hasOne(const QString foreignKey = QString("%1_%2").arg(className()).arg(primaryKey()), const QString localKey=primaryKey())\
     {return T::where(foreignKey,get(localKey)).value(0);} \
+    template<class T> T belongsTo(const QString foreignKey = QString("%1_%2").arg(className()).arg(primaryKey()),const QString localKey=primaryKey()) \
+    {return Builder(T::table()).where(localKey,get(foreignKey)).first();}\
     static Builder where(const QString key, const QVariant value) \
     {return Builder(table()).where(key,value);} \
     bool save(){return exists() ? Builder(table()).where(primaryKey(),get(primaryKey())).update(*this) : Builder(table()).insert(*this);} \
