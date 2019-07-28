@@ -139,6 +139,7 @@ bool Builder::insert(Model &model)
             arg(bindValues.join(","));;
 
 
+    qry.prepare(qryStr);
     for(const QString &key : model.keys())
     {
         qry.bindValue(QString(":%1").arg(key),model[key]);
