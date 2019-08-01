@@ -38,7 +38,7 @@ QDebug operator <<(QDebug dbg, const Collection &collection)
     QList<int> lengths;
 
     for (int i=0;i<columns.length(); i++) {
-        lengths << 0;
+        lengths << columns[i].length();
     }
 
         for (int r=0; r<collection.count(); r++) {
@@ -50,14 +50,39 @@ QDebug operator <<(QDebug dbg, const Collection &collection)
             }
         }
 
+
         for (int i=0; i<columns.size(); i++) {
             QString row;
             row.append('+');
-            for (int j=0;j<lengths[i];j++) {
+            for (int j=0;j<lengths[i]+4;j++) {
                 row.append('-');
             }
-            dbg.noquote()<<row;
+            dbg.noquote().nospace()<<row;
         }
+        dbg.noquote().nospace()<<"+\n";
+        for (int i=0;i<columns.size();i++) {
+            QString row;
+            row.append('|');
+            row.append(QString (" %1 ").arg(columns.at(i)));
+            for (int j=row.size();j<lengths[i]+5;j++) {
+                row.append(' ');
+            }
+
+           dbg.noquote().nospace()<<row;
+        }
+        dbg.noquote().nospace()<<"|\n";
+
+        for (int i=0; i<columns.size(); i++) {
+            QString row;
+            row.append('+');
+            for (int j=0;j<lengths[i]+4;j++) {
+                row.append('-');
+            }
+            dbg.noquote().nospace()<<row;
+        }
+        dbg.noquote().nospace()<<"+\n";
+
+
 
         return dbg;
 
