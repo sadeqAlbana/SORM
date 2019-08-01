@@ -43,17 +43,22 @@ QDebug operator <<(QDebug dbg, const Collection &collection)
 
         for (int r=0; r<collection.count(); r++) {
             Model tmp=collection[r];
-            for (int c=0; columns.size(); c++) {
+            for (int c=0; c<columns.size(); c++) {
              QString value=tmp[columns.at(c)].toString();
              if(value.size()>lengths.at(c))
                  lengths[c]=value.length();
             }
         }
 
-        for (int i=0; columns.size(); i++) {
+        for (int i=0; i<columns.size(); i++) {
             QString row;
-
+            row.append('+');
+            for (int j=0;j<lengths[i];j++) {
+                row.append('-');
+            }
+            dbg.noquote()<<row;
         }
 
+        return dbg;
 
 }
