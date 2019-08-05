@@ -2,6 +2,7 @@
 #include <QSqlDatabase>
 #include <QDebug>
 #include "user.h"
+#include "transaction.h"
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
@@ -17,13 +18,26 @@ int main(int argc, char *argv[])
     //Model m=DB::table("users").select("id","name").where("id",2).get().first();
 
     //User user=User::all().first();
-    User user=User::where("id",3).first();
+    User user=User::where("id",1).first();
     qDebug()<<"exists: " << user.exists();
     user.set("name","test_update2");
-    user.remove();
-
-
     qDebug()<<user["name"];
+
+    Collection transactions=user.hasMany<Transaction>();
+
+
+    qDebug()<<transactions[1]["total"];
+
+    QString r=R"(
+  -------------------------
+  | id | name | password |
+  |    |      |          |
+
+
+              )";
+
+qDebug()<<transactions;
+
 
     return a.exec();
 }

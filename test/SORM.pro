@@ -16,3 +16,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 include(../SORM.pri)
 SOURCES += \
         main.cpp 
+
+HEADERS += \
+    transaction.h

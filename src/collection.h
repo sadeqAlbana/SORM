@@ -10,7 +10,7 @@ public:
     Collection();
     operator bool();
     operator QJsonArray();
-
 };
+QDebug operator <<(QDebug dbg, const Collection &collection);
 
 #endif // COLLECTION_H
