@@ -11,6 +11,7 @@ class Builder
 public:
     Builder(const QString &table);
     Builder &where(QString key, QVariant value);
+    Builder &where(QString key,QString op, QVariant value);
     Builder &where(QString clause);
     Builder &groupBy(QString column);
     Builder &orderBy(QString column);

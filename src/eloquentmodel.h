@@ -25,6 +25,7 @@
     bool save(){return exists() ? Builder(table()).where(primaryKey(),get(primaryKey())).update(*this) : Builder(table()).insert(*this);} \
     bool remove(){_exists=false; \
     return Builder(table()).where(primaryKey(),get(primaryKey())).remove();} \
+    static Builder builder(){return Builder(table());} \
     private:
 #endif // ELOQUENTMODEL_H
     //template<class T> static _class with()

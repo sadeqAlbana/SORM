@@ -22,6 +22,14 @@ Builder &Builder::where(QString key, QVariant value)
     return *this;
 }
 
+Builder &Builder::where(QString key, QString op, QVariant value)
+{
+    if(!whereClause.size())
+        whereClause.append(QString(" where %1 %2 %3").arg(key).arg(op).arg(QString("'%1'").arg(value.toString())));
+
+    return *this;
+}
+
 Builder &Builder::where(QString clause)
 {
 

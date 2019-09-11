@@ -2,6 +2,7 @@
 #define DB_H
 class Builder;
 class QString;
+
 class DB
 {
 public:
