@@ -6,6 +6,7 @@
 #include <QSqlError>
 #include <QSqlQuery>
 #include "model.h"
+
 Builder::Builder(const QString &table) :
 tableClause(table),
   columnsClause("*"),
@@ -34,6 +35,30 @@ Builder &Builder::where(QString clause)
 {
 
     whereClause="+"+clause+"+";
+
+    return *this;
+}
+
+Builder &Builder::whereIn(QString key, QVariantList values)
+{
+    if(!whereClause.size())
+    {
+        QString valuesString;
+        for (QVariant value : values) {
+            valuesString.append(value.toString()+",");
+        }
+        valuesString.chop(1);
+
+        whereClause.append(QString(" where %1 in ( %2 )").arg(key).arg(valuesString));
+    }
+
+    return *this;
+}
+
+Builder &Builder::whereIn(QString key, QString subQuery)
+{
+    if(!whereClause.size())
+        whereClause.append(QString(" where %1 in ( %2 )").arg(key).arg(subQuery));
 
     return *this;
 }
@@ -72,18 +97,7 @@ Model Builder::first()
 
 Collection Builder::get()
 {
-    QString qry=QString("select %1 from %2").arg(columnsClause).arg(tableClause);
-
-    if(whereClause.size())
-        qry.append(whereClause);
-    if(groupByClause.size())
-        qry.append(QString(" group by %1").arg(groupByClause));
-    if(orderByClause.size())
-        qry.append(QString(" order by %1").arg(orderByClause));
-    if(_limit)
-        qry.append(QString(" limit %1").arg(_limit));
-
-    QSqlQuery query(qry);
+    QSqlQuery query(generateSql());
     if(query.exec())
     {
         Collection collection;
@@ -101,6 +115,22 @@ Collection Builder::get()
         return collection;
     }
     return Collection();
+}
+
+QString Builder::generateSql()
+{
+    QString qry=QString("select %1 from %2").arg(columnsClause).arg(tableClause);
+
+    if(whereClause.size())
+        qry.append(whereClause);
+    if(groupByClause.size())
+        qry.append(QString(" group by %1").arg(groupByClause));
+    if(orderByClause.size())
+        qry.append(QString(" order by %1").arg(orderByClause));
+    if(_limit)
+        qry.append(QString(" limit %1").arg(_limit));
+
+    return qry;
 }
 
 Builder &Builder::select()

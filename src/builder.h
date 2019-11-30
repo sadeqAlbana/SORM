@@ -1,11 +1,13 @@
 #ifndef BUILDER_H
 #define BUILDER_H
 #include <QString>
+#include <QVariantList>
 class QVariant;
 class QStringList;
 class QSqlRelation;
 class Model;
 class Collection;
+
 class Builder
 {
 public:
@@ -13,6 +15,8 @@ public:
     Builder &where(QString key, QVariant value);
     Builder &where(QString key,QString op, QVariant value);
     Builder &where(QString clause);
+    Builder &whereIn(QString key, QVariantList values);
+    Builder &whereIn(QString key, QString subQuery);
     Builder &groupBy(QString column);
     Builder &orderBy(QString column);
     Builder & join(QSqlRelation relation);
@@ -22,6 +26,7 @@ public:
     Model first();
 
     Collection get();
+    QString generateSql();
     Builder &select();
     Builder & select(QStringList args);
 
