@@ -117,6 +117,34 @@ Collection Builder::get()
     return Collection();
 }
 
+Collection Builder::sum(const QString field)
+{
+    QString qry=QString("select sum(%1) from %2").arg(field).arg(tableClause);
+    if(whereClause.size())
+        qry.append(whereClause);
+    if(_limit)
+        qry.append(QString(" limit %1").arg(_limit));
+
+    QSqlQuery query(qry);
+    if(query.exec())
+    {
+        Collection collection;
+        QSqlRecord record=query.record();
+        while (query.next()) {
+            Model m;
+            for(int i=0; i<record.count(); i++)
+            {
+                m.set(record.fieldName(i),query.value(i));
+                m.setSaved();
+            }
+            collection << m;
+
+        }
+        return collection;
+    }
+    return Collection();
+}
+
 QString Builder::generateSql()
 {
     QString qry=QString("select %1 from %2").arg(columnsClause).arg(tableClause);

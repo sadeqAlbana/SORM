@@ -26,6 +26,7 @@ public:
     Model first();
 
     Collection get();
+    Collection sum(const QString field);
     QString generateSql();
     Builder &select();
     Builder & select(QStringList args);
@@ -57,6 +58,7 @@ private:
     QString orderByClause;
     QString whereClause;
     QString groupByClause;
+    QString sumClause;
     int _limit;
     int offset;
 

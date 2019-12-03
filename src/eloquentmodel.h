@@ -15,7 +15,7 @@
     template<class T> Collection hasMany(const QString foreignKey = QString("%1_%2").arg(className()).arg(primaryKey()), const QString localKey=primaryKey()) \
     {return Builder(T::table()).where(foreignKey,get(localKey)).get();} \
     template<class T> T hasOne(const QString foreignKey = QString("%1_%2").arg(className()).arg(primaryKey()), const QString localKey=primaryKey())\
-    {return T::where(foreignKey,get(localKey)).value(0);} \
+    {return T::where(foreignKey,get(localKey)).get().value(0);} \
     template<class T> T belongsTo(const QString foreignKey = QString("%1_%2").arg(className()).arg(primaryKey()),const QString localKey=primaryKey()) \
     {return Builder(T::table()).where(localKey,get(foreignKey)).first();}\
     template<class T> Collection belongsToMany(const QString foreignKey = QString("%1_%2").arg(className()).arg(primaryKey()),const QString localKey=primaryKey()) \
