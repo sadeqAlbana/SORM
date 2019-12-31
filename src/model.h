@@ -19,6 +19,7 @@ public:
     QDateTime updated_at();
     bool exists(){return _exists;}
     bool usesTimestamps();
+    void setUseTimestamps(bool use=true){_useTimeStamps=use;}
     QVariant operator[](const QString key);
 
 protected:
@@ -26,6 +27,7 @@ protected:
     void setSaved();
     QMap<QString, QVariant> data;
     QMap<QString, QVariant> original;
+    bool _useTimeStamps;
 };
 
 #include "eloquentmodel.h"

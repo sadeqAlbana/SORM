@@ -5,7 +5,6 @@
 #include "collection.h"
 #define ELOQUENT_MODEL(_class, tableName,_primaryKey) \
     public: \
-    _class() {} \
     _class(Model model) : Model(model){} \
     static QString table(){return #tableName;} \
     static QString primaryKey(){return #_primaryKey;} \

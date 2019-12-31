@@ -59,6 +59,7 @@ private:
     QString whereClause;
     QString groupByClause;
     QString sumClause;
+    QString dbDriver;
     int _limit;
     int offset;
 

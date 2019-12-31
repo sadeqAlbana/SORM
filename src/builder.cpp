@@ -12,7 +12,7 @@ tableClause(table),
   columnsClause("*"),
   _limit(0)
 {
-
+    dbDriver=QSqlDatabase::database().driverName();
 }
 
 Builder &Builder::where(QString key, QVariant value)
@@ -211,7 +211,8 @@ bool Builder::insert(Model &model)
         qry.bindValue(QString(":%1").arg(key),model[key]);
     }
 
-    return qry.exec();
+    bool result= qry.exec();
+    return result;
 }
 
 bool Builder::update(Model &model)
@@ -256,15 +257,12 @@ bool Builder::remove()
 
 QString Builder::escapeKey(const QString &key) const
 {
-    return QString("`%1`.`%2`").arg(tableClause).arg(key);
+    return dbDriver == "QSQLITE" ?
+                QString("`%1`").arg(key):
+                QString("`%1`.`%2`").arg(tableClause).arg(key);
 }
 
 QString Builder::escapeTable() const
 {
     return QString ("`%1`").arg(tableClause);
 }
-
-
-
-
-

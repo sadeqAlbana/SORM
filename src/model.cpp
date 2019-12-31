@@ -34,8 +34,10 @@ void Model::setSaved()
 
 bool Model::usesTimestamps()
 {
-    return true;
+    return _useTimeStamps;
 }
+
+
 
 QVariant Model::operator[](const QString key)
 {
