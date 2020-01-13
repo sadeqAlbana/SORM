@@ -2,12 +2,19 @@
 #include "collection.h"
 #include "builder.h"
 #include <QJsonObject>
-Model::Model() : _exists(false)
+#include "relations/hasmanyrelation.h"
+#include "relations/relation.h"
+//Model::Model(const Model &other, const QString tbl, const QString pk): _exists(other._exists), data(other.data),original(other.original),_useTimeStamps(other._useTimeStamps)
+//{
+
+//}
+
+Model::Model(const QString tbl, const QString pk, const QString modelName) : _exists(false),_table(tbl),_primaryKey(pk),_modelName(modelName)
 {
 
 }
 
-Model::Model(const QMap<QString, QVariant> &map) : _exists(false),data(map)
+Model::Model(const QMap<QString, QVariant> &map, const QString tbl, const QString pk,const QString modelName) : _exists(false),data(map),_table(tbl),_primaryKey(pk),_modelName(modelName)
 {
 
 }
@@ -69,5 +76,6 @@ QStringList Model::dirtyKeys() const
     }
     return dirtyKeys;
 }
+
 
 

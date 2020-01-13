@@ -18,7 +18,8 @@ struct withItem{
 class Builder
 {
 public:
-    Builder(const QString &table);
+    Builder(const QString &table,const QString pk=QString());
+    Builder(const Model mdl);
     Builder &where(QString key, QVariant value);
     Builder &where(QString key,QString op, QVariant value);
     Builder &where(QString clause);
@@ -71,6 +72,7 @@ private:
     QString sumClause;
     QString dbDriver;
     QList<withItem> withList;
+    QString _primaryKey;
     int _limit;
     int offset;
 };

@@ -7,12 +7,18 @@
 #include <QSqlQuery>
 #include "model.h"
 
-Builder::Builder(const QString &table) :
+Builder::Builder(const QString &table, const QString pk) :
 tableClause(table),
   columnsClause("*"),
+  _primaryKey(pk),
   _limit(0)
 {
     dbDriver=QSqlDatabase::database().driverName();
+}
+
+Builder::Builder(const Model mdl) : tableClause(mdl._table), _primaryKey(mdl._primaryKey)
+{
+
 }
 
 Builder &Builder::where(QString key, QVariant value)
@@ -103,7 +109,7 @@ Collection Builder::get()
         Collection collection;
         QSqlRecord record=query.record();
         while (query.next()){
-            Model m;
+            Model m(tableClause,_primaryKey);
             for(int i=0; i<record.count(); i++)
             {
                 m.set(record.fieldName(i),query.value(i));

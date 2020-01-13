@@ -5,7 +5,10 @@ SOURCES += \
     $$PWD/src/builder.cpp \
     $$PWD/src/model.cpp \
     $$PWD/src/collection.cpp \
-    $$PWD/src/db.cpp
+    $$PWD/src/db.cpp \
+    src/modelbuilder.cpp \
+    src/relations/hasmanyrelation.cpp \
+    src/relations/relation.cpp
 
 HEADERS += \
     $$PWD/src/builder.h \
@@ -13,7 +16,12 @@ HEADERS += \
     $$PWD/src/collection.h \
     $$PWD/src/db.h \
     $$PWD/src/eloquentmodel.h \
-    $$PWD/src/user.h
+    $$PWD/src/user.h \
+    $$PWD/src/relations/relation.h \
+    $$PWD/src/relations/eloquentrelation.h \
+    src/modelbuilder.h \
+    src/relations/hasmanyrelation.h
+
 
 
 unix {
