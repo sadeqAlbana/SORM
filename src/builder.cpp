@@ -102,7 +102,7 @@ Collection Builder::get()
     {
         Collection collection;
         QSqlRecord record=query.record();
-        while (query.next()) {
+        while (query.next()){
             Model m;
             for(int i=0; i<record.count(); i++)
             {
@@ -110,11 +110,39 @@ Collection Builder::get()
                 m.setSaved();
             }
             collection << m;
+        }
+        if(!withList.isEmpty()){
+            for (const withItem &item : withList) {
 
+                QStringList ids;
+                for(const Model &mdl : collection){
+                    ids << mdl.get(item.primaryKey).toString();
+                }
+
+                Collection withResult=Builder(item.table).select(item.columns).whereIn(item.foreignKey,ids.join(',')).get();
+                for (Model &mainModel : collection) {
+                    Collection inserts;
+                    QVariant primaryKey = mainModel.get(item.primaryKey);
+                    for (Model mdl : withResult) {
+                        if(mainModel.get(item.primaryKey)==mdl.get(item.foreignKey))
+                        {
+                            inserts << mdl;
+                        }
+                    }
+                 mainModel.set(item.table,inserts);
+                 //mainModel.setSaved();
+                }
+
+            }
         }
         return collection;
     }
     return Collection();
+}
+
+Model Builder::find(const QVariant id)
+{
+    //implement me
 }
 
 Collection Builder::sum(const QString field)
@@ -157,7 +185,7 @@ QString Builder::generateSql()
         qry.append(QString(" order by %1").arg(orderByClause));
     if(_limit)
         qry.append(QString(" limit %1").arg(_limit));
-
+    qDebug()<<qry;
     return qry;
 }
 
@@ -253,6 +281,12 @@ bool Builder::remove()
 
     QSqlQuery qry;
     return qry.exec(qryStr);
+}
+
+Builder &Builder::with(const QString table, const QString primaryKey, const QString localKey, const QStringList columns)
+{
+    withList << withItem{table,primaryKey,localKey,columns};
+    return *this;
 }
 
 QString Builder::escapeKey(const QString &key) const

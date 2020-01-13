@@ -10,6 +10,8 @@ public:
     Collection();
     operator bool();
     operator QJsonArray();
+    operator QVariant();
+    operator QJsonValue();
 };
 QDebug operator <<(QDebug dbg, const Collection &collection);
 

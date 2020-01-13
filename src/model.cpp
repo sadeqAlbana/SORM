@@ -1,6 +1,7 @@
 #include "model.h"
 #include "collection.h"
 #include "builder.h"
+#include <QJsonObject>
 Model::Model() : _exists(false)
 {
 
@@ -42,6 +43,21 @@ bool Model::usesTimestamps()
 QVariant Model::operator[](const QString key)
 {
     return get(key);
+}
+
+Model::operator QVariant()
+{
+    return operator QJsonObject();
+}
+
+Model::operator QJsonObject()
+{
+    QJsonObject object;
+
+    for(const QString &key : keys())
+        object[key]=get(key).toString();
+
+    return object;
 }
 
 QStringList Model::dirtyKeys() const

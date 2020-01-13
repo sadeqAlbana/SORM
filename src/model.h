@@ -21,6 +21,8 @@ public:
     bool usesTimestamps();
     void setUseTimestamps(bool use=true){_useTimeStamps=use;}
     QVariant operator[](const QString key);
+    operator QJsonObject();
+    operator QVariant();
 
 protected:
     bool _exists;

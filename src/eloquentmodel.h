@@ -25,6 +25,9 @@
     bool remove(){_exists=false; \
     return Builder(table()).where(primaryKey(),get(primaryKey())).remove();} \
     static Builder builder(){return Builder(table());} \
+    static Builder with(){return builder();} \
+    template<typename First, typename ... Args> static Builder with(First arg, const Args &...rest) \
+        {return with(rest...);} \
     private:
 #endif // ELOQUENTMODEL_H
     //template<class T> static _class with()
