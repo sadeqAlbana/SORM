@@ -89,35 +89,17 @@ Builder &Builder::paginate(int page, int count)
     return *this;
 }
 
-Model Builder::first()
-{
-    return take(1).get().value(0);
-}
 
 
-Collection Builder::get()
+
+QSqlQuery Builder::get()
 {
     QSqlQuery query(generateSql());
-    if(query.exec())
-    {
-        Collection collection;
-        QSqlRecord record=query.record();
-        while (query.next()) {
-            Model m;
-            for(int i=0; i<record.count(); i++)
-            {
-                m.set(record.fieldName(i),query.value(i));
-                m.setSaved();
-            }
-            collection << m;
-
-        }
-        return collection;
-    }
-    return Collection();
+    query.exec();
+    return query;
 }
 
-Collection Builder::sum(const QString field)
+QSqlQuery Builder::sum(const QString field)
 {
     QString qry=QString("select sum(%1) from %2").arg(field).arg(tableClause);
     if(whereClause.size())
@@ -126,23 +108,9 @@ Collection Builder::sum(const QString field)
         qry.append(QString(" limit %1").arg(_limit));
 
     QSqlQuery query(qry);
-    if(query.exec())
-    {
-        Collection collection;
-        QSqlRecord record=query.record();
-        while (query.next()) {
-            Model m;
-            for(int i=0; i<record.count(); i++)
-            {
-                m.set(record.fieldName(i),query.value(i));
-                m.setSaved();
-            }
-            collection << m;
+    query.exec();
 
-        }
-        return collection;
-    }
-    return Collection();
+    return query;
 }
 
 QString Builder::generateSql()
@@ -182,18 +150,12 @@ Builder &Builder::select(QStringList args)
     return *this;
 }
 
-bool Builder::insert(Model &model)
+bool Builder::insert(const Map &map)
 {
-    if(model.usesTimestamps())
-    {
-        QDateTime now=QDateTime::currentDateTime();
-        model.set("created_at",now);
-        model.set("updated_at",now);
-    }
 
     QStringList columns, bindValues;
 
-    for(const QString &key : model.keys())
+    for(const QString &key : map.keys())
     {
         columns << escapeKey(key);
         bindValues << QString(":%1").arg(key);
@@ -206,27 +168,20 @@ bool Builder::insert(Model &model)
 
 
     qry.prepare(qryStr);
-    for(const QString &key : model.keys())
+    for(const QString &key : map.keys())
     {
-        qry.bindValue(QString(":%1").arg(key),model[key]);
+        qry.bindValue(QString(":%1").arg(key),map[key]);
     }
 
     bool result= qry.exec();
     return result;
 }
 
-bool Builder::update(Model &model)
+bool Builder::update(const Map &map)
 {
-    if(model.usesTimestamps())
-    {
-        QDateTime now=QDateTime::currentDateTime();
-        model.set("updated_at",now);
-    }
-
-
     QStringList assignments;
 
-    for(const QString &key : model.dirtyKeys())
+    for(const QString &key : map.keys())
         assignments << QString("%1=%2").arg(escapeKey(key)).arg(QString(":%1").arg(key));
 
     QSqlQuery qry;
@@ -235,11 +190,10 @@ bool Builder::update(Model &model)
     if(!whereClause.isEmpty())
         qryStr.append(whereClause);
     qry.prepare(qryStr);
-    for(const QString &key : model.dirtyKeys())
+    for(const QString &key : map.keys())
     {
-        qry.bindValue(QString(":%1").arg(key),model[key]);
+        qry.bindValue(QString(":%1").arg(key),map[key]);
     }
-
 
     return qry.exec();
 }

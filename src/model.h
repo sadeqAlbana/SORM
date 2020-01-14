@@ -2,14 +2,13 @@
 #define MODEL_H
 #include <QString>
 #include <QVariant>
-class Builder;
 class Collection;
 class Model
 {
-    friend class Builder;
+    friend class ModelBuilder;
 public:
-    Model();
-    Model(const QMap<QString, QVariant> &map);
+    Model(const QString &table=QString(), const QString &primarykey=QString(),const QString &modelName=QString(),bool usesTimeStamps=false);
+    //Model(const QMap<QString, QVariant> &map);
     ~Model();
     void set(QString key, QVariant value);
     QVariant get(QString key) const;
@@ -18,25 +17,22 @@ public:
     QDateTime created_at();
     QDateTime updated_at();
     bool exists(){return _exists;}
-    bool usesTimestamps();
+    bool usesTimestamps() const;
     void setUseTimestamps(bool use=true){_useTimeStamps=use;}
     QVariant operator[](const QString key);
-    QString getTable(){return _table;}
-    QString getPrimaryKey(){return _primaryKey;}
-    QString getModelName(){return _modelName;}
+    QString table()const {return _table;}
+    QString primaryKey() const {return _primaryKey;}
+    QString modelName() const {return _modelName;}
 
 protected:
     bool _exists;
     void setSaved();
     QMap<QString, QVariant> data;
     QMap<QString, QVariant> original;
+    QString _table;
+    QString _primaryKey;
+    QString _modelName;
     bool _useTimeStamps;
-//    const QString _table;
-//    const QString _primaryKey;
-//    const QString _modelName;
-      QString _table;
-      QString _primaryKey;
-      QString _modelName;
 
 public:
       template<class T>
@@ -50,14 +46,10 @@ template<class T>
 Collection Model::hasMany(QString foreignKey,QString localKey)
 {
     if(foreignKey.isEmpty())
-        foreignKey=QString("%1_%2").arg(getModelName()).arg(getPrimaryKey());
+        foreignKey=QString("%1_%2").arg(modelName()).arg(primaryKey());
 
     if(localKey.isEmpty())
-        localKey=getPrimaryKey();
-
-    qDebug()<<foreignKey;
-    qDebug()<<localKey;
-
+        localKey=primaryKey();
 
     return T::builder().where(foreignKey,get(localKey)).get();
 }

@@ -1,15 +1,16 @@
 #include "model.h"
 #include "collection.h"
 #include "builder.h"
-Model::Model() : _exists(false)
+Model::Model(const QString &table, const QString &primarykey, const QString &modelName, bool usesTimeStamps) : _exists(false),
+    _table(table),_primaryKey(primarykey),_modelName(modelName),_useTimeStamps(usesTimeStamps)
 {
 
 }
 
-Model::Model(const QMap<QString, QVariant> &map) : _exists(false),data(map)
-{
+//Model::Model(const QMap<QString, QVariant> &map) : _exists(false),data(map)
+//{
 
-}
+//}
 Model::~Model()
 {
 
@@ -32,7 +33,7 @@ void Model::setSaved()
     original=data;
 }
 
-bool Model::usesTimestamps()
+bool Model::usesTimestamps() const
 {
     return _useTimeStamps;
 }

@@ -1,7 +1,6 @@
 #ifndef RELATION_H
 #define RELATION_H
-#include "../model.h"
-#include "../builder.h"
+#include "../modelbuilder.h"
 class Relation
 {
 public:

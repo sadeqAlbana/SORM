@@ -16,7 +16,6 @@ HEADERS += \
     $$PWD/src/collection.h \
     $$PWD/src/db.h \
     $$PWD/src/eloquentmodel.h \
-    $$PWD/src/user.h \
     $$PWD/src/relations/relation.h \
     $$PWD/src/relations/eloquentrelation.h \
     src/modelbuilder.h \

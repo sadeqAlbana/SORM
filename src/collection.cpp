@@ -95,5 +95,4 @@ QDebug operator <<(QDebug dbg, const Collection &collection)
 
 
         return dbg;
-
 }
