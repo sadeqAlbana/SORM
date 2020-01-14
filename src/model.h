@@ -4,15 +4,12 @@
 #include <QVariant>
 class Builder;
 class Collection;
-class HasManyRelation;
-class Relation;
 class Model
 {
     friend class Builder;
 public:
-    //Model(const Model &other, const QString tbl=QString(), const QString pk=QString());
-    Model(const QString tbl=QString(), const QString pk=QString(),const QString modelName="Model");
-    Model(const QMap<QString, QVariant> &map, const QString tbl=QString(), const QString pk=QString(), const QString modelName="Model");
+    Model();
+    Model(const QMap<QString, QVariant> &map);
     ~Model();
     void set(QString key, QVariant value);
     QVariant get(QString key) const;
@@ -24,17 +21,9 @@ public:
     bool usesTimestamps();
     void setUseTimestamps(bool use=true){_useTimeStamps=use;}
     QVariant operator[](const QString key);
-    operator QJsonObject();
-    operator QVariant();
     QString getTable(){return _table;}
     QString getPrimaryKey(){return _primaryKey;}
-    QString modelName(){return _modelName;}
-    template<class T>
-    Relation hasMany(const QString foreignKey=QString(), const QString localKey=QString())
-    {
-        return HasManyRelation(*this,T::builder(),foreignKey,localKey);
-    }
-
+    QString getModelName(){return _modelName;}
 
 protected:
     bool _exists;
@@ -42,12 +31,36 @@ protected:
     QMap<QString, QVariant> data;
     QMap<QString, QVariant> original;
     bool _useTimeStamps;
-    QString _table;
-    QString _primaryKey;
-    QString _modelName;
+//    const QString _table;
+//    const QString _primaryKey;
+//    const QString _modelName;
+      QString _table;
+      QString _primaryKey;
+      QString _modelName;
+
+public:
+      template<class T>
+      Collection hasMany(QString foreignKey=QString(),
+                         QString localKey=QString());
 };
+#include "collection.h"
+#include "builder.h"
+#include <QDebug>
+template<class T>
+Collection Model::hasMany(QString foreignKey,QString localKey)
+{
+    if(foreignKey.isEmpty())
+        foreignKey=QString("%1_%2").arg(getModelName()).arg(getPrimaryKey());
+
+    if(localKey.isEmpty())
+        localKey=getPrimaryKey();
+
+    qDebug()<<foreignKey;
+    qDebug()<<localKey;
 
 
+    return T::builder().where(foreignKey,get(localKey)).get();
+}
 
 #include "eloquentmodel.h"
 #endif // MODEL_H

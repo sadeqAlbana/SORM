@@ -1,6 +1,6 @@
 #include "modelbuilder.h"
 
-ModelBuilder::ModelBuilder()
+ModelBuilder::ModelBuilder(const Model &model)
 {
 
 }

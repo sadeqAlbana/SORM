@@ -8,18 +8,10 @@ class QSqlRelation;
 class Model;
 class Collection;
 
-struct withItem{
-    QString table;
-    QString primaryKey;
-    QString foreignKey;
-    QStringList columns;
-};
-
 class Builder
 {
 public:
-    Builder(const QString &table,const QString pk=QString());
-    Builder(const Model mdl);
+    Builder(const QString &table);
     Builder &where(QString key, QVariant value);
     Builder &where(QString key,QString op, QVariant value);
     Builder &where(QString clause);
@@ -34,7 +26,6 @@ public:
     Model first();
 
     Collection get();
-    Model find(const QVariant id);
     Collection sum(const QString field);
     QString generateSql();
     Builder &select();
@@ -56,8 +47,6 @@ public:
     bool update(Model &model);
     bool remove();
 
-    Builder &with(const QString table,const QString primaryKey, const QString localKey, const QStringList columns=QStringList());
-
 
 
 
@@ -71,10 +60,9 @@ private:
     QString groupByClause;
     QString sumClause;
     QString dbDriver;
-    QList<withItem> withList;
-    QString _primaryKey;
     int _limit;
     int offset;
+
 };
 
 #endif // BUILDER_H
