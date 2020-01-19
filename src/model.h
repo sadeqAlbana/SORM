@@ -2,7 +2,9 @@
 #define MODEL_H
 #include <QString>
 #include <QVariant>
-class Collection;
+class HasManyRelation;
+class ModelBuilder;
+class Relation;
 class Model
 {
     friend class ModelBuilder;
@@ -23,6 +25,7 @@ public:
     QString table()const {return _table;}
     QString primaryKey() const {return _primaryKey;}
     QString modelName() const {return _modelName;}
+    ModelBuilder builder();
 
 protected:
     bool _exists;
@@ -36,22 +39,23 @@ protected:
 
 public:
       template<class T>
-      Collection hasMany(QString foreignKey=QString(),
+      HasManyRelation hasMany(QString foreignKey=QString(),
                          QString localKey=QString());
 };
-#include "collection.h"
-#include "builder.h"
-#include <QDebug>
+#include "relations/relation.h"
+#include "relations/hasmanyrelation.h"
 template<class T>
-Collection Model::hasMany(QString foreignKey,QString localKey)
+HasManyRelation Model::hasMany(QString foreignKey,QString localKey)
 {
-    if(foreignKey.isEmpty())
-        foreignKey=QString("%1_%2").arg(modelName()).arg(primaryKey());
+//    if(foreignKey.isEmpty())
+//        foreignKey=QString("%1_%2").arg(modelName()).arg(primaryKey());
 
-    if(localKey.isEmpty())
-        localKey=primaryKey();
+//    if(localKey.isEmpty())
+//        localKey=primaryKey();
 
-    return T::builder().where(foreignKey,get(localKey)).get();
+//    return T::builder().where(foreignKey,get(localKey)).get();
+    return HasManyRelation(T::builder(),this->builder(),foreignKey,localKey);
+
 }
 
 #include "eloquentmodel.h"

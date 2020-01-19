@@ -4,6 +4,7 @@
 #include <QSqlQuery>
 #include <QSqlRecord>
 #include <QDateTime>
+#include "relations/relation.h"
 ModelBuilder::ModelBuilder(const Model &model) : _table(model.table()),
     _primaryKey(model.primaryKey()), _modelName(model.modelName()),_builder(table())
 {
@@ -16,7 +17,7 @@ ModelBuilder::ModelBuilder(const QString &table, const QString &primaryKey, cons
 
 }
 
-Model ModelBuilder::model()
+Model ModelBuilder::model() const
 {
     return Model(table(),primaryKey(),modelName());
 }
@@ -50,6 +51,25 @@ Collection ModelBuilder::get(const QVariant &column)
             collection << m;
 
         }
+
+        for(Relation &relation : relations)
+        {
+            Collection relationResult=relation.get();
+            for (Model &mainModel : collection){
+                Collection inserts;
+                for (Model &relationModel : relationResult)
+                {
+                    if(mainModel.get(relation.localKey())==relationModel.get(relation.foreignKey())){
+                        inserts << relationModel;
+                    }
+                }
+                mainModel.set(relation.related().table(),inserts);
+                mainModel.setSaved();
+            }
+        }
+
+
+
         return collection;
     }
     return Collection();
@@ -70,6 +90,12 @@ ModelBuilder &ModelBuilder::where(QString key, QString op, QVariant value)
 ModelBuilder &ModelBuilder::where(QString clause)
 {
     builder().where(clause);
+    return *this;
+}
+
+ModelBuilder &ModelBuilder::with(const Relation &relation)
+{
+    relations << relation;
     return *this;
 }
 

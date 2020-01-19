@@ -45,6 +45,16 @@ QVariant Model::operator[](const QString key)
     return get(key);
 }
 
+ModelBuilder Model::builder()
+{
+    return ModelBuilder(*this);
+}
+
+//ModelBuilder Model::with(const Relation &relation)
+//{
+//    return builder().with(relation);
+//}
+
 QStringList Model::dirtyKeys() const
 {
     QStringList dirtyKeys;
@@ -54,5 +64,4 @@ QStringList Model::dirtyKeys() const
     }
     return dirtyKeys;
 }
-
 

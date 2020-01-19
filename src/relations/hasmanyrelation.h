@@ -5,7 +5,8 @@
 class HasManyRelation : public Relation
 {
 public:
-    HasManyRelation(Model parent, Builder query, QString foreignKey=QString(), QString localKey=QString());
+    HasManyRelation(const ModelBuilder &query, const ModelBuilder &parent,const QString &foreignKey=QString(),
+                    const QString &localKey=QString());
 };
 
 #endif // HASMANYRELATION_H

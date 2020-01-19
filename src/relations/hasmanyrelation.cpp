@@ -1,13 +1,13 @@
 #include "hasmanyrelation.h"
-#include "../builder.h"
-//HasManyRelation::HasManyRelation(Model parent, Builder query, QString foreignKey, QString localKey) : Relation (parent,query)
-//{
+#include "../modelbuilder.h"
+#include "../model.h"
+HasManyRelation::HasManyRelation(const ModelBuilder &query, const ModelBuilder &parent, const QString &foreignKey, const QString &localKey) : Relation (query,parent,foreignKey,localKey)
+{
+    if(foreignKey.isNull())
+        _foreignKey=QString("%1_%2").arg(Relation::parent().modelName()).arg(Relation::parent().primaryKey());
 
-//    if(foreignKey.isNull())
-//        foreignKey=QString("%1_%2").arg(parent.modelName()).arg(parent.getPrimaryKey());
+    if(localKey.isNull())
+        _localKey=Relation::parent().primaryKey();
 
-//    if(localKey.isNull())
-//        localKey=parent.getPrimaryKey();
-
-//    _builder.where(foreignKey,parent.get(localKey));
-//}
+    _query.where(Relation::foreignKey(),Relation::parent().get(localKey));
+}

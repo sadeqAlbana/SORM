@@ -10,7 +10,7 @@
     static QString staticTable(){return #tableName;} \
     static QString staticPrimaryKey(){return #_primaryKey;} \
     static QString staticClassName(){return #_class;} \
-    static ModelBuilder builder(){return ModelBuilder(staticTable());} \
+    static ModelBuilder staticBuilder(){return ModelBuilder(staticTable());} \
     _class() : Model(#tableName,#_primaryKey,#_class,_useTimeStamps){} \
     _class(const Model &model) : Model(model){} \
     static Collection all(){return ModelBuilder(staticTable(),staticPrimaryKey(),staticClassName()).get();} \
@@ -22,6 +22,7 @@
     bool save(){return exists() ? ModelBuilder(staticTable(),staticPrimaryKey(),staticClassName()).update(*this) : ModelBuilder(staticTable(),staticPrimaryKey(),staticClassName()).insert(*this);} \
     bool remove(){_exists=false; \
     return Builder(staticTable()).where(staticPrimaryKey(),get(staticPrimaryKey())).remove();} \
+    static ModelBuilder& with(const Relation &relation){return staticBuilder().with(relation); } \
     private:
 #endif // ELOQUENTMODEL_H
     //template<class T> static _class with()

@@ -4,14 +4,19 @@
 class Relation
 {
 public:
-    Relation(Model parent, Builder query);
+    Relation(const ModelBuilder &query, const ModelBuilder &parentBuilder, const QString &foreignKey=QString(),
+             const QString &llocalKey=QString());
     Collection get();
-    protected:
-    const Model _parent;
-    const Model _related;
-    Builder _builder;
+    ModelBuilder _parentBuilder;
+    ModelBuilder _query;
+    Model parent();
+    Model related();
+    QString _foreignKey;
+    QString _localKey;
 
-
+    QString localKey() const;
+    QString foreignKey() const;
+    ModelBuilder _builder;
 };
 
 #endif // RELATION_H
