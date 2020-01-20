@@ -5,8 +5,8 @@ Relation::Relation(const ModelBuilder &query, const ModelBuilder &parentBuilder,
     _parentBuilder(parentBuilder),
     _query(query),
     _foreignKey(foreignKey),
-    _localKey(localKey),
-    _builder(parent())
+    _localKey(localKey)
+    //_builder(parent())
 {
 
 }

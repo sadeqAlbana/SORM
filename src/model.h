@@ -47,15 +47,7 @@ public:
 template<class T>
 HasManyRelation Model::hasMany(QString foreignKey,QString localKey)
 {
-//    if(foreignKey.isEmpty())
-//        foreignKey=QString("%1_%2").arg(modelName()).arg(primaryKey());
-
-//    if(localKey.isEmpty())
-//        localKey=primaryKey();
-
-//    return T::builder().where(foreignKey,get(localKey)).get();
-    return HasManyRelation(T::builder(),this->builder(),foreignKey,localKey);
-
+    return HasManyRelation(T::staticBuilder(),this->builder(),foreignKey,localKey);
 }
 
 #include "eloquentmodel.h"

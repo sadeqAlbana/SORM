@@ -115,6 +115,8 @@ QSqlQuery Builder::sum(const QString field)
 
 QString Builder::generateSql()
 {
+// qDebug()<<"Columns: " << columnsClause;
+//    qDebug()<<"Table: " << tableClause;
     QString qry=QString("select %1 from %2").arg(columnsClause).arg(tableClause);
 
     if(whereClause.size())
@@ -125,7 +127,7 @@ QString Builder::generateSql()
         qry.append(QString(" order by %1").arg(orderByClause));
     if(_limit)
         qry.append(QString(" limit %1").arg(_limit));
-
+    qDebug()<<qry;
     return qry;
 }
 

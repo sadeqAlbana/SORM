@@ -5,17 +5,25 @@
 #include <QSqlRecord>
 #include <QDateTime>
 #include "relations/relation.h"
+#include <QDebug>
 ModelBuilder::ModelBuilder(const Model &model) : _table(model.table()),
-    _primaryKey(model.primaryKey()), _modelName(model.modelName()),_builder(table())
+    _primaryKey(model.primaryKey()), _modelName(model.modelName()),_usesTimestamps(model.usesTimestamps()),_builder(table())
+{
+//    qDebug()<<table();
+//    qDebug()<<primaryKey();
+//    qDebug()<<modelName();
+}
+
+ModelBuilder::ModelBuilder(const QString &table, const QString &primaryKey, const QString &modelName, const bool &usesTimestamps) : _table(table),
+    _primaryKey(primaryKey), _modelName(modelName),_usesTimestamps(usesTimestamps),_builder(table)
 {
 
 }
 
-ModelBuilder::ModelBuilder(const QString &table, const QString &primaryKey, const QString &modelName) : _table(table),
-    _primaryKey(primaryKey), _modelName(modelName),_builder(table)
-{
+//ModelBuilder::ModelBuilder(const ModelBuilder &other) : _builder(other.table())
+//{
 
-}
+//}
 
 Model ModelBuilder::model() const
 {
@@ -26,14 +34,15 @@ Model ModelBuilder::model() const
 
 Collection ModelBuilder::get(const QVariant &column)
 {
-    if(column.isValid())
-    {
-        switch (column.type()) {
-        case QMetaType::QStringList : builder().select(column.toStringList()); break;
-        case QMetaType::QString     : builder().select(column.toString())    ; break;
-        default:                                                               break;
-        }
-    }
+    qDebug()<<"Called";
+//    if(column.isValid())
+//    {
+//        switch (column.type()) {
+//        case QMetaType::QStringList : builder().select(column.toStringList()); break;
+//        case QMetaType::QString     : builder().select(column.toString())    ; break;
+//        default:                                                               break;
+//        }
+//    }
 
 
     QSqlQuery query=builder().get();
@@ -52,14 +61,23 @@ Collection ModelBuilder::get(const QVariant &column)
 
         }
 
+        qDebug()<<"Reached";
+        QVariantList ids;
+
         for(Relation &relation : relations)
         {
+
+            QVariantList ids;
+            for(const Model &mdl : collection){
+                ids << mdl.get(relation.localKey());
+            }
             Collection relationResult=relation.get();
             for (Model &mainModel : collection){
                 Collection inserts;
                 for (Model &relationModel : relationResult)
                 {
                     if(mainModel.get(relation.localKey())==relationModel.get(relation.foreignKey())){
+                        qDebug()<<"found";
                         inserts << relationModel;
                     }
                 }

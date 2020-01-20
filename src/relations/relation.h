@@ -16,7 +16,7 @@ public:
 
     QString localKey() const;
     QString foreignKey() const;
-    ModelBuilder _builder;
+    //ModelBuilder _builder;
 };
 
 #endif // RELATION_H
