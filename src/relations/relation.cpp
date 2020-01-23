@@ -1,12 +1,9 @@
 #include "relation.h"
 #include "../collection.h"
 #include "../model.h"
-Relation::Relation(const ModelBuilder &query, const ModelBuilder &parentBuilder, const QString &foreignKey, const QString &localKey) :
-    _parentBuilder(parentBuilder),
-    _query(query),
-    _foreignKey(foreignKey),
-    _localKey(localKey)
-    //_builder(parent())
+Relation::Relation(const ModelBuilder &query, const Model &parent) :
+    _parent(new Model(parent)),
+    _query(query)
 {
 
 }
@@ -16,22 +13,19 @@ Collection Relation::get()
     return _query.get();
 }
 
-Model Relation::parent()
+Model Relation::parent() const
 {
-    return _parentBuilder.model();
+    return *_parent;
 }
 
-Model Relation::related()
+Model Relation::related() const
 {
-    return _query.model();
+    return query().model();
 }
 
-QString Relation::foreignKey() const
+const ModelBuilder &Relation::query() const
 {
-    return _foreignKey;
+    return _query;
 }
 
-QString Relation::localKey() const
-{
-    return _localKey;
-}
+

@@ -8,6 +8,7 @@ class ModelBuilder
 {
 public:
     ModelBuilder(const Model &model);
+    ~ModelBuilder();
     ModelBuilder(const QString &table, const QString &primaryKey,const QString &modelName,const bool &usesTimestamps);
 //    ModelBuilder(const ModelBuilder &other);
     Model model() const;
@@ -18,22 +19,14 @@ public:
     ModelBuilder &with(const Relation &relation);
     Model first();
     Model find();
-    bool insert(Model &model);
-    bool update(Model &model);
+    bool insert(Model &mdl);
+    bool update(Model &mdl);
     bool remove(const Model &model);
-    QString table() const;
-    QString primaryKey() const;
-    QString modelName() const;
-    bool usesTimestamps() const;
     Builder &builder(){return _builder;}
 
 
 private:
-
-    QString _table;
-    QString _primaryKey;
-    QString _modelName;
-    bool    _usesTimestamps;
+    Model *_model;
     Builder _builder;
     QList<Relation> relations;
 };

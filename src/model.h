@@ -42,12 +42,13 @@ public:
       HasManyRelation hasMany(QString foreignKey=QString(),
                          QString localKey=QString());
 };
+#include "modelbuilder.h"
 #include "relations/relation.h"
 #include "relations/hasmanyrelation.h"
 template<class T>
 HasManyRelation Model::hasMany(QString foreignKey,QString localKey)
 {
-    return HasManyRelation(T::staticBuilder(),this->builder(),foreignKey,localKey);
+    return HasManyRelation(T::staticBuilder(),*this,foreignKey,localKey);
 }
 
 #include "eloquentmodel.h"

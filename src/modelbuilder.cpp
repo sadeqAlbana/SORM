@@ -6,16 +6,18 @@
 #include <QDateTime>
 #include "relations/relation.h"
 #include <QDebug>
-ModelBuilder::ModelBuilder(const Model &model) : _table(model.table()),
-    _primaryKey(model.primaryKey()), _modelName(model.modelName()),_usesTimestamps(model.usesTimestamps()),_builder(table())
+ModelBuilder::ModelBuilder(const Model &model) :_model(new Model(model)),_builder(_model->table())
 {
-//    qDebug()<<table();
-//    qDebug()<<primaryKey();
-//    qDebug()<<modelName();
+
 }
 
-ModelBuilder::ModelBuilder(const QString &table, const QString &primaryKey, const QString &modelName, const bool &usesTimestamps) : _table(table),
-    _primaryKey(primaryKey), _modelName(modelName),_usesTimestamps(usesTimestamps),_builder(table)
+ModelBuilder::~ModelBuilder()
+{
+    delete _model;
+}
+
+ModelBuilder::ModelBuilder(const QString &table, const QString &primaryKey, const QString &modelName, const bool &usesTimestamps) :
+    _model(new Model(table,primaryKey,modelName,usesTimestamps)),_builder(table)
 {
 
 }
@@ -27,7 +29,7 @@ ModelBuilder::ModelBuilder(const QString &table, const QString &primaryKey, cons
 
 Model ModelBuilder::model() const
 {
-    return Model(table(),primaryKey(),modelName());
+    return *_model;
 }
 
 
@@ -51,7 +53,7 @@ Collection ModelBuilder::get(const QVariant &column)
         Collection collection;
         QSqlRecord record=query.record();
         while (query.next()) {
-            Model m(table(),primaryKey(),modelName(),usesTimestamps());
+            Model m(model());
             for(int i=0; i<record.count(); i++)
             {
                 m.set(record.fieldName(i),query.value(i));
@@ -117,50 +119,31 @@ ModelBuilder &ModelBuilder::with(const Relation &relation)
     return *this;
 }
 
-bool ModelBuilder::insert(Model &model)
+bool ModelBuilder::insert(Model &mdl)
 {
-    if(model.usesTimestamps())
+    if(mdl.usesTimestamps())
     {
         QDateTime now=QDateTime::currentDateTime();
-        model.set("created_at",now);
-        model.set("updated_at",now);
-        model.setSaved();
+        mdl.set("created_at",now);
+        mdl.set("updated_at",now);
+        mdl.setSaved();
     }
 
-    return builder().where(primaryKey(),get(primaryKey())).insert(model.original);
+    return builder().where(model().primaryKey(),get(model().primaryKey())).insert(mdl.original);
 }
 
-bool ModelBuilder::update(Model &model)
+bool ModelBuilder::update(Model &mdl)
 {
-    if(model.usesTimestamps())
+    if(mdl.usesTimestamps())
     {
         QDateTime now=QDateTime::currentDateTime();
-        model.set("updated_at",now);
+        mdl.set("updated_at",now);
     }
 
-    bool result = builder().where(primaryKey(),get(primaryKey())).update(model.data);
+    bool result = builder().where(model().primaryKey(),get(model().primaryKey())).update(mdl.data);
 
-    model.setSaved();
+    mdl.setSaved();
 
     return result;
 }
 
-bool ModelBuilder::usesTimestamps() const
-{
-    return _usesTimestamps;
-}
-
-QString ModelBuilder::table() const
-{
-    return _table;
-}
-
-QString ModelBuilder::primaryKey() const
-{
-    return _primaryKey;
-}
-
-QString ModelBuilder::modelName() const
-{
-    return _modelName;
-}
