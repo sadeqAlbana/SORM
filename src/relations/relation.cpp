@@ -8,22 +8,30 @@ Relation::Relation(const ModelBuilder &query, const Model &parent) :
 
 }
 
+Relation::Relation(const Relation &other): _parent(new Model(*other._parent)),_query(other._query)
+{
+
+}
+
+
 Collection Relation::get()
 {
+
     return _query.get();
 }
 
-Model Relation::parent() const
+Model Relation::parent()
 {
     return *_parent;
 }
 
-Model Relation::related() const
+Model Relation::related()
 {
     return query().model();
 }
 
-const ModelBuilder &Relation::query() const
+
+ModelBuilder &Relation::query()
 {
     return _query;
 }

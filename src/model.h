@@ -8,6 +8,7 @@ class Relation;
 class Model
 {
     friend class ModelBuilder;
+    friend class Relation;
 public:
     Model(const QString &table=QString(), const QString &primarykey=QString(),const QString &modelName=QString(),bool usesTimeStamps=false);
     //Model(const QMap<QString, QVariant> &map);

@@ -11,9 +11,15 @@ ModelBuilder::ModelBuilder(const Model &model) :_model(new Model(model)),_builde
 
 }
 
+ModelBuilder::ModelBuilder(const ModelBuilder &other) : _model(new Model(*other._model)),_builder(other._builder),relations(other.relations)
+{
+
+}
+
 ModelBuilder::~ModelBuilder()
 {
-    delete _model;
+//    if(_model)
+//        delete _model;
 }
 
 ModelBuilder::ModelBuilder(const QString &table, const QString &primaryKey, const QString &modelName, const bool &usesTimestamps) :
@@ -64,28 +70,11 @@ Collection ModelBuilder::get(const QVariant &column)
         }
 
         qDebug()<<"Reached";
-        QVariantList ids;
 
-        for(Relation &relation : relations)
+        for(Relation *relation : relations)
         {
-
-            QVariantList ids;
-            for(const Model &mdl : collection){
-                ids << mdl.get(relation.localKey());
-            }
-            Collection relationResult=relation.get();
-            for (Model &mainModel : collection){
-                Collection inserts;
-                for (Model &relationModel : relationResult)
-                {
-                    if(mainModel.get(relation.localKey())==relationModel.get(relation.foreignKey())){
-                        qDebug()<<"found";
-                        inserts << relationModel;
-                    }
-                }
-                mainModel.set(relation.related().table(),inserts);
-                mainModel.setSaved();
-            }
+            relation->addConstraints(collection);
+            relation->match(collection);
         }
 
 
@@ -113,9 +102,16 @@ ModelBuilder &ModelBuilder::where(QString clause)
     return *this;
 }
 
+ModelBuilder &ModelBuilder::whereIn(QString key, QVariantList values)
+{
+    builder().whereIn(key,values);
+
+    return *this;
+}
+
 ModelBuilder &ModelBuilder::with(const Relation &relation)
 {
-    relations << relation;
+    relations << relation.clone();
     return *this;
 }
 

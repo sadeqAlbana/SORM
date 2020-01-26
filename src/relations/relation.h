@@ -5,17 +5,26 @@ class Relation
 {
 public:
     Relation(const ModelBuilder &query, const Model &parent);
+    Relation(const Relation &other);
     Collection get();
 
-    Model parent() const;
-    Model related() const;
-    const ModelBuilder& query() const;
+    Model parent();
+    Model related();
+    virtual Relation *clone() const=0;
+    virtual void      addConstraints(Collection &models)=0;
+    virtual void      match(Collection &models)=0;
+
 
 protected:
     Model *_parent;
     ModelBuilder _query;
+    ModelBuilder& query();
+    void setContraints(const QStringList &constrains);
 
 
 };
+
+#define EloquentRelation(_class) \
+    virtual Relation* clone() const override{return new _class(*this);}
 
 #endif // RELATION_H

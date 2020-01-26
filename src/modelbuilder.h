@@ -3,11 +3,12 @@
 #include "builder.h"
 class Model;
 class Collection;
-class Relation;
+#include "relations/relationlist.h"
 class ModelBuilder
 {
 public:
     ModelBuilder(const Model &model);
+    ModelBuilder(const ModelBuilder &other);
     ~ModelBuilder();
     ModelBuilder(const QString &table, const QString &primaryKey,const QString &modelName,const bool &usesTimestamps);
 //    ModelBuilder(const ModelBuilder &other);
@@ -16,6 +17,7 @@ public:
     ModelBuilder &where(QString key, QVariant value);
     ModelBuilder &where(QString key,QString op, QVariant value);
     ModelBuilder &where(QString clause);
+    ModelBuilder &whereIn(QString key, QVariantList values);
     ModelBuilder &with(const Relation &relation);
     Model first();
     Model find();
@@ -28,7 +30,7 @@ public:
 private:
     Model *_model;
     Builder _builder;
-    QList<Relation> relations;
+    RelationList relations;
 };
 
 #endif // MODELBUILDER_H
