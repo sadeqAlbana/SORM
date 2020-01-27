@@ -72,9 +72,8 @@ Collection ModelBuilder::get(const QVariant &column)
 
         qDebug()<<"Reached";
 
-        for(auto ptr : relations)
+        for(Relation *relation : relations)
         {
-            Relation *relation=ptr.data();
             relation->addConstraints(collection);
             relation->match(collection);
         }
@@ -113,7 +112,7 @@ ModelBuilder &ModelBuilder::whereIn(QString key, QVariantList values)
 
 ModelBuilder &ModelBuilder::with(const Relation &relation)
 {
-    relations << QSharedPointer<Relation>(relation.clone());
+    relations << relation.clone();
     return *this;
 }
 
