@@ -8,6 +8,7 @@ SOURCES += \
     $$PWD/src/db.cpp \
     src/modelbuilder.cpp \
     src/relations/hasmanyrelation.cpp \
+    src/relations/hasmanythroughrelation.cpp \
     src/relations/relation.cpp \
     src/relations/relationlist.cpp
 
@@ -21,6 +22,7 @@ HEADERS += \
     $$PWD/src/relations/eloquentrelation.h \
     src/modelbuilder.h \
     src/relations/hasmanyrelation.h \
+    src/relations/hasmanythroughrelation.h \
     src/relations/relationlist.h
 
 

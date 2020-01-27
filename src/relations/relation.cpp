@@ -14,12 +14,6 @@ Relation::Relation(const Relation &other): _parent(new Model(*other._parent)),_q
 
 }
 
-Relation::~Relation()
-{
-    qDebug()<<"relation deleted";
-}
-
-
 Collection Relation::get()
 {
 

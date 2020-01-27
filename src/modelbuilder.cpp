@@ -19,8 +19,7 @@ ModelBuilder::ModelBuilder(const ModelBuilder &other) : _model(new Model(*other.
 
 ModelBuilder::~ModelBuilder()
 {
-//    if(_model)
-//        delete _model;
+        delete _model;
 }
 
 ModelBuilder::ModelBuilder(const QString &table, const QString &primaryKey, const QString &modelName, const bool &usesTimestamps) :
