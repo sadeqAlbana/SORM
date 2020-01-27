@@ -5,7 +5,4 @@ RelationList::RelationList()
 
 }
 
-RelationList::~RelationList()
-{
-//    qDeleteAll(*this);
-}
+

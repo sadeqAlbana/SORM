@@ -1,6 +1,7 @@
 #include "relation.h"
 #include "../collection.h"
 #include "../model.h"
+#include <QDebug>
 Relation::Relation(const ModelBuilder &query, const Model &parent) :
     _parent(new Model(parent)),
     _query(query)
@@ -11,6 +12,11 @@ Relation::Relation(const ModelBuilder &query, const Model &parent) :
 Relation::Relation(const Relation &other): _parent(new Model(*other._parent)),_query(other._query)
 {
 
+}
+
+Relation::~Relation()
+{
+    qDebug()<<"relation deleted";
 }
 
 

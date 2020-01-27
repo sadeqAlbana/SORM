@@ -6,6 +6,7 @@
 #include <QDateTime>
 #include "relations/relation.h"
 #include <QDebug>
+#include <QSharedPointer>
 ModelBuilder::ModelBuilder(const Model &model) :_model(new Model(model)),_builder(_model->table())
 {
 
@@ -71,8 +72,9 @@ Collection ModelBuilder::get(const QVariant &column)
 
         qDebug()<<"Reached";
 
-        for(Relation *relation : relations)
+        for(auto ptr : relations)
         {
+            Relation *relation=ptr.data();
             relation->addConstraints(collection);
             relation->match(collection);
         }
@@ -111,7 +113,7 @@ ModelBuilder &ModelBuilder::whereIn(QString key, QVariantList values)
 
 ModelBuilder &ModelBuilder::with(const Relation &relation)
 {
-    relations << relation.clone();
+    relations << QSharedPointer<Relation>(relation.clone());
     return *this;
 }
 
@@ -141,5 +143,10 @@ bool ModelBuilder::update(Model &mdl)
     mdl.setSaved();
 
     return result;
+}
+
+bool ModelBuilder::remove(const Model &model)
+{
+    //implement me
 }
 

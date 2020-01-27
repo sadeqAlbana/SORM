@@ -6,6 +6,7 @@ class Relation
 public:
     Relation(const ModelBuilder &query, const Model &parent);
     Relation(const Relation &other);
+    virtual ~Relation();
     Collection get();
 
     Model parent();

@@ -50,6 +50,17 @@ ModelBuilder Model::builder()
     return ModelBuilder(*this);
 }
 
+bool Model::save()
+{
+    return exists() ? builder().update(*this) : builder().insert(*this);
+}
+
+bool Model::remove()
+{
+    _exists=false;
+    return builder().remove(*this);
+}
+
 //ModelBuilder Model::with(const Relation &relation)
 //{
 //    return builder().with(relation);

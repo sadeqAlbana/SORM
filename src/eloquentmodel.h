@@ -19,10 +19,6 @@
     static Model find(const QVariant value){return staticBuilder().where(staticPrimaryKey(),value).get().value(0);} \
     template<class T> T hasOne(const QString foreignKey = QString("%1_%2").arg(staticClassName()).arg(staticPrimaryKey()), const QString localKey=staticPrimaryKey())\
     {return T::where(foreignKey,get(localKey)).get().value(0);} \
-    bool save(){return exists() ? staticBuilder().update(*this) : staticBuilder().insert(*this);} \
-    bool remove(){_exists=false; \
-    return staticBuilder().remove(*this);} \
     static ModelBuilder with(const Relation &relation){return staticBuilder().with(relation); } \
     private:
 #endif // ELOQUENTMODEL_H
-    //template<class T> static _class with()

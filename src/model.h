@@ -27,6 +27,8 @@ public:
     QString primaryKey() const {return _primaryKey;}
     QString modelName() const {return _modelName;}
     ModelBuilder builder();
+    bool save();
+    bool remove();
 
 protected:
     bool _exists;
