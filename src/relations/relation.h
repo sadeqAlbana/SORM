@@ -6,7 +6,7 @@ class Relation
 public:
     Relation(const ModelBuilder &query, const Model &parent);
     Relation(const Relation &other);
-    Collection get();
+    Collection get(const QVariant &columns=QVariant());
 
     Model parent();
     Model related();

@@ -1,4 +1,4 @@
-#include "builder.h"
+﻿#include "builder.h"
 #include "collection.h"
 #include <QDebug>
 #include <QSqlRecord>
@@ -89,6 +89,16 @@ Builder &Builder::paginate(int page, int count)
     return *this;
 }
 
+Builder &Builder::join(const QString &table, const QString &first, const QString op, const QString &second)
+{
+    joinClause=QString(" inner join %1 on %2 %3 %4").arg(escapeTable(table))
+            .arg(escapeKey(first))
+            .arg(op)
+            .arg(second);
+
+    return *this;
+}
+
 
 
 
@@ -118,6 +128,9 @@ QString Builder::generateSql()
 // qDebug()<<"Columns: " << columnsClause;
 //    qDebug()<<"Table: " << tableClause;
     QString qry=QString("select %1 from %2").arg(columnsClause).arg(tableClause);
+
+    if(joinClause.size())
+        qry.append(joinClause);
 
     if(whereClause.size())
         qry.append(whereClause);
@@ -218,7 +231,7 @@ QString Builder::escapeKey(const QString &key) const
                 QString("`%1`.`%2`").arg(tableClause).arg(key);
 }
 
-QString Builder::escapeTable() const
+QString Builder::escapeTable(const QString &table) const
 {
-    return QString ("`%1`").arg(tableClause);
+    return QString ("`%1`").arg(table.isNull() ? tableClause : table);
 }

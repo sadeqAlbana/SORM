@@ -14,10 +14,9 @@ Relation::Relation(const Relation &other): _parent(new Model(*other._parent)),_q
 
 }
 
-Collection Relation::get()
+Collection Relation::get(const QVariant &columns)
 {
-
-    return _query.get();
+    return _query.get(columns);
 }
 
 Model Relation::parent()

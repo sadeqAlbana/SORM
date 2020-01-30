@@ -26,6 +26,7 @@ public:
     Builder & take(int l){_limit=l; return *this;}
     Builder &skip(int offset);
     Builder &paginate(int page, int count);
+    Builder &join(const QString &table,const QString &first,const QString op, const QString &second);
 
     QSqlQuery get();
     QSqlQuery sum(const QString field);
@@ -54,12 +55,13 @@ public:
 
 private:
     QString escapeKey(const QString &key) const;
-    QString escapeTable() const;
+    QString escapeTable(const QString &table=QString()) const;
     QString tableClause;
     QString columnsClause;
     QString orderByClause;
     QString whereClause;
     QString groupByClause;
+    QString joinClause;
     QString sumClause;
     QString dbDriver;
     int _limit;

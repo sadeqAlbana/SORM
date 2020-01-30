@@ -18,6 +18,7 @@ public:
     ModelBuilder &where(QString key,QString op, QVariant value);
     ModelBuilder &where(QString clause);
     ModelBuilder &whereIn(QString key, QVariantList values);
+    ModelBuilder &whereIn(QString key, QString subQuery);
     ModelBuilder &with(const Relation &relation);
     Model first();
     Model find();
@@ -25,6 +26,7 @@ public:
     bool update(Model &mdl);
     bool remove(const Model &model);
     Builder &builder(){return _builder;}
+    ModelBuilder &paginate(int page, int count);
 
 
 private:

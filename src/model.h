@@ -3,6 +3,7 @@
 #include <QString>
 #include <QVariant>
 class HasManyRelation;
+class hasManyThroughRelation;
 class ModelBuilder;
 class Relation;
 class Model
@@ -44,14 +45,29 @@ public:
       template<class T>
       HasManyRelation hasMany(QString foreignKey=QString(),
                          QString localKey=QString());
+
+      template<class T,class B>
+      hasManyThroughRelation hasManyThrough(                           const QString &firstKey=QString(),
+                                                                       const QString &secondKey=QString(),
+                                                                       const QString &localKey=QString(),
+                                                                       const QString &secondLocalKey=QString());
 };
 #include "modelbuilder.h"
 #include "relations/relation.h"
 #include "relations/hasmanyrelation.h"
+#include "relations/hasmanythroughrelation.h"
 template<class T>
 HasManyRelation Model::hasMany(QString foreignKey,QString localKey)
 {
     return HasManyRelation(T::staticBuilder(),*this,foreignKey,localKey);
+}
+template<class T,class B>
+hasManyThroughRelation Model::hasManyThrough( const QString &firstKey,
+                                              const QString &secondKey,
+                                              const QString &localKey,
+                                              const QString &secondLocalKey)
+{
+    return hasManyThroughRelation(T::staticBuilder(),*this,B(),firstKey,secondKey,localKey,secondLocalKey);
 }
 
 #include "eloquentmodel.h"

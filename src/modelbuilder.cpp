@@ -28,11 +28,6 @@ ModelBuilder::ModelBuilder(const QString &table, const QString &primaryKey, cons
 
 }
 
-//ModelBuilder::ModelBuilder(const ModelBuilder &other) : _builder(other.table())
-//{
-
-//}
-
 Model ModelBuilder::model() const
 {
     return *_model;
@@ -43,14 +38,14 @@ Model ModelBuilder::model() const
 Collection ModelBuilder::get(const QVariant &column)
 {
     qDebug()<<"Called";
-//    if(column.isValid())
-//    {
-//        switch (column.type()) {
-//        case QMetaType::QStringList : builder().select(column.toStringList()); break;
-//        case QMetaType::QString     : builder().select(column.toString())    ; break;
-//        default:                                                               break;
-//        }
-//    }
+    if(column.isValid())
+    {
+        switch (column.type()) {
+        case QMetaType::QStringList : builder().select(column.toStringList()); break;
+        case QMetaType::QString     : builder().select(column.toString())    ; break;
+        default:                                                               break;
+        }
+    }
 
 
     QSqlQuery query=builder().get();
@@ -109,10 +104,23 @@ ModelBuilder &ModelBuilder::whereIn(QString key, QVariantList values)
     return *this;
 }
 
+ModelBuilder &ModelBuilder::whereIn(QString key, QString subQuery)
+{
+    builder().whereIn(key,subQuery);
+
+    return *this;
+}
+
 ModelBuilder &ModelBuilder::with(const Relation &relation)
 {
     relations << relation.clone();
     return *this;
+}
+
+Model ModelBuilder::first()
+{
+    builder().take(1);
+    return get().value(0);
 }
 
 bool ModelBuilder::insert(Model &mdl)
@@ -146,5 +154,12 @@ bool ModelBuilder::update(Model &mdl)
 bool ModelBuilder::remove(const Model &model)
 {
     //implement me
+}
+
+ModelBuilder &ModelBuilder::paginate(int page, int count)
+{
+    builder().paginate(page,count);
+
+    return *this;
 }
 

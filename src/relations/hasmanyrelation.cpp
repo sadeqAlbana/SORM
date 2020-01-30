@@ -27,8 +27,6 @@ QString HasManyRelation::localKey() const
 
 void HasManyRelation::addConstraints(Collection &models)
 {
-
-    qDebug()<<"HasManyRelation::addConstraints";
     QVariantList ids;
     for(const Model &model : models){
         ids << model.get(localKey());
