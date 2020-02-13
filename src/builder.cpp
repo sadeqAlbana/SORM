@@ -17,16 +17,13 @@ tableClause(table),
 
 Builder &Builder::where(QString key, QVariant value)
 {
-    if(!whereClause.size())
-        whereClause.append(QString(" where %1 = %2").arg(key).arg(QString("'%1'").arg(value.toString())));
-
+    whereClause.append(QString(" %1 %2 = %3").arg(whereClause.size() ? "and" : "where").arg(key).arg(QString("'%1'").arg(value.toString())));
     return *this;
 }
 
 Builder &Builder::where(QString key, QString op, QVariant value)
 {
-    if(!whereClause.size())
-        whereClause.append(QString(" where %1 %2 %3").arg(key).arg(op).arg(QString("'%1'").arg(value.toString())));
+    whereClause.append(QString(" %1 %2 %3 %4").arg(whereClause.size() ? "and" : "where").arg(key).arg(op).arg(QString("'%1'").arg(value.toString())));
 
     return *this;
 }
@@ -34,31 +31,29 @@ Builder &Builder::where(QString key, QString op, QVariant value)
 Builder &Builder::where(QString clause)
 {
 
-    whereClause="+"+clause+"+";
+    //whereClause="+"+clause+"+";
 
     return *this;
 }
 
 Builder &Builder::whereIn(QString key, QVariantList values)
 {
-    if(!whereClause.size())
-    {
-        QString valuesString;
-        for (QVariant value : values) {
-            valuesString.append(value.toString()+",");
-        }
-        valuesString.chop(1);
 
-        whereClause.append(QString(" where %1 in ( %2 )").arg(key).arg(valuesString));
+    QString valuesString;
+    for (QVariant value : values) {
+        valuesString.append(value.toString()+",");
     }
+    valuesString.chop(1);
+
+    whereClause.append(QString(" %1 %2 in ( %3 )").arg(whereClause.size() ? "and" : "where").arg(key).arg(valuesString));
+
 
     return *this;
 }
 
 Builder &Builder::whereIn(QString key, QString subQuery)
 {
-    if(!whereClause.size())
-        whereClause.append(QString(" where %1 in ( %2 )").arg(key).arg(subQuery));
+    whereClause.append(QString(" %1 %2 in ( %3 )").arg(whereClause.size() ? "and" : "where").arg(key).arg(subQuery));
 
     return *this;
 }

@@ -13,7 +13,7 @@ public:
     virtual Relation *clone() const=0;
     virtual void      addConstraints(Collection &models)=0;
     virtual void      match(Collection &models)=0;
-
+    Relation &where(QString key, QVariant value);
 
 protected:
     Model *_parent;

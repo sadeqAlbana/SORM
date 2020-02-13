@@ -29,6 +29,12 @@ Model Relation::related()
     return query().model();
 }
 
+Relation &Relation::where(QString key, QVariant value)
+{
+    query().where(key,value);
+    return *this;
+}
+
 
 ModelBuilder &Relation::query()
 {
