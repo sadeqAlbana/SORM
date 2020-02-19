@@ -1,6 +1,7 @@
 #include "model.h"
 #include "collection.h"
 #include "builder.h"
+#include <QJsonObject>
 Model::Model(const QString &table, const QString &primarykey, const QString &modelName, bool usesTimeStamps) : _exists(false),
     _table(table),_primaryKey(primarykey),_modelName(modelName),_useTimeStamps(usesTimeStamps)
 {
@@ -59,6 +60,16 @@ bool Model::remove()
 {
     _exists=false;
     return builder().remove(*this);
+}
+
+Model::operator QVariant()
+{
+    return operator QJsonObject();
+}
+
+Model::operator QJsonObject()
+{
+    return QJsonObject::fromVariantMap(data);
 }
 
 //ModelBuilder Model::with(const Relation &relation)

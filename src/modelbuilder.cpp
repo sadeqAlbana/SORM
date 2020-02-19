@@ -37,7 +37,6 @@ Model ModelBuilder::model() const
 
 Collection ModelBuilder::get(const QVariant &column)
 {
-    qDebug()<<"Called";
     if(column.isValid())
     {
         switch (column.type()) {
@@ -64,7 +63,6 @@ Collection ModelBuilder::get(const QVariant &column)
 
         }
 
-        qDebug()<<"Reached";
 
         for(Relation *relation : relations)
         {

@@ -10,7 +10,10 @@ SOURCES += \
     src/relations/hasmanyrelation.cpp \
     src/relations/hasmanythroughrelation.cpp \
     src/relations/relation.cpp \
-    src/relations/relationlist.cpp
+    src/relations/relationlist.cpp \
+    src/relations/relationresult.cpp \
+    src/relations/hasonerelation.cpp \
+    src/relations/hasonethroughrelation.cpp
 
 HEADERS += \
     $$PWD/src/builder.h \
@@ -23,7 +26,10 @@ HEADERS += \
     src/modelbuilder.h \
     src/relations/hasmanyrelation.h \
     src/relations/hasmanythroughrelation.h \
-    src/relations/relationlist.h
+    src/relations/relationlist.h \
+    src/relations/relationresult.h \
+    src/relations/hasonerelation.h \
+    src/relations/hasonethroughrelation.h
 
 
 
