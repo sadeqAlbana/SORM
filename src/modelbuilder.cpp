@@ -142,7 +142,12 @@ bool ModelBuilder::update(Model &mdl)
         mdl.set("updated_at",now);
     }
 
-    bool result = builder().where(model().primaryKey(),get(model().primaryKey())).update(mdl.data);
+
+    Map updateData;
+    for (auto key : mdl.dirtyKeys()) {
+     updateData[key]=mdl[key];
+    }
+    bool result = builder().where(model().primaryKey(),mdl.get(model().primaryKey())).update(updateData);
 
     mdl.setSaved();
 
