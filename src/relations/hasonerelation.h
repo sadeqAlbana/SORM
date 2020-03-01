@@ -1,7 +1,7 @@
 #ifndef HASONERELATION_H
 #define HASONERELATION_H
 #include "relation.h"
-class HasOneRelation : public Relation
+class HasOneRelation : public Relation //inverse of belongs to
 {
 public:
     HasOneRelation(const ModelBuilder &query, const Model &parent, const QString &foreignKey=QString(),

@@ -6,6 +6,8 @@ class HasManyRelation;
 class hasManyThroughRelation;
 class HasOneThroughRelation;
 class HasOneRelation;
+class BelongsToRelation;
+class BelongsToManyRelation;
 class ModelBuilder;
 class Relation;
 class Model
@@ -55,18 +57,24 @@ public:
       HasOneRelation hasOne(QString foreignKey=QString(),
                          QString localKey=QString());
 
-      template<class T,class B>
-      hasManyThroughRelation hasManyThrough(                           const QString &firstKey=QString(),
-                                                                       const QString &secondKey=QString(),
-                                                                       const QString &localKey=QString(),
-                                                                       const QString &secondLocalKey=QString());
 
-      template<class T,class B>
-      HasOneThroughRelation hasOneThrough(                           const QString &firstKey=QString(),
-                                                                       const QString &secondKey=QString(),
-                                                                       const QString &localKey=QString(),
-                                                                      const QString &secondLocalKey=QString());
+
+      template<class T>
+      BelongsToManyRelation belongsToMany(                          const QString &table,
+                                                                    const QString &foreignPivotKey=QString(),
+                                                                    const QString &relatedPivotKey=QString(),
+                                                                    const QString &parentKey=QString(),
+                                                                    const QString &relatedKey=QString());
+
+
+      template<class T>
+      BelongsToRelation belongsTo(QString foreignKey=QString(),
+                               QString ownerKey=QString());
 };
+
+
+
+
 
 
 #include "modelbuilder.h"
@@ -75,6 +83,8 @@ public:
 #include "relations/hasmanythroughrelation.h"
 #include "relations/hasonethroughrelation.h"
 #include "relations/hasonerelation.h"
+#include "relations/belongstomanyrelation.h"
+#include "relations/belongstorelation.h"
 template<class T>
 HasManyRelation Model::hasMany(QString foreignKey,QString localKey)
 {
@@ -85,22 +95,18 @@ HasOneRelation Model::hasOne(QString foreignKey,QString localKey)
 {
     return HasOneRelation(T::staticBuilder(),*this,foreignKey,localKey);
 }
-template<class T,class B>
-hasManyThroughRelation Model::hasManyThrough( const QString &firstKey,
-                                              const QString &secondKey,
-                                              const QString &localKey,
-                                              const QString &secondLocalKey)
+
+
+template<class T>
+BelongsToManyRelation Model::belongsToMany(const QString &table, const QString &foreignPivotKey, const QString &relatedPivotKey, const QString &parentKey, const QString &relatedKey)
 {
-    return hasManyThroughRelation(T::staticBuilder(),*this,B(),firstKey,secondKey,localKey,secondLocalKey);
+    return BelongsToManyRelation(T::staticBuilder(),*this,table,foreignPivotKey,relatedPivotKey,parentKey,relatedKey);
 }
 
-template<class T,class B>
-HasOneThroughRelation Model::hasOneThrough( const QString &firstKey,
-                                              const QString &secondKey,
-                                              const QString &localKey,
-                                              const QString &secondLocalKey)
+template<class T>
+BelongsToRelation Model::belongsTo(QString foreignKey, QString ownerKey)
 {
-    return HasOneThroughRelation(T::staticBuilder(),*this,B(),firstKey,secondKey,localKey,secondLocalKey);
+    return BelongsToRelation(T::staticBuilder(),*this,foreignKey,ownerKey);
 }
 
 #include "eloquentmodel.h"
