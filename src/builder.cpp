@@ -6,7 +6,7 @@
 #include <QSqlError>
 #include <QSqlQuery>
 #include "model.h"
-
+#include "db.h"
 Builder::Builder(const QString &table) :
 tableClause(table),
   columnsClause("*"),
@@ -94,13 +94,11 @@ Builder &Builder::join(const QString &table, const QString &first, const QString
     return *this;
 }
 
-
-
-
 QSqlQuery Builder::get()
 {
     QSqlQuery query(generateSql());
     query.exec();
+    DB::setLastError(query.lastError());
     return query;
 }
 
@@ -114,7 +112,7 @@ QSqlQuery Builder::sum(const QString field)
 
     QSqlQuery query(qry);
     query.exec();
-
+    DB::setLastError(query.lastError());
     return query;
 }
 
@@ -184,6 +182,7 @@ bool Builder::insert(const Map &map)
     }
 
     bool result= qry.exec();
+    DB::setLastError(qry.lastError());
     return result;
 }
 
@@ -205,7 +204,9 @@ bool Builder::update(const Map &map)
         qry.bindValue(QString(":%1").arg(key),map[key]);
     }
 
-    return qry.exec();
+    bool success= qry.exec();
+    DB::setLastError(qry.lastError());
+    return success;
 }
 
 bool Builder::remove()
@@ -216,7 +217,9 @@ bool Builder::remove()
         qryStr.append(whereClause);
 
     QSqlQuery qry;
-    return qry.exec(qryStr);
+    bool success= qry.exec(qryStr);
+    DB::setLastError(qry.lastError());
+    return success;
 }
 
 QString Builder::escapeKey(const QString &key) const
