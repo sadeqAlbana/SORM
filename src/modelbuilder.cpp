@@ -22,8 +22,8 @@ ModelBuilder::~ModelBuilder()
         delete _model;
 }
 
-ModelBuilder::ModelBuilder(const QString &table, const QString &primaryKey, const QString &modelName, const bool &usesTimestamps) :
-    _model(new Model(table,primaryKey,modelName,usesTimestamps)),_builder(table)
+ModelBuilder::ModelBuilder(const QString &table, const PrimaryKey &primaryKey, const QString &modelName, const bool &usesTimestamps, const bool &usesAutoIncrement) :
+    _model(new Model(table,primaryKey,modelName,usesTimestamps,usesAutoIncrement)),_builder(table)
 {
 
 }
@@ -128,10 +128,17 @@ bool ModelBuilder::insert(Model &mdl)
         QDateTime now=QDateTime::currentDateTime();
         mdl.set("created_at",now);
         mdl.set("updated_at",now);
-        mdl.setSaved();
     }
 
-    return builder().where(model().primaryKey(),get(model().primaryKey())).insert(mdl.original);
+    bool success= builder().insert(mdl.data);
+    if(success){
+        QVariant lastInsertId=builder().lastInsertId();
+        if(lastInsertId.isValid() && mdl._incrementing){
+            mdl.set(mdl.primaryKey().toString(),lastInsertId);
+        }
+        mdl.setSaved();
+    }
+    return success;
 }
 
 bool ModelBuilder::update(Model &mdl)
@@ -147,16 +154,45 @@ bool ModelBuilder::update(Model &mdl)
     for (auto key : mdl.dirtyKeys()) {
      updateData[key]=mdl[key];
     }
-    bool result = builder().where(model().primaryKey(),mdl.get(model().primaryKey())).update(updateData);
 
+    if(mdl.primaryKey().isList())
+    {
+        QStringList primaryKeys=mdl.primaryKey().toStringList();
+        for(const QString &key : primaryKeys){
+            builder().where(key,mdl.get(key));
+        }
+    }
+    else{
+       builder().where(model().primaryKey().toString(),mdl.get(model().primaryKey().toString()));
+    }
+
+
+    bool result=builder().update(updateData);
     mdl.setSaved();
 
     return result;
 }
 
-bool ModelBuilder::remove(const Model &model)
+bool ModelBuilder::remove(Model &model)
 {
-    //implement me
+    if(!model.exists())
+        return false;
+
+    if(model.primaryKey().isList()){
+        QStringList primaryKeys=model.primaryKey().toStringList();
+        for(const QString &key : primaryKeys){
+            builder().where(key,model.get(key));
+        }
+    }
+    else
+        builder().where(model.primaryKey().toString(),model.get(model.primaryKey().toString()));
+
+    bool success=builder().remove();
+    if(success){
+        model._exists=false;
+    }
+
+    return success;
 }
 
 ModelBuilder &ModelBuilder::paginate(int page, int count)

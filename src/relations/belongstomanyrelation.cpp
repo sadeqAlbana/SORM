@@ -17,16 +17,16 @@ BelongsToManyRelation::BelongsToManyRelation(const ModelBuilder &query,
 
 {
     if(parentKey.isNull()){
-        _parentKey=Relation::parent().primaryKey();
+        _parentKey=Relation::parent().primaryKey().toString();
     }
     if(relatedKey.isNull()){
-        _relatedKey=related().primaryKey();
+        _relatedKey=related().primaryKey().toString();
     }
     if(foreignPivotKey.isNull()){
-        _foreignPivotKey=QString("%1_%2").arg(Relation::parent().modelName().toLower()).arg(Relation::parent().primaryKey());
+        _foreignPivotKey=QString("%1_%2").arg(Relation::parent().modelName().toLower()).arg(Relation::parent().primaryKey().toString());
     }
     if(relatedPivotKey.isNull()){
-        _relatedPivotKey=QString("%1_%2").arg(related().modelName().toLower()).arg(related().primaryKey());
+        _relatedPivotKey=QString("%1_%2").arg(related().modelName().toLower()).arg(related().primaryKey().toString());
     }
 
 
@@ -41,7 +41,7 @@ void BelongsToManyRelation::addConstraints(Collection &models)
 {
     QVariantList ids;
     for(const Model &model : models){
-        ids << model.get(parent().primaryKey());
+        ids << model.get(parent().primaryKey().toString());
     }
 
     Relation::query().whereIn(QString("%1.%2").arg(related().table()).arg(_relatedKey),
@@ -62,7 +62,7 @@ void BelongsToManyRelation::match(Collection &models)
         Collection inserts;
         for (Model &relationModel : results)
         {
-            if(mainModel.get(parent().primaryKey())==relationModel.get(_foreignPivotKey)){
+            if(mainModel.get(parent().primaryKey().toString())==relationModel.get(_foreignPivotKey)){
                 inserts << relationModel;
             }
         }

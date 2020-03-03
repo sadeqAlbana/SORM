@@ -96,24 +96,24 @@ Builder &Builder::join(const QString &table, const QString &first, const QString
 
 QSqlQuery Builder::get()
 {
-    QSqlQuery query(generateSql());
-    query.exec();
-    DB::setLastError(query.lastError());
-    return query;
+    _sqlQuery.clear();
+    _sqlQuery.exec(generateSql());
+    DB::setLastError(_sqlQuery.lastError());
+    return _sqlQuery;
 }
 
 QSqlQuery Builder::sum(const QString field)
 {
+    _sqlQuery.clear();
     QString qry=QString("select sum(%1) from %2").arg(field).arg(tableClause);
     if(whereClause.size())
         qry.append(whereClause);
     if(_limit)
         qry.append(QString(" limit %1").arg(_limit));
 
-    QSqlQuery query(qry);
-    query.exec();
-    DB::setLastError(query.lastError());
-    return query;
+    _sqlQuery.exec(qry);
+    DB::setLastError(_sqlQuery.lastError());
+    return _sqlQuery;
 }
 
 QString Builder::generateSql()
@@ -160,7 +160,7 @@ Builder &Builder::select(QStringList args)
 
 bool Builder::insert(const Map &map)
 {
-
+    _sqlQuery.clear();
     QStringList columns, bindValues;
 
     for(const QString &key : map.keys())
@@ -169,57 +169,62 @@ bool Builder::insert(const Map &map)
         bindValues << QString(":%1").arg(key);
     }
 
-    QSqlQuery qry;
+
     QString qryStr=QString("insert into %1 (%2) values(%3);").arg(tableClause).
             arg(columns.join(",")).
             arg(bindValues.join(","));;
 
-
-    qry.prepare(qryStr);
+    _sqlQuery.prepare(qryStr);
     for(const QString &key : map.keys())
     {
-        qry.bindValue(QString(":%1").arg(key),map[key]);
+        _sqlQuery.bindValue(QString(":%1").arg(key),map[key]);
     }
 
-    bool result= qry.exec();
-    DB::setLastError(qry.lastError());
+    bool result= _sqlQuery.exec();
+    DB::setLastError(_sqlQuery.lastError());
     return result;
 }
 
 bool Builder::update(const Map &map)
 {
+    _sqlQuery.clear();
     QStringList assignments;
 
     for(const QString &key : map.keys())
         assignments << QString("%1=%2").arg(escapeKey(key)).arg(QString(":%1").arg(key));
 
-    QSqlQuery qry;
+
     QString qryStr=QString("update %1 set %2 ").arg(tableClause).arg(assignments.join(","));
 
     if(!whereClause.isEmpty())
         qryStr.append(whereClause);
-    qry.prepare(qryStr);
+    _sqlQuery.prepare(qryStr);
     for(const QString &key : map.keys())
     {
-        qry.bindValue(QString(":%1").arg(key),map[key]);
+        _sqlQuery.bindValue(QString(":%1").arg(key),map[key]);
     }
 
-    bool success= qry.exec();
-    DB::setLastError(qry.lastError());
+    bool success= _sqlQuery.exec();
+    DB::setLastError(_sqlQuery.lastError());
     return success;
 }
 
 bool Builder::remove()
 {
+    _sqlQuery.clear();
     QString qryStr=QString("delete from %1 ").arg(escapeTable());
 
     if(!whereClause.isEmpty())
         qryStr.append(whereClause);
 
-    QSqlQuery qry;
-    bool success= qry.exec(qryStr);
-    DB::setLastError(qry.lastError());
+    bool success= _sqlQuery.exec(qryStr);
+    DB::setLastError(_sqlQuery.lastError());
     return success;
+}
+
+QVariant Builder::lastInsertId() const
+{
+    return _sqlQuery.lastInsertId();
 }
 
 QString Builder::escapeKey(const QString &key) const

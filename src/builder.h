@@ -3,11 +3,12 @@
 #include <QString>
 #include <QVariantList>
 #include <QMap>
+#include <QSqlQuery>
 class QVariant;
 class QStringList;
 class QSqlRelation;
 class Collection;
-class QSqlQuery;
+
 class QSqlRecord;
 
 using Map = QMap<QString,QVariant>;
@@ -50,7 +51,7 @@ public:
     bool update(const Map &map);
     bool remove();
 
-
+    QVariant lastInsertId() const;
 
 
 private:
@@ -67,6 +68,7 @@ private:
     int _limit;
     int offset;
 
+    QSqlQuery _sqlQuery;
 };
 
 #endif // BUILDER_H

@@ -3,6 +3,7 @@
 #include "builder.h"
 class Model;
 class Collection;
+#include "primarykey.h"
 #include "relations/relationlist.h"
 class ModelBuilder
 {
@@ -10,7 +11,7 @@ public:
     ModelBuilder(const Model &model);
     ModelBuilder(const ModelBuilder &other);
     ~ModelBuilder();
-    ModelBuilder(const QString &table, const QString &primaryKey,const QString &modelName,const bool &usesTimestamps);
+    ModelBuilder(const QString &table, const PrimaryKey &primaryKey,const QString &modelName,const bool &usesTimestamps,const bool &usesAutoIncrement);
 //    ModelBuilder(const ModelBuilder &other);
     Model model() const;
     Collection get(const QVariant &column=QVariant());
@@ -24,7 +25,7 @@ public:
     Model find();
     bool insert(Model &mdl);
     bool update(Model &mdl);
-    bool remove(const Model &model);
+    bool remove(Model &model);
     Builder &builder(){return _builder;}
     ModelBuilder &paginate(int page, int count);
 

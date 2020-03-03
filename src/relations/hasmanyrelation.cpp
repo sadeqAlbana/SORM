@@ -5,10 +5,10 @@
 HasManyRelation::HasManyRelation(const ModelBuilder &query, const Model &parent, const QString &foreignKey, const QString &localKey) : Relation (query,parent),_foreignKey(foreignKey),_localKey(localKey)
 {
     if(foreignKey.isNull())
-        _foreignKey=QString("%1_%2").arg(Relation::parent().modelName().toLower()).arg(Relation::parent().primaryKey());
+        _foreignKey=QString("%1_%2").arg(Relation::parent().modelName().toLower()).arg(Relation::parent().primaryKey().toString());
 
     if(localKey.isNull())
-        _localKey=Relation::parent().primaryKey();
+        _localKey=Relation::parent().primaryKey().toString();
 
     if(Relation::parent().exists()){
         Relation::query().where(HasManyRelation::foreignKey(),Relation::parent().get(HasManyRelation::localKey()));

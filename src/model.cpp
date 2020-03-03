@@ -2,8 +2,8 @@
 #include "collection.h"
 #include "builder.h"
 #include <QJsonObject>
-Model::Model(const QString &table, const QString &primarykey, const QString &modelName, bool usesTimeStamps) : _exists(false),
-    _table(table),_primaryKey(primarykey),_modelName(modelName),_useTimeStamps(usesTimeStamps)
+Model::Model(const QString &table, const PrimaryKey &primarykey, const QString &modelName, bool usesTimeStamps, bool usesIncrementing) : _exists(false),
+    _table(table),_primaryKey(primarykey),_modelName(modelName),_useTimeStamps(usesTimeStamps),_incrementing(usesIncrementing)
 {
 
 }

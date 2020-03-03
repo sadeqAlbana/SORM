@@ -15,7 +15,8 @@ SOURCES += \
     src/relations/hasonerelation.cpp \
     src/relations/hasonethroughrelation.cpp \
     src/relations/belongstorelation.cpp \
-    src/relations/belongstomanyrelation.cpp
+    src/relations/belongstomanyrelation.cpp \
+    src/primarykey.cpp
 
 HEADERS += \
     $$PWD/src/builder.h \
@@ -33,7 +34,8 @@ HEADERS += \
     src/relations/hasonerelation.h \
     src/relations/hasonethroughrelation.h \
     src/relations/belongstorelation.h \
-    src/relations/belongstomanyrelation.h
+    src/relations/belongstomanyrelation.h \
+    src/primarykey.h
 
 
 

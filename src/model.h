@@ -2,6 +2,7 @@
 #define MODEL_H
 #include <QString>
 #include <QVariant>
+#include "primarykey.h"
 class HasManyRelation;
 class hasManyThroughRelation;
 class HasOneThroughRelation;
@@ -15,7 +16,8 @@ class Model
     friend class ModelBuilder;
     friend class Relation;
 public:
-    Model(const QString &table=QString(), const QString &primarykey=QString(),const QString &modelName=QString(),bool usesTimeStamps=false);
+    Model(const QString &table=QString(), const PrimaryKey &primarykey=QString(),const QString &modelName=QString(),bool usesTimeStamps=true,bool usesIncrementing=true);
+
     //Model(const QMap<QString, QVariant> &map);
     ~Model();
     void set(QString key, QVariant value);
@@ -27,9 +29,10 @@ public:
     bool exists(){return _exists;}
     bool usesTimestamps() const;
     void setUseTimestamps(bool use=true){_useTimeStamps=use;}
+    bool incrementing() const {return _incrementing;}
     QVariant operator[](const QString key);
     QString table()const {return _table;}
-    QString primaryKey() const {return _primaryKey;}
+    PrimaryKey primaryKey() const {return _primaryKey;}
     QString modelName() const {return _modelName;}
     ModelBuilder builder();
     bool save();
@@ -45,9 +48,10 @@ protected:
     QMap<QString, QVariant> data;
     QMap<QString, QVariant> original;
     QString _table;
-    QString _primaryKey;
+    PrimaryKey _primaryKey;
     QString _modelName;
     bool _useTimeStamps;
+    bool _incrementing;
 
 public:
       template<class T>
