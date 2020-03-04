@@ -22,7 +22,7 @@
     else\
         {   \
     ModelBuilder builder = staticBuilder();\
-    QStringList values=value.toStringList();\
+    QVariantList values=value.toList();\
     QStringList keys = staticPrimaryKey().toStringList(); \
     for(int i=0; i<keys.size();i++ ) \
         builder.where(keys.value(i),values.value(i));\

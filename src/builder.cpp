@@ -31,7 +31,7 @@ Builder &Builder::where(QString key, QString op, QVariant value)
 Builder &Builder::where(QString clause)
 {
 
-    //whereClause="+"+clause+"+";
+    whereClause.append(QString(" %1 %2").arg(whereClause.size() ? "and" : "where").arg(clause));
 
     return *this;
 }
