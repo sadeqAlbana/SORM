@@ -53,6 +53,8 @@ public:
 
     QVariant lastInsertId() const;
 
+    bool executeQuery(QSqlQuery &query);
+
 
 private:
     QString escapeKey(const QString &key) const;

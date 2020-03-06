@@ -1,4 +1,5 @@
 TEMPLATE = lib
+DEFINES +=ENABLE_EXCEPTIONS
 QT += sql
 CONFIG += staticlib
 SOURCES += \
@@ -6,6 +7,7 @@ SOURCES += \
     $$PWD/src/model.cpp \
     $$PWD/src/collection.cpp \
     $$PWD/src/db.cpp \
+    databaseerrorexception.cpp \
     src/modelbuilder.cpp \
     src/relations/hasmanyrelation.cpp \
     src/relations/hasmanythroughrelation.cpp \
@@ -26,6 +28,7 @@ HEADERS += \
     $$PWD/src/eloquentmodel.h \
     $$PWD/src/relations/relation.h \
     $$PWD/src/relations/eloquentrelation.h \
+    databaseerrorexception.h \
     src/modelbuilder.h \
     src/relations/hasmanyrelation.h \
     src/relations/hasmanythroughrelation.h \

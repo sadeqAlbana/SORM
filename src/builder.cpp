@@ -7,6 +7,9 @@
 #include <QSqlQuery>
 #include "model.h"
 #include "db.h"
+#ifdef ENABLE_EXCEPTIONS
+#include "databaseerrorexception.h"
+#endif
 Builder::Builder(const QString &table) :
 tableClause(table),
   columnsClause("*"),
@@ -97,8 +100,8 @@ Builder &Builder::join(const QString &table, const QString &first, const QString
 QSqlQuery Builder::get()
 {
     _sqlQuery.clear();
-    _sqlQuery.exec(generateSql());
-    DB::setLastError(_sqlQuery.lastError());
+    _sqlQuery.prepare(generateSql());
+    executeQuery(_sqlQuery);
     return _sqlQuery;
 }
 
@@ -217,14 +220,25 @@ bool Builder::remove()
     if(!whereClause.isEmpty())
         qryStr.append(whereClause);
 
-    bool success= _sqlQuery.exec(qryStr);
-    DB::setLastError(_sqlQuery.lastError());
-    return success;
+    _sqlQuery.prepare(qryStr);
+    return executeQuery(_sqlQuery);
 }
 
 QVariant Builder::lastInsertId() const
 {
     return _sqlQuery.lastInsertId();
+}
+
+bool Builder::executeQuery(QSqlQuery &query)
+{
+    bool success= query.exec();
+    QSqlError error = query.lastError();
+    DB::setLastError(error);
+#ifdef ENABLE_EXCEPTIONS
+    if(error.type()!=QSqlError::NoError)
+        throw  DatabaseErrorException(Q_FUNC_INFO,error);
+#endif
+    return success;
 }
 
 QString Builder::escapeKey(const QString &key) const
