@@ -24,9 +24,9 @@ public:
     QVariant get(QString key) const;
     QStringList keys() const {return data.keys();}
     QStringList dirtyKeys() const;
-    QDateTime created_at();
-    QDateTime updated_at();
-    bool exists(){return _exists;}
+    QDateTime created_at() const;
+    QDateTime updated_at() const;
+    bool exists() const{return _exists;}
     bool usesTimestamps() const;
     void setUseTimestamps(bool use=true){_useTimeStamps=use;}
     bool incrementing() const {return _incrementing;}
@@ -34,7 +34,7 @@ public:
     QString table()const {return _table;}
     PrimaryKey primaryKey() const {return _primaryKey;}
     QString modelName() const {return _modelName;}
-    ModelBuilder builder();
+    ModelBuilder builder() const;
     bool save();
     bool remove();
 
@@ -56,10 +56,10 @@ protected:
 public:
       template<class T>
       HasManyRelation hasMany(QString foreignKey=QString(),
-                         QString localKey=QString());
+                         QString localKey=QString()) const;
       template<class T>
       HasOneRelation hasOne(QString foreignKey=QString(),
-                         QString localKey=QString());
+                         QString localKey=QString()) const;
 
 
 
@@ -68,12 +68,12 @@ public:
                                                                     const QString &foreignPivotKey=QString(),
                                                                     const QString &relatedPivotKey=QString(),
                                                                     const QString &parentKey=QString(),
-                                                                    const QString &relatedKey=QString());
+                                                                    const QString &relatedKey=QString()) const;
 
 
       template<class T>
       BelongsToRelation belongsTo(QString foreignKey=QString(),
-                               QString ownerKey=QString());
+                               QString ownerKey=QString()) const;
 };
 
 
@@ -90,25 +90,25 @@ public:
 #include "relations/belongstomanyrelation.h"
 #include "relations/belongstorelation.h"
 template<class T>
-HasManyRelation Model::hasMany(QString foreignKey,QString localKey)
+HasManyRelation Model::hasMany(QString foreignKey,QString localKey) const
 {
     return HasManyRelation(T::staticBuilder(),*this,foreignKey,localKey);
 }
 template<class T>
-HasOneRelation Model::hasOne(QString foreignKey,QString localKey)
+HasOneRelation Model::hasOne(QString foreignKey,QString localKey) const
 {
     return HasOneRelation(T::staticBuilder(),*this,foreignKey,localKey);
 }
 
 
 template<class T>
-BelongsToManyRelation Model::belongsToMany(const QString &table, const QString &foreignPivotKey, const QString &relatedPivotKey, const QString &parentKey, const QString &relatedKey)
+BelongsToManyRelation Model::belongsToMany(const QString &table, const QString &foreignPivotKey, const QString &relatedPivotKey, const QString &parentKey, const QString &relatedKey) const
 {
     return BelongsToManyRelation(T::staticBuilder(),*this,table,foreignPivotKey,relatedPivotKey,parentKey,relatedKey);
 }
 
 template<class T>
-BelongsToRelation Model::belongsTo(QString foreignKey, QString ownerKey)
+BelongsToRelation Model::belongsTo(QString foreignKey, QString ownerKey) const
 {
     return BelongsToRelation(T::staticBuilder(),*this,foreignKey,ownerKey);
 }

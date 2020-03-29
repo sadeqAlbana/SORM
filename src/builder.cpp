@@ -1,4 +1,4 @@
-﻿#include "builder.h"
+#include "builder.h"
 #include "collection.h"
 #include <QDebug>
 #include <QSqlRecord>
@@ -100,23 +100,34 @@ Builder &Builder::join(const QString &table, const QString &first, const QString
 QSqlQuery Builder::get()
 {
     _sqlQuery.clear();
-    _sqlQuery.prepare(generateSql());
-    executeQuery(_sqlQuery);
+    executeQuery(_sqlQuery,generateSql());
     return _sqlQuery;
 }
 
-QSqlQuery Builder::sum(const QString field)
+double Builder::sum(const QString &field)
 {
     _sqlQuery.clear();
     QString qry=QString("select sum(%1) from %2").arg(field).arg(tableClause);
     if(whereClause.size())
         qry.append(whereClause);
-    if(_limit)
-        qry.append(QString(" limit %1").arg(_limit));
 
     _sqlQuery.exec(qry);
     DB::setLastError(_sqlQuery.lastError());
-    return _sqlQuery;
+    _sqlQuery.first();
+    return _sqlQuery.value(field).toDouble();
+}
+
+double Builder::max(const QString &field)
+{
+    _sqlQuery.clear();
+    QString qry=QString("select max(%1) from %2").arg(field).arg(tableClause);
+    if(whereClause.size())
+        qry.append(whereClause);
+
+    _sqlQuery.exec(qry);
+    DB::setLastError(_sqlQuery.lastError());
+    _sqlQuery.first();
+    return _sqlQuery.value(field).toDouble();
 }
 
 QString Builder::generateSql()
@@ -136,7 +147,7 @@ QString Builder::generateSql()
         qry.append(QString(" order by %1").arg(orderByClause));
     if(_limit)
         qry.append(QString(" limit %1").arg(_limit));
-    qDebug()<<qry;
+    //qDebug()<<qry;
     return qry;
 }
 
@@ -183,9 +194,7 @@ bool Builder::insert(const Map &map)
         _sqlQuery.bindValue(QString(":%1").arg(key),map[key]);
     }
 
-    bool result= _sqlQuery.exec();
-    DB::setLastError(_sqlQuery.lastError());
-    return result;
+    return executeQuery(_sqlQuery);
 }
 
 bool Builder::update(const Map &map)
@@ -207,9 +216,7 @@ bool Builder::update(const Map &map)
         _sqlQuery.bindValue(QString(":%1").arg(key),map[key]);
     }
 
-    bool success= _sqlQuery.exec();
-    DB::setLastError(_sqlQuery.lastError());
-    return success;
+    return executeQuery(_sqlQuery);
 }
 
 bool Builder::remove()
@@ -229,9 +236,9 @@ QVariant Builder::lastInsertId() const
     return _sqlQuery.lastInsertId();
 }
 
-bool Builder::executeQuery(QSqlQuery &query)
+bool Builder::executeQuery(QSqlQuery &query,const QString &statement)
 {
-    bool success= query.exec();
+    bool success= statement.isNull() ?  query.exec() : query.exec(statement);
     QSqlError error = query.lastError();
     DB::setLastError(error);
 #ifdef ENABLE_EXCEPTIONS

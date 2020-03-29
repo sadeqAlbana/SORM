@@ -46,7 +46,7 @@ QVariant Model::operator[](const QString key)
     return get(key);
 }
 
-ModelBuilder Model::builder()
+ModelBuilder Model::builder() const
 {
     return ModelBuilder(*this);
 }

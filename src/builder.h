@@ -30,7 +30,9 @@ public:
     Builder &join(const QString &table,const QString &first,const QString op, const QString &second);
 
     QSqlQuery get();
-    QSqlQuery sum(const QString field);
+    double sum(const QString &field);
+    double max(const QString &field);
+
     QString generateSql();
     Builder &select();
     Builder & select(QStringList args);
@@ -53,7 +55,7 @@ public:
 
     QVariant lastInsertId() const;
 
-    bool executeQuery(QSqlQuery &query);
+    bool executeQuery(QSqlQuery &query, const QString &statement=QString());
 
 
 private:
