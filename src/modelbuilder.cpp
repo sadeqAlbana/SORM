@@ -46,7 +46,9 @@ Collection ModelBuilder::get(const QVariant &column)
         }
     }
 
-
+    if(model().usesTimestamps()){
+        builder().where("deleted_at is null");
+    }
     QSqlQuery query=builder().get();
     if(query.exec())
     {
@@ -187,7 +189,15 @@ bool ModelBuilder::remove(Model &model)
     else
         builder().where(model.primaryKey().toString(),model.get(model.primaryKey().toString()));
 
-    bool success=builder().remove();
+
+    bool success=false;
+    if(model.usesTimestamps()){
+        model.set("deleted_at",QDateTime::currentDateTime());
+        success=update(model);
+    }else{
+        success=builder().remove();
+    }
+
     if(success){
         model._exists=false;
     }

@@ -227,8 +227,8 @@ bool Builder::remove()
     if(!whereClause.isEmpty())
         qryStr.append(whereClause);
 
-    _sqlQuery.prepare(qryStr);
-    return executeQuery(_sqlQuery);
+//    _sqlQuery.prepare(qryStr);
+    return executeQuery(_sqlQuery,qryStr);
 }
 
 QVariant Builder::lastInsertId() const

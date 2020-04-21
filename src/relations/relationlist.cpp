@@ -1,11 +1,11 @@
 #include "relationlist.h"
 #include "relation.h"
-RelationList::RelationList()
+RelationList::RelationList() : QList<Relation *> ()
 {
 
 }
 
-RelationList::RelationList(const RelationList &other)
+RelationList::RelationList(const RelationList &other) : QList<Relation *> ()
 {
     for (auto ptr : other) {
         append(ptr->clone());

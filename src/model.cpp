@@ -58,7 +58,6 @@ bool Model::save()
 
 bool Model::remove()
 {
-    _exists=false;
     return builder().remove(*this);
 }
 
