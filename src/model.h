@@ -58,17 +58,18 @@ public:
       HasManyRelation hasMany(QString foreignKey=QString(),
                          QString localKey=QString()) const;
 
-//      template<class T>
-//      HasManyRelation hasMany(QString foreignKey,
-//                         QString localKey,const Relation &rel) const;
-
-      template<class T,class C>
+      template<class T>
       HasManyRelation hasMany(QString foreignKey,
-                         QString localKey,C (T::*rel)()) const;
+                         QString localKey,const Relation &rel) const;
+
 
       template<class T>
       HasOneRelation hasOne(QString foreignKey=QString(),
                          QString localKey=QString()) const;
+
+      template<class T>
+      HasOneRelation hasOne(QString foreignKey,
+                         QString localKey,const Relation &rel) const;
 
 
 
@@ -108,23 +109,24 @@ HasManyRelation Model::hasMany(QString foreignKey, QString localKey) const
     return HasManyRelation(T::staticBuilder(),*this,foreignKey,localKey);
 }
 
-//template<class T>
-//HasManyRelation Model::hasMany(QString foreignKey, QString localKey, const Relation &rel) const
-//{
-//    return HasManyRelation(T::with(rel),*this,foreignKey,localKey);
-//}
-
-template<class T,class C>
-HasManyRelation Model::hasMany(QString foreignKey,
-                        QString localKey,C (T::*rel)()) const{
-
-    return HasManyRelation(T::with((T().*rel)()),*this,foreignKey,localKey);
+template<class T>
+HasManyRelation Model::hasMany(QString foreignKey, QString localKey, const Relation &rel) const
+{
+    return HasManyRelation(T::with(rel),*this,foreignKey,localKey);
 }
+
+
 
 template<class T>
 HasOneRelation Model::hasOne(QString foreignKey,QString localKey) const
 {
     return HasOneRelation(T::staticBuilder(),*this,foreignKey,localKey);
+}
+
+template<class T>
+HasOneRelation Model::hasOne(QString foreignKey,QString localKey,const Relation &rel) const
+{
+    return HasOneRelation(T::with(rel),*this,foreignKey,localKey);
 }
 
 
