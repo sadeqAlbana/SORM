@@ -65,11 +65,12 @@ Collection ModelBuilder::get(const QVariant &column)
 
         }
 
-
-        for(Relation *relation : relations)
-        {
-            relation->addConstraints(collection);
-            relation->match(collection);
+        if(!collection.isEmpty()){
+            for(Relation *relation : relations)
+            {
+                relation->addConstraints(collection);
+                relation->match(collection);
+            }
         }
 
 
