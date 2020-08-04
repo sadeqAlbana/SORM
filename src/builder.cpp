@@ -104,7 +104,7 @@ QSqlQuery Builder::get()
     return _sqlQuery;
 }
 
-double Builder::sum(const QString &field)
+QVariant Builder::sum(const QString &field)
 {
     _sqlQuery.clear();
     QString qry=QString("select sum(%1) from %2").arg(field).arg(tableClause);
@@ -114,7 +114,7 @@ double Builder::sum(const QString &field)
     _sqlQuery.exec(qry);
     DB::setLastError(_sqlQuery.lastError());
     _sqlQuery.first();
-    return _sqlQuery.value(field).toDouble();
+    return _sqlQuery.value(0);
 }
 
 double Builder::max(const QString &field)

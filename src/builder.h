@@ -30,7 +30,7 @@ public:
     Builder &join(const QString &table,const QString &first,const QString op, const QString &second);
 
     QSqlQuery get();
-    double sum(const QString &field);
+    QVariant sum(const QString &field);
     double max(const QString &field);
 
     QString generateSql();
