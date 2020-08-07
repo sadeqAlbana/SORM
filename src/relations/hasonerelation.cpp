@@ -30,7 +30,9 @@ void HasOneRelation::addConstraints(Collection &models)
 {
     QVariantList ids;
     for(const Model &model : models){
-        ids << model.get(localKey());
+        QVariant id=model.get(localKey());
+        if(!ids.contains(id))
+            ids << id;
     }
 
     query().whereIn(foreignKey(),ids);

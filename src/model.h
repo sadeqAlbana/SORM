@@ -38,9 +38,9 @@ public:
     bool save();
     bool remove();
 
-    operator QJsonObject();
+    operator QJsonObject() const;
 
-    operator QVariant();
+    operator QVariant() const;
 
 protected:
     bool _exists;

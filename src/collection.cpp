@@ -26,17 +26,11 @@ Collection::operator QJsonArray()
 {
     if(!size())
         return QJsonArray();
-    QStringList keys=value(0).keys();
     QJsonArray array;
 
     for (int i=0; i<size(); i++)
     {
-        const Model &model=at(i);
-        QJsonObject obj;
-        for(QString key : keys)
-            obj.insert(key,QJsonValue::fromVariant(model.get(key)));
-
-        array << obj;
+        array << at(i).operator QJsonObject();
     }
     return array;
 }

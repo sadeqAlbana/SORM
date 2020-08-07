@@ -61,12 +61,12 @@ bool Model::remove()
     return builder().remove(*this);
 }
 
-Model::operator QVariant()
+Model::operator QVariant() const
 {
     return operator QJsonObject();
 }
 
-Model::operator QJsonObject()
+Model::operator QJsonObject()  const
 {
     return QJsonObject::fromVariantMap(data);
 }
