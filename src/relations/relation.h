@@ -21,7 +21,7 @@ protected:
     Model *_parent;
     ModelBuilder _query;
     ModelBuilder& query();
-    void setContraints(const QStringList &constrains);
+    //void setContraints(const QStringList &constrains);
 
 
 };
