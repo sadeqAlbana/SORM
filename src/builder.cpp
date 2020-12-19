@@ -127,7 +127,7 @@ QVariant Builder::max(const QString &field)
     _sqlQuery.exec(qry);
     DB::setLastError(_sqlQuery.lastError());
     _sqlQuery.first();
-    return _sqlQuery.value(field);
+    return _sqlQuery.value(0);
 }
 
 int Builder::count(const QString &field)
