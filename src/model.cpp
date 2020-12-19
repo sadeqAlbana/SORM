@@ -2,6 +2,7 @@
 #include "collection.h"
 #include "builder.h"
 #include <QJsonObject>
+#include <QDateTime>
 Model::Model(const QString &table, const PrimaryKey &primarykey, const QString &modelName, bool usesTimeStamps, bool usesIncrementing) : _exists(false),
     _table(table),_primaryKey(primarykey),_modelName(modelName),_useTimeStamps(usesTimeStamps),_incrementing(usesIncrementing)
 {
@@ -84,5 +85,10 @@ QStringList Model::dirtyKeys() const
          dirtyKeys << key;
     }
     return dirtyKeys;
+}
+
+QDateTime Model::created_at() const
+{
+    return get("created_at").toDateTime();
 }
 
