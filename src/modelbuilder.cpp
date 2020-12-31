@@ -7,6 +7,7 @@
 #include "relations/relation.h"
 #include <QDebug>
 #include <QSharedPointer>
+#include <QSqlError>
 ModelBuilder::ModelBuilder(const Model &model) :_model(new Model(model)),_builder(_model->table())
 {
 
@@ -50,7 +51,7 @@ Collection ModelBuilder::get(const QVariant &column)
         builder().where("deleted_at is null");
     }
     QSqlQuery query=builder().get();
-    if(query.exec())
+    if(query.lastError().type()==QSqlError::NoError) //was if(query.exec()).........possible bug ?
     {
         Collection collection;
         QSqlRecord record=query.record();
