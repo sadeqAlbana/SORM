@@ -117,7 +117,7 @@ QVariant Builder::sum(const QString &field)
     return _sqlQuery.value(0);
 }
 
-double Builder::max(const QString &field)
+QVariant Builder::max(const QString &field)
 {
     _sqlQuery.clear();
     QString qry=QString("select max(%1) from %2").arg(field).arg(tableClause);
@@ -127,7 +127,20 @@ double Builder::max(const QString &field)
     _sqlQuery.exec(qry);
     DB::setLastError(_sqlQuery.lastError());
     _sqlQuery.first();
-    return _sqlQuery.value(field).toDouble();
+    return _sqlQuery.value(0);
+}
+
+int Builder::count(const QString &field)
+{
+    _sqlQuery.clear();
+    QString qry=QString("select count(%1) from %2").arg(field).arg(tableClause);
+    if(whereClause.size())
+        qry.append(whereClause);
+
+    _sqlQuery.exec(qry);
+    DB::setLastError(_sqlQuery.lastError());
+    _sqlQuery.first();
+    return _sqlQuery.value(0).toInt();
 }
 
 QString Builder::generateSql()

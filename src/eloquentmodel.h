@@ -13,7 +13,7 @@
     static ModelBuilder staticBuilder(){return ModelBuilder(staticTable(),staticPrimaryKey(),staticClassName(),_useTimeStamps,_useAutoIncrement);} \
     _class() : Model(#tableName,staticPrimaryKey(),#_class,_useTimeStamps,_useAutoIncrement){} \
     _class(const Model &model) : Model(model){} \
-    static Collection all(){return staticBuilder().get();} \
+    static Collection all(const QVariant &column=QVariant()){return staticBuilder().get(column);} \
     static ModelBuilder where(const QString key, const QVariant value) \
     {return staticBuilder().where(key,value);} \
     static Model find(const QVariant value){\

@@ -31,7 +31,8 @@ public:
 
     QSqlQuery get();
     QVariant sum(const QString &field);
-    double max(const QString &field);
+    QVariant max(const QString &field);
+    int  count(const QString &field="*");
 
     QString generateSql();
     Builder &select();
