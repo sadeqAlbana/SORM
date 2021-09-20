@@ -11,7 +11,7 @@ class BelongsToRelation;
 class BelongsToManyRelation;
 class ModelBuilder;
 class Relation;
-class Model
+class Model  //consider using the Q_GADGET macro for furuture improvments !
 {
     friend class ModelBuilder;
     friend class Relation;

@@ -252,11 +252,22 @@ QVariant Builder::lastInsertId() const
 bool Builder::executeQuery(QSqlQuery &query,const QString &statement)
 {
     bool success= statement.isNull() ?  query.exec() : query.exec(statement);
+
+//    if(!statement.isNull())
+//        qDebug()<<"statement: " << statement;
+//    else
+//        qDebug()<<"query: " << query.executedQuery();
+
     QSqlError error = query.lastError();
     DB::setLastError(error);
 #ifdef ENABLE_EXCEPTIONS
-    if(error.type()!=QSqlError::NoError)
+    if(error.type()!=QSqlError::NoError){
+        if(!statement.isNull())
+            qDebug()<<"statement: " << statement;
+        else
+            qDebug()<<"query: " << query.executedQuery();
         throw  DatabaseErrorException(Q_FUNC_INFO,error);
+    }
 #endif
     return success;
 }
