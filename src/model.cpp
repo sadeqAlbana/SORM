@@ -62,6 +62,11 @@ bool Model::remove()
     return builder().remove(*this);
 }
 
+Model::operator QJsonValue() const
+{
+    return QJsonValue(operator QJsonObject());
+}
+
 Model::operator QVariant() const
 {
     return operator QJsonObject();

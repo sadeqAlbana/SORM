@@ -39,6 +39,8 @@ public:
     bool remove();
 
     operator QJsonObject() const;
+    operator QJsonValue() const;
+
 
     operator QVariant() const;
 
