@@ -3,7 +3,7 @@
 #include "../modelbuilder.h"
 #include "../model.h"
 #include <QDebug>
-HasOneRelation::HasOneRelation(const ModelBuilder &query, const Model &parent, const QString &foreignKey, const QString &localKey) : Relation (query,parent),_foreignKey(foreignKey),_localKey(localKey)
+HasOneRelation::HasOneRelation(const ModelBuilder &query, const Model &parent, const QString &foreignKey, const QString &localKey, const QString &name) : Relation (query,parent,name),_foreignKey(foreignKey),_localKey(localKey)
 {
     if(foreignKey.isNull())
         _foreignKey=QString("%1_%2").arg(Relation::parent().modelName().toLower()).arg(Relation::parent().primaryKey().toString());
@@ -41,11 +41,17 @@ void HasOneRelation::addConstraints(Collection &models)
 void HasOneRelation::match(Collection &models)
 {
     Collection results=get();
+
     for (Model &mainModel : models){
+        if(results.isEmpty()){
+            mainModel.set(m_name,Model());
+            break;
+        }
+
         for (Model &relationModel : results)
         {
             if(mainModel.get(localKey())==relationModel.get(foreignKey())){
-                mainModel.set(related().table(),relationModel);
+                mainModel.set(m_name,relationModel);
                 break;
             }
         }

@@ -119,6 +119,8 @@ ModelBuilder &ModelBuilder::with(const Relation &relation)
     return *this;
 }
 
+
+
 Model ModelBuilder::first()
 {
     builder().take(1);

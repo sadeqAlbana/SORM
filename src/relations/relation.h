@@ -6,7 +6,7 @@
 class Relation
 {
 public:
-    Relation(const ModelBuilder &query, const Model &parent);
+    Relation(const ModelBuilder &query, const Model &parent, const QString &name=QString());
     Relation(const Relation &other);
     Collection get(const QVariant &columns=QVariant());
 
@@ -21,6 +21,7 @@ protected:
     Model *_parent;
     ModelBuilder _query;
     ModelBuilder& query();
+    QString m_name;
     //void setContraints(const QStringList &constrains);
 
 
@@ -28,6 +29,8 @@ protected:
 
 #define EloquentRelation(_class) \
     virtual Relation* clone() const override{return new _class(*this);} \
-    _class &where(QString key, QVariant value){query().where(key,value); return *this;}
+    _class &where(QString key, QVariant value){query().where(key,value); return *this;} \
+    _class & select(QStringList args){query().select(args); return *this;}
+
 
 #endif // RELATION_H

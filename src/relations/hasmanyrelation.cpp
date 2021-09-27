@@ -2,7 +2,7 @@
 #include "../modelbuilder.h"
 #include "../model.h"
 #include <QDebug>
-HasManyRelation::HasManyRelation(const ModelBuilder &query, const Model &parent, const QString &foreignKey, const QString &localKey) : Relation (query,parent),_foreignKey(foreignKey),_localKey(localKey)
+HasManyRelation::HasManyRelation(const ModelBuilder &query, const Model &parent, const QString &foreignKey, const QString &localKey, const QString &name) : Relation (query,parent,name),_foreignKey(foreignKey),_localKey(localKey)
 {
     if(foreignKey.isNull())
         _foreignKey=QString("%1_%2").arg(Relation::parent().modelName().toLower()).arg(Relation::parent().primaryKey().toString());
@@ -42,11 +42,16 @@ void HasManyRelation::match(Collection &models)
         Collection inserts;
         for (Model &relationModel : results)
         {
+            if(results.isEmpty()){
+                mainModel.set(m_name,QJsonArray());
+                break;
+            }
+
             if(mainModel.get(localKey())==relationModel.get(foreignKey())){
                 inserts << relationModel;
             }
         }
-        mainModel.set(related().table(),inserts);
+        mainModel.set(m_name,inserts);
         //mainModel.setSaved();
     }
 }

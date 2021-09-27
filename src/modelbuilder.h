@@ -30,6 +30,8 @@ public:
     Builder &builder(){return _builder;}
     ModelBuilder &paginate(int page, int count);
     ModelBuilder & take(int l){builder().take(l); return *this;}
+    ModelBuilder & select(QStringList args){builder().select(args); return *this;}
+
 
 
 
