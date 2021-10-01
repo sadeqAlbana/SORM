@@ -74,6 +74,8 @@ private:
     int offset;
 
     QSqlQuery _sqlQuery;
+
+    friend class ModelBuilder;
 };
 
 #endif // BUILDER_H
