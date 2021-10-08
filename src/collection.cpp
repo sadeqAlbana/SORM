@@ -7,6 +7,26 @@ Collection::Collection()
 
 }
 
+QVariantList Collection::primaryKeys() const
+{
+    QVariantList pks;
+    for (int i=0; i<size(); i++)
+    {
+        Model model= this->at(i);
+        if(model.primaryKey().isString()){
+            pks << model.get(model.primaryKey().toString());
+        }else{
+            QStringList keys=model.primaryKey().toStringList();
+            QVariantList compositePk;
+            for(const QString &key : keys){
+                compositePk << model.get(key);
+            }
+            pks << compositePk;
+        }
+    }
+    return pks;
+}
+
 Collection::operator QJsonValue()
 {
     return operator QJsonArray();

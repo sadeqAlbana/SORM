@@ -12,6 +12,8 @@ public:
     operator QJsonArray();
     operator QVariant();
     operator QJsonValue();
+
+    QVariantList primaryKeys() const;
 };
 QDebug operator <<(QDebug dbg, const Collection &collection);
 
