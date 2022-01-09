@@ -11,7 +11,6 @@ class Collection;
 
 class QSqlRecord;
 
-using Map = QMap<QString,QVariant>;
 
 class Builder
 {
@@ -50,8 +49,8 @@ public:
     }
 
 
-    bool insert(const Map &map);
-    bool update(const Map &map);
+    bool insert(const QVariantMap &map);
+    bool update(const QVariantMap &map);
     bool remove();
 
     QVariant lastInsertId() const;
@@ -72,8 +71,9 @@ private:
     QString dbDriver;
     int _limit;
     int offset;
+    QVariant m_lastInsertId;
 
-    QSqlQuery _sqlQuery;
+    //QSqlQuery _sqlQuery;
 
     friend class ModelBuilder;
 };

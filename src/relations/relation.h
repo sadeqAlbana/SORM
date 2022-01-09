@@ -8,6 +8,7 @@ class Relation
 public:
     Relation(const ModelBuilder &query, const Model &parent, const QString &name=QString());
     Relation(const Relation &other);
+    virtual ~Relation();
     Collection get(const QVariant &columns=QVariant());
 
     Model parent();

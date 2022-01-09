@@ -16,6 +16,11 @@ Relation::Relation(const Relation &other): _parent(new Model(*other._parent)),_q
 
 }
 
+Relation::~Relation()
+{
+    delete _parent;
+}
+
 Collection Relation::get(const QVariant &columns)
 {
     return _query.get(columns);

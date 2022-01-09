@@ -156,7 +156,7 @@ bool ModelBuilder::update(Model &mdl)
     }
 
 
-    Map updateData;
+    QVariantMap updateData;
     for (auto key : mdl.dirtyKeys()) {
      updateData[key]=mdl[key];
     }
