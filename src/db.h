@@ -19,7 +19,7 @@ public:
     static QSqlQuery exec(const QString &statement, const QVariantMap &bindings=QVariantMap());
 
     //static QVariant lastInsertId();
-
+    static QJsonArray toArray(QSqlQuery &query);
 
 private:
     friend class Builder;

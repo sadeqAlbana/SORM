@@ -2,6 +2,9 @@
 #include "builder.h"
 #include <QDebug>
 #include <databaseerrorexception.h>
+#include <QJsonArray>
+#include <QSqlRecord>
+#include <QJsonObject>
 QSqlError DB::_lastError;
 //QVariant DB::m_lastInsertId;
 
@@ -33,9 +36,12 @@ QSqlQuery DB::exec(const QString &statement, const QVariantMap &bindings)
     }else{
         query.exec(statement);
     }
+    if(query.isSelect())
+            query.first();
 
     QSqlError error = query.lastError();
     DB::setLastError(error);
+
 #ifdef ENABLE_EXCEPTIONS
     if(error.type()!=QSqlError::NoError){
         if(!statement.isNull())
@@ -49,6 +55,22 @@ QSqlQuery DB::exec(const QString &statement, const QVariantMap &bindings)
 
 
     return query;
+}
+
+QJsonArray DB::toArray(QSqlQuery &query)
+{
+    QJsonArray array;
+    QSqlRecord record=query.record();
+    while (query.next()) {
+        QJsonObject object;
+        for(int i=0; i<record.count(); i++)
+        {
+            object[record.fieldName(i)]=query.value(i).toJsonValue();
+        }
+        array << object;
+
+    }
+    return array;
 }
 
 void DB::setLastError(const QSqlError &lastError)
