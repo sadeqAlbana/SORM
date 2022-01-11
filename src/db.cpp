@@ -36,8 +36,7 @@ QSqlQuery DB::exec(const QString &statement, const QVariantMap &bindings)
     }else{
         query.exec(statement);
     }
-    if(query.isSelect())
-            query.first();
+
 
     QSqlError error = query.lastError();
     DB::setLastError(error);
@@ -55,6 +54,13 @@ QSqlQuery DB::exec(const QString &statement, const QVariantMap &bindings)
 
 
     return query;
+}
+
+QJsonArray DB::select(const QString &statement, const QVariantMap &bindings)
+{
+    QSqlQuery query=exec(statement,bindings);
+
+    return DB::toArray(query);
 }
 
 QJsonArray DB::toArray(QSqlQuery &query)

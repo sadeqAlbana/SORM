@@ -17,6 +17,7 @@ public:
     static QSqlError lastError();
 
     static QSqlQuery exec(const QString &statement, const QVariantMap &bindings=QVariantMap());
+    static QJsonArray select(const QString &statement, const QVariantMap &bindings=QVariantMap());
 
     //static QVariant lastInsertId();
     static QJsonArray toArray(QSqlQuery &query);
