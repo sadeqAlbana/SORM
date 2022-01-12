@@ -1,11 +1,16 @@
+/*
+ * Copyright (C) 2022 Sadeq Albana
+ *
+ * Licensed under the GNU Lesser General Public License v3.0 :
+ * https://www.gnu.org/licenses/lgpl-3.0.html
+ */
+
 #ifndef MODEL_H
 #define MODEL_H
 #include <QString>
 #include <QVariant>
 #include "primarykey.h"
 class HasManyRelation;
-class hasManyThroughRelation;
-class HasOneThroughRelation;
 class HasOneRelation;
 class BelongsToRelation;
 class BelongsToManyRelation;
@@ -98,8 +103,6 @@ public:
 #include "modelbuilder.h"
 #include "relations/relation.h"
 #include "relations/hasmanyrelation.h"
-#include "relations/hasmanythroughrelation.h"
-#include "relations/hasonethroughrelation.h"
 #include "relations/hasonerelation.h"
 #include "relations/belongstomanyrelation.h"
 #include "relations/belongstorelation.h"
