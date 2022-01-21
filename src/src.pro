@@ -2,6 +2,7 @@ TEMPLATE = lib
 DEFINES +=ENABLE_EXCEPTIONS
 QT += sql
 CONFIG += staticlib
+TARGET =  SORM
 SOURCES += \
     $$PWD/builder.cpp \
     $$PWD/model.cpp \

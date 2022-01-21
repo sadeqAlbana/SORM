@@ -10,6 +10,14 @@
 #include "../model.h"
 #include "../collection.h"
 
+union RelationResultData{
+public:
+    RelationResultData(const Collection &collection): m_collection(collection){}
+    RelationResultData(const Model &model) : m_model(model){}
+    ~RelationResultData(){}
+    Collection m_collection;
+    Model m_model;
+};
 
 class RelationResult
 {
@@ -21,10 +29,9 @@ public:
 
     RelationResult(const Model &model);
     RelationResult(const Collection &collection);
-    Model _model;
-    Collection _collection;
-    inline const Type& type(){return _type;}
-    Type _type;
+    RelationResultData m_data;
+    inline const Type& type(){return m_type;}
+    Type m_type;
 };
 
 #endif // RELATIONRESULT_H

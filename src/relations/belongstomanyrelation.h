@@ -18,7 +18,8 @@ public:
                           const QString &foreignPivotKey=QString(),
                           const QString &relatedPivotKey=QString(),
                           const QString &parentKey=QString(),
-                          const QString &relatedKey=QString());
+                          const QString &relatedKey=QString(),
+                          const QString &name=QString());
     EloquentRelation(BelongsToManyRelation)
     virtual void addConstraints(Collection &models) override;
     virtual void match(Collection &models) override;

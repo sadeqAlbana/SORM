@@ -12,7 +12,6 @@ SOURCES += \
     $$PWD/src/relations/relationlist.cpp \
     $$PWD/src/relations/relationresult.cpp \
     $$PWD/src/relations/hasonerelation.cpp \
-    $$PWD/src/relations/hasonethroughrelation.cpp \
     $$PWD/src/relations/belongstorelation.cpp \
     $$PWD/src/relations/belongstomanyrelation.cpp \
     $$PWD/src/primarykey.cpp
@@ -31,7 +30,6 @@ HEADERS += \
     $$PWD/src/relations/relationlist.h \
     $$PWD/src/relations/relationresult.h \
     $$PWD/src/relations/hasonerelation.h \
-    $$PWD/src/relations/hasonethroughrelation.h \
     $$PWD/src/relations/belongstorelation.h \
     $$PWD/src/relations/belongstomanyrelation.h \
     $$PWD/src/primarykey.h

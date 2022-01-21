@@ -7,12 +7,13 @@
 
 #include "relationresult.h"
 
-RelationResult::RelationResult(const Model &model): _model(model), _type(Type::Model)
+RelationResult::RelationResult(const Model &model): m_data(model), m_type(Type::Model)
 {
 
 }
 
-RelationResult::RelationResult(const Collection &collection) : _collection(collection), _type(Type::Collection)
+RelationResult::RelationResult(const Collection &collection) : m_data(collection), m_type(Type::Collection)
 {
 
 }
+

@@ -55,10 +55,15 @@ void BelongsToRelation::match(Collection &models)
 {
     Collection results=get();
     for (Model &mainModel : models){
+        if(results.isEmpty()){
+            mainModel.set(m_name,Model());
+            break;
+        }
+
         for (Model &relationModel : results)
         {
             if(mainModel.get(foreignKey())==relationModel.get(ownerKey())){
-                mainModel.set(related().table(),relationModel);
+                mainModel.set(m_name,relationModel);
                 break;
             }
         }
