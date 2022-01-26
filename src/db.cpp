@@ -32,7 +32,7 @@ QSqlError DB::lastError()
 
 QSqlQuery DB::exec(const QString &statement, const QVariantMap &bindings)
 {
-    QSqlQuery query;
+    QSqlQuery query(QSqlDatabase::database(CurrentThreadString));
     if(bindings.count()){
         query.prepare(statement);
         QStringList keys=bindings.keys();

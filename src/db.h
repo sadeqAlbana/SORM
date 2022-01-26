@@ -13,6 +13,10 @@ class QString;
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QVariantMap>
+#include <QThread>
+
+#define CurrentThreadString QString::number(qintptr(QThread::currentThread()))
+
 class DB
 {
 public:
@@ -34,6 +38,7 @@ private:
     static void setLastError(const QSqlError &lastError);
     static QSqlError _lastError;
     static QVariant m_lastInsertId;
+
 
 };
 
