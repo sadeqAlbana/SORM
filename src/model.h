@@ -63,11 +63,11 @@ protected:
 public:
       template<class T>
       HasManyRelation hasMany(QString foreignKey=QString(),
-                         QString localKey=QString()) const;
+                         QString localKey=QString(), QString name=QString()) const;
 
       template<class T>
       HasManyRelation hasMany(QString foreignKey,
-                         QString localKey,const Relation &rel) const;
+                         QString localKey,const Relation &rel, QString name=QString()) const;
 
 
       template<class T>
@@ -108,17 +108,17 @@ public:
 #include "relations/belongstomanyrelation.h"
 #include "relations/belongstorelation.h"
 template<class T>
-HasManyRelation Model::hasMany(QString foreignKey, QString localKey) const
+HasManyRelation Model::hasMany(QString foreignKey, QString localKey,QString name) const
 {
 
 
-    return HasManyRelation(T::staticBuilder(),*this,foreignKey,localKey);
+    return HasManyRelation(T::staticBuilder(),*this,foreignKey,localKey,name);
 }
 
 template<class T>
-HasManyRelation Model::hasMany(QString foreignKey, QString localKey, const Relation &rel) const
+HasManyRelation Model::hasMany(QString foreignKey, QString localKey, const Relation &rel, QString name) const
 {
-    return HasManyRelation(T::with(rel),*this,foreignKey,localKey);
+    return HasManyRelation(T::with(rel),*this,foreignKey,localKey,name);
 }
 
 
