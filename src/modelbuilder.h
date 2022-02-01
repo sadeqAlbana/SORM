@@ -28,6 +28,7 @@ public:
     ModelBuilder &whereIn(QString key, QVariantList values);
     ModelBuilder &whereIn(QString key, QString subQuery);
     ModelBuilder &with(const Relation &relation);
+    ModelBuilder &with(const RelationList &relations);
 
     Model first();
     Model find();

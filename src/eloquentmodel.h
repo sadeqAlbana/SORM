@@ -37,5 +37,6 @@
         }\
     }\
     static ModelBuilder with(const Relation &relation){return staticBuilder().with(relation); } \
+    static ModelBuilder with(const RelationList &relations){return staticBuilder().with(relations); } \
     private:
 #endif // ELOQUENTMODEL_H

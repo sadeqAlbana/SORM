@@ -15,6 +15,7 @@
 #include <QDebug>
 #include <QSharedPointer>
 #include <QSqlError>
+#include "relations/relationlist.h"
 ModelBuilder::ModelBuilder(const Model &model) :_model(new Model(model)),_builder(_model->table())
 {
 
@@ -123,6 +124,14 @@ ModelBuilder &ModelBuilder::whereIn(QString key, QString subQuery)
 ModelBuilder &ModelBuilder::with(const Relation &relation)
 {
     relations << relation.clone();
+    return *this;
+}
+
+ModelBuilder &ModelBuilder::with(const RelationList &relations)
+{
+    for(const Relation * const &relation : relations){
+        this->relations << relation->clone();
+    }
     return *this;
 }
 

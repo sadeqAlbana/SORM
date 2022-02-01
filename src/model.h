@@ -16,6 +16,7 @@ class BelongsToRelation;
 class BelongsToManyRelation;
 class ModelBuilder;
 class Relation;
+class RelationList;
 class Model  //consider using the Q_GADGET macro for furuture improvments !
 {
     friend class ModelBuilder;
@@ -68,7 +69,9 @@ public:
       template<class T>
       HasManyRelation hasMany(QString foreignKey,
                          QString localKey,const Relation &rel, QString name=QString()) const;
-
+      template<class T>
+      HasManyRelation hasMany(QString foreignKey,
+                         QString localKey,const RelationList &relations, QString name=QString()) const;
 
       template<class T>
       HasOneRelation hasOne(QString foreignKey=QString(),
@@ -101,8 +104,10 @@ public:
 
 
 
+
 #include "modelbuilder.h"
 #include "relations/relation.h"
+#include "relations/relationlist.h"
 #include "relations/hasmanyrelation.h"
 #include "relations/hasonerelation.h"
 #include "relations/belongstomanyrelation.h"
@@ -119,6 +124,12 @@ template<class T>
 HasManyRelation Model::hasMany(QString foreignKey, QString localKey, const Relation &rel, QString name) const
 {
     return HasManyRelation(T::with(rel),*this,foreignKey,localKey,name);
+}
+
+template<class T>
+        HasManyRelation Model::hasMany(QString foreignKey, QString localKey, const RelationList &relations, QString name) const
+{
+     return HasManyRelation(T::with(relations),*this,foreignKey,localKey,name);
 }
 
 
