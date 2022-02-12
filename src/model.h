@@ -25,7 +25,7 @@ public:
     Model(const QString &table=QString(), const PrimaryKey &primarykey=QString(),const QString &modelName=QString(),bool usesTimeStamps=true,bool usesIncrementing=true);
 
     //Model(const QMap<QString, QVariant> &map);
-    virtual ~Model();
+    ~Model();
     void set(QString key, QVariant value);
     QVariant get(QString key) const;
     QStringList keys() const {return data.keys();}
