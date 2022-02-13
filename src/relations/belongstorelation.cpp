@@ -57,7 +57,7 @@ void BelongsToRelation::match(Collection &models)
     for (Model &mainModel : models){
         if(results.isEmpty()){
             mainModel.set(m_name,Model());
-            break;
+            continue;
         }
 
         for (Model &relationModel : results)

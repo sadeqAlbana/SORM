@@ -66,10 +66,13 @@ void BelongsToManyRelation::match(Collection &models)
                                      QString("%1.%2").arg(_table).arg(_relatedPivotKey));
 
     Collection results=get(QString("%1.* , %2").arg(related().table()).arg(_foreignPivotKey));
+
+
+
     for (Model &mainModel : models){
         if(results.isEmpty()){
             mainModel.set(m_name,QJsonArray());
-            break;
+            continue;
         }
         Collection inserts;
         for (Model &relationModel : results)

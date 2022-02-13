@@ -51,7 +51,7 @@ void HasManyRelation::match(Collection &models)
         {
             if(results.isEmpty()){
                 mainModel.set(m_name,QJsonArray());
-                break;
+                continue;
             }
 
             if(mainModel.get(localKey())==relationModel.get(foreignKey())){
