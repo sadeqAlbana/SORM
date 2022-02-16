@@ -24,12 +24,13 @@ public:
     Collection get(const QVariant &column=QVariant());
     ModelBuilder &where(QString key, QVariant value);
     ModelBuilder &where(QString key,QString op, QVariant value);
-    ModelBuilder &where(QString clause);
+    ModelBuilder &whereRaw(QString clause);
     ModelBuilder &whereIn(QString key, QVariantList values);
     ModelBuilder &whereIn(QString key, QString subQuery);
     ModelBuilder &with(const Relation &relation);
     ModelBuilder &with(const RelationList &relations);
-
+    ModelBuilder &groupBy(QString column);
+    ModelBuilder &orderBy(QString column);
     Model first();
     Model find();
     bool insert(Model &mdl);

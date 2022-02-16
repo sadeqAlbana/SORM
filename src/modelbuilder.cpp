@@ -101,7 +101,7 @@ ModelBuilder &ModelBuilder::where(QString key, QString op, QVariant value)
     return *this;
 }
 
-ModelBuilder &ModelBuilder::where(QString clause)
+ModelBuilder &ModelBuilder::whereRaw(QString clause)
 {
     builder().whereRaw(clause);
     return *this;
@@ -132,6 +132,18 @@ ModelBuilder &ModelBuilder::with(const RelationList &relations)
     for(const Relation * const &relation : relations){
         this->relations << relation->clone();
     }
+    return *this;
+}
+
+ModelBuilder &ModelBuilder::groupBy(QString column)
+{
+    builder().groupBy(column);
+    return *this;
+}
+
+ModelBuilder &ModelBuilder::orderBy(QString column)
+{
+    builder().groupBy(column);
     return *this;
 }
 

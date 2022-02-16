@@ -48,7 +48,7 @@ QSqlQuery DB::exec(const QString &statement, const QVariantMap &bindings)
     QSqlError error = query.lastError();
     DB::setLastError(error);
     //query.finish();
-#ifdef ENABLE_EXCEPTIONS
+#ifdef SORM_ENABLE_EXCEPTIONS
     if(error.type()!=QSqlError::NoError){
         if(!statement.isNull())
             qDebug()<<"statement: " << statement;
