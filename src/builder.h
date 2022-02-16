@@ -25,7 +25,8 @@ public:
     Builder(const QString &table);
     Builder &where(QString key, QVariant value); //not perfect
     Builder &where(QString key,QString op, QVariant value); //not perfect
-    Builder &where(QString clause);
+    Builder &whereRaw(QString clause);
+
     Builder &whereIn(QString key, QVariantList values); //not perfect
     Builder &whereIn(QString key, QString subQuery);
     Builder &groupBy(QString column);

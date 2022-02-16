@@ -38,7 +38,7 @@ Builder &Builder::where(QString key, QString op, QVariant value)
     return *this;
 }
 
-Builder &Builder::where(QString clause)
+Builder &Builder::whereRaw(QString clause)
 {
 
     whereClause.append(QString(" %1 %2").arg(whereClause.size() ? "and" : "where").arg(clause));
@@ -46,12 +46,19 @@ Builder &Builder::where(QString clause)
     return *this;
 }
 
+
 Builder &Builder::whereIn(QString key, QVariantList values)
 {
 
     QString valuesString;
-    for (QVariant value : values) {
-        valuesString.append(value.toString()+",");
+    for (const QVariant &value : values) {
+        if(value.type()==QMetaType::Int || value.type()==QMetaType::Double || value.type()==QMetaType::Float || value.type()==QMetaType::Long
+                || value.type()==QMetaType::LongLong || value.type()==QMetaType::UInt || value.type()==QMetaType::UShort)
+            valuesString.append(value.toString()+",");
+        else{
+            valuesString.append("'"+value.toString()+"'"+",");
+
+        }
     }
     valuesString.chop(1);
 

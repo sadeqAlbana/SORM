@@ -56,7 +56,7 @@ Collection ModelBuilder::get(const QVariant &column)
     }
 
     if(model().usesTimestamps()){
-        builder().where(QString("%1 is null").arg(builder().escapeKey("deleted_at")));
+        builder().whereRaw(QString("%1 is null").arg(builder().escapeKey("deleted_at")));
     }
     QSqlQuery query=builder().get();
     if(query.lastError().type()==QSqlError::NoError) //was if(query.exec()).........possible bug ?
@@ -103,7 +103,7 @@ ModelBuilder &ModelBuilder::where(QString key, QString op, QVariant value)
 
 ModelBuilder &ModelBuilder::where(QString clause)
 {
-    builder().where(clause);
+    builder().whereRaw(clause);
     return *this;
 }
 
