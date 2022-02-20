@@ -26,9 +26,16 @@ public:
     Builder &where(QString key, QVariant value); //not perfect
     Builder &where(QString key,QString op, QVariant value); //not perfect
     Builder &whereRaw(QString clause);
+    Builder &orWhere(QString key, QVariant value); //not perfect
+    Builder &orWhere(QString key,QString op, QVariant value); //not perfect
+    Builder &orWhereRaw(QString clause);
 
     Builder &whereIn(QString key, QVariantList values); //not perfect
+    Builder &orWhereIn(QString key, QVariantList values); //not perfect
+
     Builder &whereIn(QString key, QString subQuery);
+    Builder &orWhereIn(QString key, QString subQuery);
+
     Builder &groupBy(QString column);
     Builder &orderBy(QString column);
     Builder & take(int l){_limit=l; return *this;}

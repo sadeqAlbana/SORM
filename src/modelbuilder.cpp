@@ -101,9 +101,27 @@ ModelBuilder &ModelBuilder::where(QString key, QString op, QVariant value)
     return *this;
 }
 
+ModelBuilder &ModelBuilder::orWhere(QString key, QVariant value)
+{
+    builder().orWhere(key,value);
+    return *this;
+}
+
+ModelBuilder &ModelBuilder::orWhere(QString key, QString op, QVariant value)
+{
+    builder().orWhere(key,op,value);
+    return *this;
+}
+
 ModelBuilder &ModelBuilder::whereRaw(QString clause)
 {
     builder().whereRaw(clause);
+    return *this;
+}
+
+ModelBuilder &ModelBuilder::orWhereRaw(QString clause)
+{
+    builder().orWhereRaw(clause);
     return *this;
 }
 

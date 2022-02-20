@@ -24,7 +24,11 @@ public:
     Collection get(const QVariant &column=QVariant());
     ModelBuilder &where(QString key, QVariant value);
     ModelBuilder &where(QString key,QString op, QVariant value);
+    ModelBuilder &orWhere(QString key, QVariant value);
+    ModelBuilder &orWhere(QString key,QString op, QVariant value);
     ModelBuilder &whereRaw(QString clause);
+    ModelBuilder &orWhereRaw(QString clause);
+
     ModelBuilder &whereIn(QString key, QVariantList values);
     ModelBuilder &whereIn(QString key, QString subQuery);
     ModelBuilder &with(const Relation &relation);
