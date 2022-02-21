@@ -60,8 +60,9 @@ void BelongsToManyRelation::addConstraints(Collection &models)
 
 void BelongsToManyRelation::match(Collection &models)
 {
+
     Relation::query().builder().join(_table,
-                                     _relatedKey,
+                                     related().table()+"."+_relatedKey,
                                      "=",
                                      QString("%1.%2").arg(_table).arg(_relatedPivotKey));
 

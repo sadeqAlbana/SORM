@@ -152,8 +152,8 @@ Builder &Builder::paginate(int page, int count)
 
 Builder &Builder::join(const QString &table, const QString &first, const QString op, const QString &second)
 {
-    joinClause=QString(" inner join %1 on %2 %3 %4").arg(escapeTable(table))
-            .arg(escapeKey(first))
+    joinClause+=QString(" inner join %1 on %2 %3 %4").arg(escapeTable(table))
+            .arg(first)
             .arg(op)
             .arg(second);
 
