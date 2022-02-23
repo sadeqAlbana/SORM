@@ -30,7 +30,7 @@ QSqlError DB::lastError()
     return _lastError;
 }
 
-QSqlQuery DB::exec(const QString &statement, const QVariantMap &bindings)
+QSqlQuery DB::exec(const QString &statement, const QVariantMap &bindings, const QString connection)
 {
     QSqlQuery query(QSqlDatabase::database(CurrentThreadString));
     if(bindings.count()){
@@ -59,6 +59,7 @@ QSqlQuery DB::exec(const QString &statement, const QVariantMap &bindings)
             qDebug()<<"statement: " << statement;
         else
             qDebug()<<"query: " << query.executedQuery();
+        qDebug()<<"rollback: "<<DB::database().rollback();
         throw  DatabaseErrorException(Q_FUNC_INFO,error);
     }
 #endif
@@ -89,6 +90,23 @@ QJsonArray DB::toArray(QSqlQuery &query)
 
     }
     return array;
+}
+/*
+ * Hi @Calvev, I had the same problem of the missing transactions feature. The problem was that I used a new version of libmysql.dll which I got from the MySQL connector package, but the server I was connecting to, was an older MySQL 5.1, so their versions did not match. When I downloaded the old 5.1 server package and extracted the libmysql.dll from there, transactions started to work :o)
+*/
+bool DB::transaction(const QString &connection)
+{
+    return DB::database(connection).transaction();
+}
+
+QSqlDatabase DB::database(const QString &connection)
+{
+    return connection.isEmpty()? QSqlDatabase::database(CurrentThreadString) : QSqlDatabase::database(connection);
+}
+
+bool DB::commit(const QString &connection)
+{
+    return DB::database(connection).commit();
 }
 
 void DB::setLastError(const QSqlError &lastError)

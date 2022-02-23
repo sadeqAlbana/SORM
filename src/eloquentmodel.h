@@ -21,8 +21,10 @@
     _class() : Model(#tableName,staticPrimaryKey(),#_class,_useTimeStamps,_useAutoIncrement){} \
     _class(const Model &model) : Model(model){} \
     static Collection all(const QVariant &column=QVariant()){return staticBuilder().get(column);} \
-    static ModelBuilder where(const QString key, const QVariant value) \
+    static ModelBuilder where(const QString &key, const QVariant &value) \
     {return staticBuilder().where(key,value);} \
+    static ModelBuilder where(const QString &key, const QString &op, const QVariant &value) \
+    {return staticBuilder().where(key,op,value);} \
     static Model find(const QVariant value){\
     if(staticPrimaryKey().isString())\
         return staticBuilder().where(staticPrimaryKey().toString(),value).get().value(0);\

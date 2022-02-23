@@ -27,11 +27,14 @@ public:
 
     static QSqlError lastError();
 
-    static QSqlQuery exec(const QString &statement, const QVariantMap &bindings=QVariantMap());
+    static QSqlQuery exec(const QString &statement, const QVariantMap &bindings=QVariantMap(), const QString connection=QString());
     static QJsonArray select(const QString &statement, const QVariantMap &bindings=QVariantMap());
 
     //static QVariant lastInsertId();
     static QJsonArray toArray(QSqlQuery &query);
+    static bool transaction(const QString &connection=QString());
+    static QSqlDatabase database(const QString &connection=QString());
+    static bool commit(const QString &connection=QString());
 
 private:
     friend class Builder;
