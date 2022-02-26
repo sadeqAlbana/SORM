@@ -45,6 +45,11 @@ BelongsToManyRelation::BelongsToManyRelation(const ModelBuilder &query,
     }
 }
 
+BelongsToManyRelation::~BelongsToManyRelation()
+{
+    //qDebug()<<Q_FUNC_INFO;
+}
+
 void BelongsToManyRelation::addConstraints(Collection &models)
 {
     QVariantList ids;

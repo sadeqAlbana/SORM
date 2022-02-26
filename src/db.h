@@ -21,6 +21,8 @@ class DB
 {
 public:
     DB();
+    ~DB();
+
 
     static Builder table(const QString &table);
 

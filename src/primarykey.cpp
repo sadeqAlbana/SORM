@@ -6,7 +6,7 @@
  */
 
 #include "primarykey.h"
-
+#include <QDebug>
 
 PrimaryKey::PrimaryKey(const QString &str)
 {
@@ -16,6 +16,12 @@ PrimaryKey::PrimaryKey(const QString &str)
 PrimaryKey::PrimaryKey(const QStringList &list)
 {
     _list=list;
+}
+
+PrimaryKey::~PrimaryKey()
+{
+    //qDebug()<<Q_FUNC_INFO;
+
 }
 
 bool PrimaryKey::isEmpty() const

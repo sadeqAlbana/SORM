@@ -26,6 +26,11 @@ BelongsToRelation::BelongsToRelation(const ModelBuilder &query,
     }
 }
 
+BelongsToRelation::~BelongsToRelation()
+{
+    //qDebug()<<Q_FUNC_INFO;
+}
+
 QString BelongsToRelation::foreignKey() const
 {
     return _foreignKey;

@@ -22,6 +22,11 @@ HasManyRelation::HasManyRelation(const ModelBuilder &query, const Model &parent,
     }
 }
 
+HasManyRelation::~HasManyRelation()
+{
+    //qDebug()<<Q_FUNC_INFO;
+}
+
 QString HasManyRelation::foreignKey() const
 {
     return _foreignKey;

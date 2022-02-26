@@ -6,6 +6,7 @@ class DatabaseErrorException : public std::exception
 {
 public:
     DatabaseErrorException(const QString &function,const QSqlError &sqlError);
+    ~DatabaseErrorException();
     QSqlError error() const {return _error;}
 
    virtual const char*

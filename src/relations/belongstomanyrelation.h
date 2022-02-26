@@ -20,6 +20,7 @@ public:
                           const QString &parentKey=QString(),
                           const QString &relatedKey=QString(),
                           const QString &name=QString());
+    ~BelongsToManyRelation();
     EloquentRelation(BelongsToManyRelation)
     virtual void addConstraints(Collection &models) override;
     virtual void match(Collection &models) override;

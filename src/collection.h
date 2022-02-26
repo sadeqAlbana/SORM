@@ -15,6 +15,7 @@ class Collection : public QList<Model>
 {
 public:
     Collection();
+    ~Collection();
     operator bool();
     operator QJsonArray();
     operator QVariant();

@@ -17,3 +17,8 @@ RelationResult::RelationResult(const Collection &collection) : m_data(collection
 
 }
 
+
+RelationResultData::~RelationResultData()
+{
+    //qDebug()<<Q_FUNC_INFO;
+}

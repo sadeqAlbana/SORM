@@ -14,6 +14,7 @@ class HasManyRelation : public Relation
 public:
     HasManyRelation(const ModelBuilder &query, const Model &parent, const QString &foreignKey=QString(),
                     const QString &localKey=QString(), const QString &name=QString());
+    ~HasManyRelation();
     EloquentRelation(HasManyRelation)
 
     QString foreignKey() const;

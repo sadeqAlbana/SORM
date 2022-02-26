@@ -14,6 +14,11 @@ Collection::Collection()
 
 }
 
+Collection::~Collection()
+{
+    //qDebug()<<Q_FUNC_INFO;
+}
+
 QVariantList Collection::primaryKeys() const
 {
     QVariantList pks;

@@ -22,6 +22,7 @@ Model::Model(const QString &table, const PrimaryKey &primarykey, const QString &
 //}
 Model::~Model()
 {
+    //qDebug()<<Q_FUNC_INFO;
 
 }
 

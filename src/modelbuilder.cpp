@@ -28,7 +28,8 @@ ModelBuilder::ModelBuilder(const ModelBuilder &other) : _model(new Model(*other.
 
 ModelBuilder::~ModelBuilder()
 {
-        delete _model;
+   //qDebug()<<Q_FUNC_INFO;
+   delete _model;
 }
 
 ModelBuilder::ModelBuilder(const QString &table, const PrimaryKey &primaryKey, const QString &modelName, const bool &usesTimestamps, const bool &usesAutoIncrement) :

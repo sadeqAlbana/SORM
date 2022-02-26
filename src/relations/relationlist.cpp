@@ -7,6 +7,7 @@
 
 #include "relationlist.h"
 #include "relation.h"
+#include <QDebug>
 RelationList::RelationList() : QList<Relation *> ()
 {
 
@@ -21,6 +22,7 @@ RelationList::RelationList(const RelationList &other) : QList<Relation *> ()
 
 RelationList::~RelationList()
 {
+    //qDebug()<<Q_FUNC_INFO;
     qDeleteAll(this->begin(),this->end());
 }
 

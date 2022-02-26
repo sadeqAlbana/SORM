@@ -14,7 +14,7 @@ union RelationResultData{
 public:
     RelationResultData(const Collection &collection): m_collection(collection){}
     RelationResultData(const Model &model) : m_model(model){}
-    ~RelationResultData(){}
+    ~RelationResultData();
     Collection m_collection;
     Model m_model;
 };

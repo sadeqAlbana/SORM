@@ -23,6 +23,11 @@ HasOneRelation::HasOneRelation(const ModelBuilder &query, const Model &parent, c
     }
 }
 
+HasOneRelation::~HasOneRelation()
+{
+    //qDebug()<<Q_FUNC_INFO;
+}
+
 QString HasOneRelation::foreignKey() const
 {
     return _foreignKey;

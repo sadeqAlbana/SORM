@@ -14,6 +14,7 @@ class PrimaryKey
 public:
     PrimaryKey(const QString &str);
     PrimaryKey(const QStringList &list);
+    ~PrimaryKey();
 
 
     //operator QString();

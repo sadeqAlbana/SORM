@@ -25,6 +25,11 @@ tableClause(table),
     dbDriver=QSqlDatabase::database().driverName();
 }
 
+Builder::~Builder()
+{
+    //qDebug()<<Q_FUNC_INFO;
+}
+
 Builder &Builder::where(QString key, QVariant value)
 {
     whereClause.append(QString(" %1 %2 = %3").arg(whereClause.size() ? "and" : "where").arg(key).arg(QString("'%1'").arg(value.toString())));

@@ -23,6 +23,7 @@ class Builder
 {
 public:
     Builder(const QString &table);
+    ~Builder();
     Builder &where(QString key, QVariant value); //not perfect
     Builder &where(QString key,QString op, QVariant value); //not perfect
     Builder &whereRaw(QString clause);

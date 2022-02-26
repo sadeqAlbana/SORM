@@ -20,7 +20,7 @@ Relation::Relation(const ModelBuilder &query, const Model &parent, const QString
 
 Relation::Relation(const Relation &other): _parent(new Model(*other._parent)),_query(other._query), m_name(other.m_name)
 {
-
+    //qDebug()<<Q_FUNC_INFO;
 }
 
 Relation::~Relation()

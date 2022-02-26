@@ -14,7 +14,7 @@ public:
     BelongsToRelation(const ModelBuilder &query, const Model &child, const QString &foreignKey=QString(),
                     const QString &ownerKey=QString());
     EloquentRelation(BelongsToRelation)
-
+    ~BelongsToRelation();
     QString foreignKey() const;
     QString ownerKey() const;
     Model child();

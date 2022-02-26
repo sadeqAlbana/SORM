@@ -20,6 +20,11 @@ DB::DB()
 
 }
 
+DB::~DB()
+{
+    //qDebug()<<Q_FUNC_INFO;
+}
+
 Builder DB::table(const QString &table)
 {
     return Builder(table);

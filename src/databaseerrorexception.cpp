@@ -5,6 +5,11 @@ DatabaseErrorException::DatabaseErrorException(const QString &function, const QS
 {
 }
 
+DatabaseErrorException::~DatabaseErrorException()
+{
+    //qDebug()<<Q_FUNC_INFO;
+}
+
 const char *DatabaseErrorException::what() const noexcept
 {
     return QString("%1 : %2").arg(_function).arg(error().text()).toUtf8().constData();
