@@ -81,6 +81,18 @@ public:
       HasOneRelation hasOne(QString foreignKey,
                          QString localKey,const Relation &rel) const;
 
+      template<class T>
+      HasOneRelation hasOne(QString foreignKey,
+                         QString localKey, const QString name) const;
+
+      template<class T>
+      HasOneRelation hasOne(QString foreignKey,
+                         QString localKey, const Relation &relation, QString name=QString()) const;
+
+      template<class T>
+      HasOneRelation hasOne(QString foreignKey,
+                         QString localKey, const RelationList &relations, QString name=QString()) const;
+
 
 
       template<class T>
@@ -96,6 +108,10 @@ public:
       BelongsToRelation belongsTo(QString foreignKey=QString(),
                                   QString ownerKey=QString()) const;
 };
+
+
+
+
 
 
 
@@ -159,6 +175,23 @@ BelongsToRelation Model::belongsTo(QString foreignKey, QString ownerKey) const
     return BelongsToRelation(T::staticBuilder(),*this,foreignKey,ownerKey);
 }
 
+template<class T>
+       HasOneRelation Model::hasOne(QString foreignKey, QString localKey, const QString name) const
+{
+           return HasOneRelation(T::staticBuilder(),*this,foreignKey,localKey,name);
+}
+
+template<class T>
+       HasOneRelation Model::hasOne(QString foreignKey, QString localKey, const Relation &relation, QString name) const
+{
+           return HasOneRelation(T::with(relation),*this,foreignKey,localKey,name);
+}
+
+template<class T>
+       HasOneRelation Model::hasOne(QString foreignKey, QString localKey, const RelationList &relations, QString name) const
+{
+           return HasOneRelation(T::with(relations),*this,foreignKey,localKey,name);
+}
 
 
 #include "eloquentmodel.h"
