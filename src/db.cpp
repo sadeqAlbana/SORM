@@ -37,7 +37,9 @@ QSqlError DB::lastError()
 
 QSqlQuery DB::exec(const QString &statement, const QVariantMap &bindings, const QString connection)
 {
-    QSqlQuery query(QSqlDatabase::database(CurrentThreadString));
+    //maybe add a third option to use the default connection?
+
+    QSqlQuery query(DB::database(connection));
     if(bindings.count()){
         query.prepare(statement);
         QStringList keys=bindings.keys();
@@ -49,10 +51,10 @@ QSqlQuery DB::exec(const QString &statement, const QVariantMap &bindings, const 
         query.exec(statement);
     }
 
-//    if(!statement.isNull())
-//        qDebug()<<"statement: " << statement;
-//    else
-//        qDebug()<<"query: " << query.executedQuery();
+    if(!statement.isNull())
+        qDebug()<<"statement: " << statement;
+    else
+        qDebug()<<"query: " << query.executedQuery();
 
 
     QSqlError error = query.lastError();
@@ -106,7 +108,9 @@ bool DB::transaction(const QString &connection)
 
 QSqlDatabase DB::database(const QString &connection)
 {
-    return connection.isEmpty()? QSqlDatabase::database(CurrentThreadString) : QSqlDatabase::database(connection);
+    //should it be QLatin1String(defaultConnection) ?
+    return connection.isNull()? QSqlDatabase::database(QThread::currentThread()->property("SORM_DB_CONNECTION_STR").toString())
+                              : QSqlDatabase::database(connection);
 }
 
 bool DB::commit(const QString &connection)

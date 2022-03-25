@@ -15,7 +15,6 @@ class QString;
 #include <QVariantMap>
 #include <QThread>
 
-#define CurrentThreadString QString::number(qintptr(QThread::currentThread()))
 
 class DB
 {
