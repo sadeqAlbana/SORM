@@ -62,10 +62,10 @@ QSqlQuery DB::exec(const QString &statement, const QVariantMap &bindings, const 
     //query.finish();
 #ifdef SORM_ENABLE_EXCEPTIONS
     if(error.type()!=QSqlError::NoError){
-        if(!statement.isNull())
-            qDebug()<<"statement: " << statement;
-        else
-            qDebug()<<"query: " << query.executedQuery();
+//        if(!statement.isNull())
+//            qDebug()<<"statement: " << statement;
+//        else
+//            qDebug()<<"query: " << query.executedQuery();
         qDebug()<<"rollback: "<<DB::database().rollback();
         throw  DatabaseErrorException(Q_FUNC_INFO,error);
     }

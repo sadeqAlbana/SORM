@@ -1,5 +1,9 @@
 INCLUDEPATH += $$PWD/src
-
+SORM_EXCEPTIONS:{
+    DEFINES += SORM_ENABLE_EXCEPTIONS=1
+}else{
+    DEFINES += SORM_ENABLE_EXCEPTIONS=0
+}
 SOURCES += \
     $$PWD/src/builder.cpp \
     $$PWD/src/model.cpp \
