@@ -12,7 +12,7 @@
 #include <QMap>
 #include <QSqlQuery>
 class QVariant;
-class QStringList;
+#include <QStringList>
 class QSqlRelation;
 class Collection;
 

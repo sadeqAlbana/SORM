@@ -226,7 +226,7 @@ QString Builder::generateSql()
 
 Builder &Builder::select()
 {
-    if(columnsClause.at(columnsClause.size()-1)==",")
+    if(columnsClause.at(columnsClause.size()-1)==QStringLiteral(","))
         columnsClause.remove(columnsClause.size()-1,1);
     return *this;
 }
