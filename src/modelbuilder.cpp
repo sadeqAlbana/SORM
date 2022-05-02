@@ -180,7 +180,7 @@ bool ModelBuilder::insert(Model &mdl)
     {
         QDateTime now=QDateTime::currentDateTime();
         mdl.set("created_at",now);
-        mdl.set("updated_at",now);
+        //mdl.set("updated_at",now);
     }
 
     bool success= builder().insert(mdl.data);

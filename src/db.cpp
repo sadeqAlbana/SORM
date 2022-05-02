@@ -51,10 +51,10 @@ QSqlQuery DB::exec(const QString &statement, const QVariantMap &bindings, const 
         query.exec(statement);
     }
 
-    if(!statement.isNull())
-        qDebug()<<"statement: " << statement;
-    else
-        qDebug()<<"query: " << query.executedQuery();
+//    if(!statement.isNull())
+//        qDebug()<<"statement: " << statement;
+//    else
+//        qDebug()<<"query: " << query.executedQuery();
 
 
     QSqlError error = query.lastError();
