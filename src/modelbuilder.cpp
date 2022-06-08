@@ -59,7 +59,17 @@ Collection ModelBuilder::get(const QVariant &column)
     if(model().usesTimestamps()){
         builder().whereRaw(QString("%1 is null").arg(builder().escapeKey("deleted_at")));
     }
+
     QSqlQuery query=builder().get();
+
+    int lastPage=-1;
+    if(m_page!=-1){
+        int count=query.size();
+        this->simplePaginate(m_page,m_count);
+        query=builder().get();
+
+    }
+
     if(query.lastError().type()==QSqlError::NoError) //was if(query.exec()).........possible bug ?
     {
         Collection collection;
@@ -256,10 +266,19 @@ bool ModelBuilder::remove(Model &model)
     return success;
 }
 
-ModelBuilder &ModelBuilder::paginate(int page, int count)
+ModelBuilder &ModelBuilder::simplePaginate(int page, int count)
 {
-    builder().paginate(page,count);
+    builder().simplePaginate(page,count);
 
     return *this;
 }
+
+ModelBuilder &ModelBuilder::paginate(int page, int count)
+{
+    m_page=page;
+    m_page=m_pageCount=count;
+    return *this;
+}
+
+
 

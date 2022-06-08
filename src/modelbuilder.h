@@ -41,17 +41,19 @@ public:
     bool update(Model &mdl);
     bool remove(Model &model);
     Builder &builder(){return _builder;}
+    ModelBuilder &simplePaginate(int page, int count);
     ModelBuilder &paginate(int page, int count);
+
     ModelBuilder & take(int l){builder().take(l); return *this;}
     ModelBuilder & select(QStringList args){builder().select(args); return *this;}
-
-
 
 
 private:
     Model *_model;
     Builder _builder;
     RelationList relations;
+    int m_count=-1;
+    int m_page=-1;
 };
 
 #endif // MODELBUILDER_H

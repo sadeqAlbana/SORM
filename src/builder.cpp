@@ -147,13 +147,15 @@ Builder &Builder::skip(int offset)
     return *this;
 }
 
-Builder &Builder::paginate(int page, int count)
+Builder &Builder::simplePaginate(int page, int count)
 {
     if(!(page==1))
         skip(page*count);
     take(count);
     return *this;
 }
+
+
 
 Builder &Builder::join(const QString &table, const QString &first, const QString op, const QString &second)
 {
@@ -218,8 +220,14 @@ QString Builder::generateSql()
         qry.append(QString(" group by %1").arg(groupByClause));
     if(orderByClause.size())
         qry.append(QString(" order by %1").arg(orderByClause));
-    if(_limit)
-        qry.append(QString(" limit %1").arg(_limit));
+    if(_limit){
+        if(offset)
+            qry.append(QString(" limit %1 offset %2").arg(_limit).arg(offset));
+        else{
+            qry.append(QString(" limit %1").arg(_limit));
+
+        }
+    }
     //qDebug()<<qry;
     return qry;
 }

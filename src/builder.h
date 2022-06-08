@@ -41,7 +41,7 @@ public:
     Builder &orderBy(QString column);
     Builder & take(int l){_limit=l; return *this;}
     Builder &skip(int offset);
-    Builder &paginate(int page, int count);
+    Builder &simplePaginate(int page, int count);
     Builder &join(const QString &table,const QString &first,const QString op, const QString &second);
 
     QSqlQuery get();
@@ -86,9 +86,8 @@ private:
     QString sumClause;
     QString dbDriver;
     int _limit;
-    int offset;
+    int offset=0;
     QVariant m_lastInsertId;
-
     //QSqlQuery _sqlQuery;
 
     friend class ModelBuilder;

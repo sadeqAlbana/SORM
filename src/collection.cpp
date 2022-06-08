@@ -39,6 +39,26 @@ QVariantList Collection::primaryKeys() const
     return pks;
 }
 
+int Collection::page() const
+{
+    return m_page;
+}
+
+void Collection::setPage(int newPage)
+{
+    m_page = newPage;
+}
+
+int Collection::lastPage() const
+{
+    return m_lastPage;
+}
+
+void Collection::setLastPage(int newLastPage)
+{
+    m_lastPage = newLastPage;
+}
+
 Collection::operator QJsonValue()
 {
     return operator QJsonArray();
@@ -117,8 +137,6 @@ QDebug operator <<(QDebug dbg, const Collection &collection)
             dbg.noquote().nospace()<<row;
         }
         dbg.noquote().nospace()<<"+\n";
-
-
 
         return dbg;
 }

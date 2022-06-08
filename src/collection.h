@@ -22,6 +22,16 @@ public:
     operator QJsonValue();
 
     QVariantList primaryKeys() const;
+
+    int page() const;
+    void setPage(int newPage);
+
+    int lastPage() const;
+    void setLastPage(int newLastPage);
+
+private:
+    int m_page=-1;
+    int m_lastPage=-1;
 };
 QDebug operator <<(QDebug dbg, const Collection &collection);
 
