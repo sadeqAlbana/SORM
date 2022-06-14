@@ -187,7 +187,7 @@ ModelBuilder &ModelBuilder::groupBy(QString column)
     return *this;
 }
 
-ModelBuilder &ModelBuilder::orderBy(QString column,const QString direction)
+ModelBuilder &ModelBuilder::orderBy(QString column, const QString &direction)
 {
     builder().orderBy(column,direction);
     return *this;
