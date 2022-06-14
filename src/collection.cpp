@@ -61,12 +61,21 @@ void Collection::setLastPage(int newLastPage)
 
 Collection::operator QJsonValue()
 {
-    return operator QJsonArray();
+    return m_page==-1? QJsonValue(operator QJsonArray()) : QJsonValue(operator QJsonObject());
+}
+
+Collection::operator QJsonObject()
+{
+    return QJsonObject{
+        {"data",operator QJsonArray()},
+        {"current_page",m_page},
+        {"last_page",m_lastPage}
+    };
 }
 
 Collection::operator QVariant()
 {
-    return operator QJsonArray();
+    return operator QJsonValue();
 }
 
 Collection::operator bool()

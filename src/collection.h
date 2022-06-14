@@ -20,6 +20,7 @@ public:
     operator QJsonArray();
     operator QVariant();
     operator QJsonValue();
+    operator QJsonObject();
 
     QVariantList primaryKeys() const;
 
