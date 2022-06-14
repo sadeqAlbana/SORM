@@ -64,15 +64,32 @@ Collection ModelBuilder::get(const QVariant &column)
 
     int lastPage=-1;
     if(m_page!=-1){
-        int count=query.size();
-        this->simplePaginate(m_page,m_count);
-        query=builder().get();
+        int totalCount=query.size();
+        float pageCount=(double)totalCount/(double)m_count;
 
+        qDebug()<<"count before: " << pageCount;
+
+
+        qDebug()<<"count: " <<pageCount;
+
+        if(m_page>pageCount){
+            m_page=pageCount;
+        }
+        if(m_page<pageCount){
+            this->simplePaginate(m_page,m_count);
+        }
+        else{
+           this->simplePaginate(m_page,m_count);
+        }
+        query=builder().get();
+        lastPage=pageCount;
     }
 
     if(query.lastError().type()==QSqlError::NoError) //was if(query.exec()).........possible bug ?
     {
         Collection collection;
+        collection.setLastPage(lastPage);
+        collection.setPage(m_page);
         QSqlRecord record=query.record();
         while (query.next()) {
             Model m(model());
@@ -170,9 +187,9 @@ ModelBuilder &ModelBuilder::groupBy(QString column)
     return *this;
 }
 
-ModelBuilder &ModelBuilder::orderBy(QString column)
+ModelBuilder &ModelBuilder::orderBy(QString column,const QString direction)
 {
-    builder().groupBy(column);
+    builder().orderBy(column,direction);
     return *this;
 }
 
@@ -276,7 +293,7 @@ ModelBuilder &ModelBuilder::simplePaginate(int page, int count)
 ModelBuilder &ModelBuilder::paginate(int page, int count)
 {
     m_page=page;
-    m_page=m_pageCount=count;
+    m_count=count;
     return *this;
 }
 

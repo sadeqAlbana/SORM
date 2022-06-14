@@ -38,7 +38,7 @@ public:
     Builder &orWhereIn(QString key, QString subQuery);
 
     Builder &groupBy(QString column);
-    Builder &orderBy(QString column);
+    Builder &orderBy(QString column,const QString &direction=QStringLiteral("asc"));
     Builder & take(int l){_limit=l; return *this;}
     Builder &skip(int offset);
     Builder &simplePaginate(int page, int count);

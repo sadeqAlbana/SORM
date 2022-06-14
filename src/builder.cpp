@@ -135,9 +135,9 @@ Builder &Builder::groupBy(QString column)
     return *this;
 }
 
-Builder &Builder::orderBy(QString column)
+Builder &Builder::orderBy(QString column, const QString &direction)
 {
-    orderByClause=column;
+    orderByClause=QString("%1 %2").arg(column).arg(direction);
     return *this;
 }
 
@@ -149,7 +149,9 @@ Builder &Builder::skip(int offset)
 
 Builder &Builder::simplePaginate(int page, int count)
 {
-    if(!(page==1))
+    if(page==2)
+        skip(count);
+    if(page>2)
         skip(page*count);
     take(count);
     return *this;

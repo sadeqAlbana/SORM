@@ -34,7 +34,7 @@ public:
     ModelBuilder &with(const Relation &relation);
     ModelBuilder &with(const RelationList &relations);
     ModelBuilder &groupBy(QString column);
-    ModelBuilder &orderBy(QString column);
+    ModelBuilder &orderBy(QString column,const QString direction=QStringLiteral("asc"));
     Model first();
     Model find();
     bool insert(Model &mdl);
