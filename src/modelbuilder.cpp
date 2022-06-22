@@ -66,11 +66,12 @@ Collection ModelBuilder::get(const QVariant &column)
     if(m_page!=-1){
         int totalCount=query.size();
         float pageCount=(double)totalCount/(double)m_count;
+        if(pageCount<1)
+            pageCount=1;
 
         qDebug()<<"count before: " << pageCount;
 
 
-        qDebug()<<"count: " <<pageCount;
 
         if(m_page>pageCount){
             m_page=pageCount;
