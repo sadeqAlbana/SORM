@@ -32,26 +32,26 @@ Builder::~Builder()
 
 Builder &Builder::where(QString key, QVariant value)
 {
-    whereClause.append(QString(" %1 %2 = %3").arg(whereClause.size() ? "and" : "where").arg(key).arg(QString("'%1'").arg(value.toString())));
+    whereClause.append(QString(" %1 %2 = %3").arg(whereClause.size() ? "and" : "where").arg(escapeKey(key)).arg(QString("'%1'").arg(value.toString())));
     return *this;
 }
 
 Builder &Builder::where(QString key, QString op, QVariant value)
 {
-    whereClause.append(QString(" %1 %2 %3 %4").arg(whereClause.size() ? "and" : "where").arg(key).arg(op).arg(QString("'%1'").arg(value.toString())));
+    whereClause.append(QString(" %1 %2 %3 %4").arg(whereClause.size() ? "and" : "where").arg(escapeKey(key)).arg(op).arg(QString("'%1'").arg(value.toString())));
 
     return *this;
 }
 
 Builder &Builder::orWhere(QString key, QVariant value)
 {
-    whereClause.append(QString(" %1 %2 = %3").arg(whereClause.size() ? "or" : "where").arg(key).arg(QString("'%1'").arg(value.toString())));
+    whereClause.append(QString(" %1 %2 = %3").arg(whereClause.size() ? "or" : "where").arg(escapeKey(key)).arg(QString("'%1'").arg(value.toString())));
     return *this;
 }
 
 Builder &Builder::orWhere(QString key, QString op, QVariant value)
 {
-    whereClause.append(QString(" %1 %2 %3 %4").arg(whereClause.size() ? "or" : "where").arg(key).arg(op).arg(QString("'%1'").arg(value.toString())));
+    whereClause.append(QString(" %1 %2 %3 %4").arg(whereClause.size() ? "or" : "where").arg(escapeKey(key)).arg(op).arg(QString("'%1'").arg(value.toString())));
 
     return *this;
 }
@@ -89,7 +89,7 @@ Builder &Builder::whereIn(QString key, QVariantList values)
     }
     valuesString.chop(1);
 
-    whereClause.append(QString(" %1 %2 in ( %3 )").arg(whereClause.size() ? "and" : "where").arg(key).arg(valuesString));
+    whereClause.append(QString(" %1 %2 in ( %3 )").arg(whereClause.size() ? "and" : "where").arg(escapeKey(key)).arg(valuesString));
 
 
     return *this;
@@ -109,7 +109,7 @@ Builder &Builder::orWhereIn(QString key, QVariantList values)
     }
     valuesString.chop(1);
 
-    whereClause.append(QString(" %1 %2 in ( %3 )").arg(whereClause.size() ? "or" : "where").arg(key).arg(valuesString));
+    whereClause.append(QString(" %1 %2 in ( %3 )").arg(whereClause.size() ? "or" : "where").arg(escapeKey(key)).arg(valuesString));
 
 
     return *this;
@@ -117,14 +117,14 @@ Builder &Builder::orWhereIn(QString key, QVariantList values)
 
 Builder &Builder::whereIn(QString key, QString subQuery)
 {
-    whereClause.append(QString(" %1 %2 in ( %3 )").arg(whereClause.size() ? "and" : "where").arg(key).arg(subQuery));
+    whereClause.append(QString(" %1 %2 in ( %3 )").arg(whereClause.size() ? "and" : "where").arg(escapeKey(key)).arg(subQuery));
 
     return *this;
 }
 
 Builder &Builder::orWhereIn(QString key, QString subQuery)
 {
-    whereClause.append(QString(" %1 %2 in ( %3 )").arg(whereClause.size() ? "or" : "where").arg(key).arg(subQuery));
+    whereClause.append(QString(" %1 %2 in ( %3 )").arg(whereClause.size() ? "or" : "where").arg(escapeKey(key)).arg(subQuery));
 
     return *this;
 }
@@ -236,7 +236,7 @@ QString Builder::generateSql()
 
 Builder &Builder::select()
 {
-    if(columnsClause.at(columnsClause.size()-1)==",")
+    if(columnsClause.at(columnsClause.size()-1)==QStringLiteral(","))
         columnsClause.remove(columnsClause.size()-1,1);
     return *this;
 }
