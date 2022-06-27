@@ -39,7 +39,7 @@ BelongsToManyRelation::BelongsToManyRelation(const ModelBuilder &query,
 
 
     if(Relation::parent().exists()){
-        Relation::query().whereIn(QString("%1.%2").arg(related().table()).arg(_relatedKey),
+        Relation::query().whereIn(_relatedKey,
                                   Builder(_table).select(_relatedPivotKey).
                                   where(_foreignPivotKey,Relation::parent().get(_parentKey)).generateSql());
     }
@@ -57,7 +57,7 @@ void BelongsToManyRelation::addConstraints(Collection &models)
         ids << model.get(parent().primaryKey().toString());
     }
 
-    Relation::query().whereIn(QString("%1.%2").arg(related().table()).arg(_relatedKey),
+    Relation::query().whereIn(_relatedKey,
 
                               Builder(_table).select(_relatedPivotKey).
                               whereIn(_foreignPivotKey,ids).generateSql());
