@@ -168,6 +168,20 @@ ModelBuilder &ModelBuilder::whereIn(QString key, QString subQuery)
     return *this;
 }
 
+ModelBuilder &ModelBuilder::whereNotIn(QString key, QVariantList values)
+{
+    builder().whereNotIn(key,values);
+
+    return *this;
+}
+
+ModelBuilder &ModelBuilder::whereNotIn(QString key, QString subQuery)
+{
+    builder().whereNotIn(key,subQuery);
+
+    return *this;
+}
+
 ModelBuilder &ModelBuilder::with(const Relation &relation)
 {
     relations << relation.clone();

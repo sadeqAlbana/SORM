@@ -37,6 +37,10 @@ public:
     Builder &whereIn(QString key, QString subQuery);
     Builder &orWhereIn(QString key, QString subQuery);
 
+    Builder &whereNotIn(QString key, QVariantList values); //not perfect
+    Builder &whereNotIn(QString key, QString subQuery);
+
+
     Builder &groupBy(QString column);
     Builder &orderBy(QString column,const QString &direction=QStringLiteral("asc"));
     Builder & take(int l){_limit=l; return *this;}

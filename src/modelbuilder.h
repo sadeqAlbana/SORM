@@ -31,6 +31,8 @@ public:
 
     ModelBuilder &whereIn(QString key, QVariantList values);
     ModelBuilder &whereIn(QString key, QString subQuery);
+    ModelBuilder &whereNotIn(QString key, QVariantList values);
+    ModelBuilder &whereNotIn(QString key, QString subQuery);
     ModelBuilder &with(const Relation &relation);
     ModelBuilder &with(const RelationList &relations);
     ModelBuilder &groupBy(QString column);

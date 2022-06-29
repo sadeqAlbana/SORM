@@ -129,6 +129,33 @@ Builder &Builder::orWhereIn(QString key, QString subQuery)
     return *this;
 }
 
+Builder &Builder::whereNotIn(QString key, QVariantList values)
+{
+    QString valuesString;
+    for (const QVariant &value : values) {
+        if(value.type()==QMetaType::Int || value.type()==QMetaType::Double || value.type()==QMetaType::Float || value.type()==QMetaType::Long
+                || value.type()==QMetaType::LongLong || value.type()==QMetaType::UInt || value.type()==QMetaType::UShort)
+            valuesString.append(value.toString()+",");
+        else{
+            valuesString.append("'"+value.toString()+"'"+",");
+
+        }
+    }
+    valuesString.chop(1);
+
+    whereClause.append(QString(" %1 %2 not in ( %3 )").arg(whereClause.size() ? "and" : "where").arg(escapeKey(key)).arg(valuesString));
+
+
+    return *this;
+}
+
+Builder &Builder::whereNotIn(QString key, QString subQuery)
+{
+    whereClause.append(QString(" %1 %2 not in ( %3 )").arg(whereClause.size() ? "and" : "where").arg(escapeKey(key)).arg(subQuery));
+
+    return *this;
+}
+
 Builder &Builder::groupBy(QString column)
 {
     groupByClause=column;
