@@ -87,7 +87,7 @@ void BelongsToManyRelation::match(Collection &models)
                 inserts << relationModel;
             }
         }
-        mainModel.set(m_name,inserts);
+        mainModel.set(m_name,QJsonArray(inserts));
         //mainModel.setSaved();
     }
 }
