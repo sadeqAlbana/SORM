@@ -21,7 +21,8 @@ SOURCES += \
     $$PWD/relations/hasonerelation.cpp \
     $$PWD/relations/belongstorelation.cpp \
     $$PWD/relations/belongstomanyrelation.cpp \
-    $$PWD/primarykey.cpp
+    $$PWD/primarykey.cpp \
+    array.cpp
 
 HEADERS += \
     $$PWD/builder.h \
@@ -39,7 +40,8 @@ HEADERS += \
     $$PWD/relations/hasonerelation.h \
     $$PWD/relations/belongstorelation.h \
     $$PWD/relations/belongstomanyrelation.h \
-    $$PWD/primarykey.h
+    $$PWD/primarykey.h \
+    array.h
 
 
 
