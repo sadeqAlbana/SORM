@@ -238,10 +238,18 @@ bool ModelBuilder::insert(Model &mdl)
 
 bool ModelBuilder::update(Model &mdl)
 {
+
     if(mdl.usesTimestamps())
     {
         QDateTime now=QDateTime::currentDateTime();
         mdl.set("updated_at",now);
+    }
+
+    /*the behaviour is everytime you call seve, the timestamp gets updated even if not data are modified,
+    simetimes, if you call Model::save() more than monce, QDateTime::currentDateTime will return the same timestamp and will result in an SQL syntax error
+    the code below fixes this issue*/
+    if(mdl.dirtyKeys().isEmpty()){
+        return true; //just ignore it and pretend that it is saved
     }
 
 
