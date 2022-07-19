@@ -118,6 +118,11 @@ bool DB::commit(const QString &connection)
     return DB::database(connection).commit();
 }
 
+bool DB::rollback(const QString &connection)
+{
+    return DB::database(connection).rollback();
+}
+
 void DB::setLastError(const QSqlError &lastError)
 {
     _lastError = lastError;
