@@ -36,6 +36,7 @@ public:
     static bool transaction(const QString &connection=QString());
     static QSqlDatabase database(const QString &connection=QString());
     static bool commit(const QString &connection=QString());
+    static bool rollback(const QString &connection=QString());
 
 private:
     friend class Builder;
