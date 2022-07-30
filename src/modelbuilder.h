@@ -31,27 +31,31 @@ public:
 
     ModelBuilder &whereIn(QString key, QVariantList values);
     ModelBuilder &whereIn(QString key, QString subQuery);
+    ModelBuilder &whereNotIn(QString key, QVariantList values);
+    ModelBuilder &whereNotIn(QString key, QString subQuery);
     ModelBuilder &with(const Relation &relation);
     ModelBuilder &with(const RelationList &relations);
     ModelBuilder &groupBy(QString column);
-    ModelBuilder &orderBy(QString column);
+    ModelBuilder &orderBy(QString column,const QString &direction=QStringLiteral("asc"));
     Model first();
     Model find();
     bool insert(Model &mdl);
     bool update(Model &mdl);
     bool remove(Model &model);
     Builder &builder(){return _builder;}
+    ModelBuilder &simplePaginate(int page, int count);
     ModelBuilder &paginate(int page, int count);
+
     ModelBuilder & take(int l){builder().take(l); return *this;}
     ModelBuilder & select(QStringList args){builder().select(args); return *this;}
-
-
 
 
 private:
     Model *_model;
     Builder _builder;
     RelationList relations;
+    int m_count=-1;
+    int m_page=-1;
 };
 
 #endif // MODELBUILDER_H

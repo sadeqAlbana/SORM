@@ -59,10 +59,38 @@ Collection ModelBuilder::get(const QVariant &column)
     if(model().usesTimestamps()){
         builder().whereRaw(QString("%1 is null").arg(builder().escapeKey("deleted_at")));
     }
+
     QSqlQuery query=builder().get();
+
+    int lastPage=-1;
+    if(m_page!=-1){
+        int totalCount=query.size();
+        float pageCount=(double)totalCount/(double)m_count;
+        if(pageCount<1)
+            pageCount=1;
+
+        qDebug()<<"count before: " << pageCount;
+
+
+
+        if(m_page>pageCount){
+            m_page=pageCount;
+        }
+        if(m_page<pageCount){
+            this->simplePaginate(m_page,m_count);
+        }
+        else{
+           this->simplePaginate(m_page,m_count);
+        }
+        query=builder().get();
+        lastPage=pageCount;
+    }
+
     if(query.lastError().type()==QSqlError::NoError) //was if(query.exec()).........possible bug ?
     {
         Collection collection;
+        collection.setLastPage(lastPage);
+        collection.setPage(m_page);
         QSqlRecord record=query.record();
         while (query.next()) {
             Model m(model());
@@ -140,6 +168,20 @@ ModelBuilder &ModelBuilder::whereIn(QString key, QString subQuery)
     return *this;
 }
 
+ModelBuilder &ModelBuilder::whereNotIn(QString key, QVariantList values)
+{
+    builder().whereNotIn(key,values);
+
+    return *this;
+}
+
+ModelBuilder &ModelBuilder::whereNotIn(QString key, QString subQuery)
+{
+    builder().whereNotIn(key,subQuery);
+
+    return *this;
+}
+
 ModelBuilder &ModelBuilder::with(const Relation &relation)
 {
     relations << relation.clone();
@@ -160,9 +202,9 @@ ModelBuilder &ModelBuilder::groupBy(QString column)
     return *this;
 }
 
-ModelBuilder &ModelBuilder::orderBy(QString column)
+ModelBuilder &ModelBuilder::orderBy(QString column, const QString &direction)
 {
-    builder().groupBy(column);
+    builder().orderBy(column,direction);
     return *this;
 }
 
@@ -180,7 +222,7 @@ bool ModelBuilder::insert(Model &mdl)
     {
         QDateTime now=QDateTime::currentDateTime();
         mdl.set("created_at",now);
-        mdl.set("updated_at",now);
+        //mdl.set("updated_at",now);
     }
 
     bool success= builder().insert(mdl.data);
@@ -256,10 +298,19 @@ bool ModelBuilder::remove(Model &model)
     return success;
 }
 
-ModelBuilder &ModelBuilder::paginate(int page, int count)
+ModelBuilder &ModelBuilder::simplePaginate(int page, int count)
 {
-    builder().paginate(page,count);
+    builder().simplePaginate(page,count);
 
     return *this;
 }
+
+ModelBuilder &ModelBuilder::paginate(int page, int count)
+{
+    m_page=page;
+    m_count=count;
+    return *this;
+}
+
+
 

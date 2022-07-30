@@ -129,15 +129,42 @@ Builder &Builder::orWhereIn(QString key, QString subQuery)
     return *this;
 }
 
+Builder &Builder::whereNotIn(QString key, QVariantList values)
+{
+    QString valuesString;
+    for (const QVariant &value : values) {
+        if(value.type()==QMetaType::Int || value.type()==QMetaType::Double || value.type()==QMetaType::Float || value.type()==QMetaType::Long
+                || value.type()==QMetaType::LongLong || value.type()==QMetaType::UInt || value.type()==QMetaType::UShort)
+            valuesString.append(value.toString()+",");
+        else{
+            valuesString.append("'"+value.toString()+"'"+",");
+
+        }
+    }
+    valuesString.chop(1);
+
+    whereClause.append(QString(" %1 %2 not in ( %3 )").arg(whereClause.size() ? "and" : "where").arg(escapeKey(key)).arg(valuesString));
+
+
+    return *this;
+}
+
+Builder &Builder::whereNotIn(QString key, QString subQuery)
+{
+    whereClause.append(QString(" %1 %2 not in ( %3 )").arg(whereClause.size() ? "and" : "where").arg(escapeKey(key)).arg(subQuery));
+
+    return *this;
+}
+
 Builder &Builder::groupBy(QString column)
 {
     groupByClause=column;
     return *this;
 }
 
-Builder &Builder::orderBy(QString column)
+Builder &Builder::orderBy(QString column, const QString &direction)
 {
-    orderByClause=column;
+    orderByClause=QString("%1 %2").arg(column).arg(direction);
     return *this;
 }
 
@@ -147,13 +174,17 @@ Builder &Builder::skip(int offset)
     return *this;
 }
 
-Builder &Builder::paginate(int page, int count)
+Builder &Builder::simplePaginate(int page, int count)
 {
-    if(!(page==1))
+    if(page==2)
+        skip(count);
+    if(page>2)
         skip(page*count);
     take(count);
     return *this;
 }
+
+
 
 Builder &Builder::join(const QString &table, const QString &first, const QString op, const QString &second)
 {
@@ -218,8 +249,14 @@ QString Builder::generateSql()
         qry.append(QString(" group by %1").arg(groupByClause));
     if(orderByClause.size())
         qry.append(QString(" order by %1").arg(orderByClause));
-    if(_limit)
-        qry.append(QString(" limit %1").arg(_limit));
+    if(_limit){
+        if(offset)
+            qry.append(QString(" limit %1 offset %2").arg(_limit).arg(offset));
+        else{
+            qry.append(QString(" limit %1").arg(_limit));
+
+        }
+    }
     //qDebug()<<qry;
     return qry;
 }

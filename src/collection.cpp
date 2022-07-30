@@ -39,14 +39,43 @@ QVariantList Collection::primaryKeys() const
     return pks;
 }
 
+int Collection::page() const
+{
+    return m_page;
+}
+
+void Collection::setPage(int newPage)
+{
+    m_page = newPage;
+}
+
+int Collection::lastPage() const
+{
+    return m_lastPage;
+}
+
+void Collection::setLastPage(int newLastPage)
+{
+    m_lastPage = newLastPage;
+}
+
 Collection::operator QJsonValue()
 {
-    return operator QJsonArray();
+    return m_page==-1? QJsonValue(operator QJsonArray()) : QJsonValue(operator QJsonObject());
+}
+
+Collection::operator QJsonObject()
+{
+    return QJsonObject{
+        {"data",operator QJsonArray()},
+        {"current_page",m_page},
+        {"last_page",m_lastPage}
+    };
 }
 
 Collection::operator QVariant()
 {
-    return operator QJsonArray();
+    return operator QJsonValue();
 }
 
 Collection::operator bool()
@@ -117,8 +146,6 @@ QDebug operator <<(QDebug dbg, const Collection &collection)
             dbg.noquote().nospace()<<row;
         }
         dbg.noquote().nospace()<<"+\n";
-
-
 
         return dbg;
 }
