@@ -69,19 +69,16 @@ Collection ModelBuilder::get(const QVariant &column)
         if(pageCount<1)
             pageCount=1;
 
-        qDebug()<<"count before: " << pageCount;
-
+        if(pageCount!=(int)pageCount)
+            pageCount++;
 
 
         if(m_page>pageCount){
             m_page=pageCount;
         }
-        if(m_page<pageCount){
-            this->simplePaginate(m_page,m_count);
-        }
-        else{
-           this->simplePaginate(m_page,m_count);
-        }
+
+        this->simplePaginate(m_page,m_count);
+
         query=builder().get();
         lastPage=pageCount;
     }
