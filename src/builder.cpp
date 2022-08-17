@@ -177,10 +177,11 @@ Builder &Builder::skip(int offset)
 Builder &Builder::simplePaginate(int page, int count)
 {
     if(page==2)
-        skip(count);
+        skip(count); //offset
     if(page>2)
-        skip(page*count);
-    take(count);
+        skip((page*count)-count); //offset
+
+    take(count); //limit
     return *this;
 }
 
