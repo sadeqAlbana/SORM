@@ -8,7 +8,7 @@
 #include "db.h"
 #include "builder.h"
 #include <QDebug>
-#include <databaseerrorexception.h>
+#include "databaseerrorexception.h"
 #include <QJsonArray>
 #include <QSqlRecord>
 #include <QJsonObject>
