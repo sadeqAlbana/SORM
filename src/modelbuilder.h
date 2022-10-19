@@ -7,11 +7,14 @@
 
 #ifndef MODELBUILDER_H
 #define MODELBUILDER_H
+
 #include "builder.h"
-class Model;
-class Collection;
 #include "primarykey.h"
 #include "relations/relationlist.h"
+
+class Model;
+class Collection;
+
 class ModelBuilder
 {
 public:

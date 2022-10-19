@@ -6,8 +6,6 @@
  */
 
 #include "model.h"
-#include "collection.h"
-#include "builder.h"
 #include <QJsonObject>
 #include <QDateTime>
 Model::Model(const QString &table, const PrimaryKey &primarykey, const QString &modelName, bool usesTimeStamps, bool usesIncrementing) : _exists(false),

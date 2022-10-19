@@ -5,8 +5,8 @@
  * https://www.gnu.org/licenses/lgpl-3.0.html
  */
 
-#include "modelbuilder.h"
 #include "model.h"
+#include "modelbuilder.h"
 #include "collection.h"
 #include <QSqlQuery>
 #include <QSqlRecord>
@@ -15,7 +15,7 @@
 #include <QDebug>
 #include <QSharedPointer>
 #include <QSqlError>
-#include "relations/relationlist.h"
+
 ModelBuilder::ModelBuilder(const Model &model) :_model(new Model(model)),_builder(_model->table())
 {
 
@@ -49,7 +49,7 @@ Collection ModelBuilder::get(const QVariant &column)
 {
     if(column.isValid())
     {
-        switch (column.type()) {
+        switch (column.typeId()) {
         case QMetaType::QStringList : builder().select(column.toStringList()); break;
         case QMetaType::QString     : builder().select(column.toString())    ; break;
         default:                                                               break;
@@ -251,7 +251,8 @@ bool ModelBuilder::update(Model &mdl)
 
 
     QVariantMap updateData;
-    for (auto key : mdl.dirtyKeys()) {
+    const auto dirtyKeys= mdl.dirtyKeys();
+    for (const QString &key : dirtyKeys) {
      updateData[key]=mdl[key];
     }
 

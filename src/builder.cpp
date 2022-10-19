@@ -6,13 +6,11 @@
  */
 
 #include "builder.h"
-#include "collection.h"
 #include <QDebug>
 #include <QSqlRecord>
 #include <QDateTime>
 #include <QSqlError>
 #include <QSqlQuery>
-#include "model.h"
 #include "db.h"
 #ifdef ENABLE_EXCEPTIONS
 #include "databaseerrorexception.h"
@@ -32,26 +30,26 @@ Builder::~Builder()
 
 Builder &Builder::where(QString key, QVariant value)
 {
-    whereClause.append(QString(" %1 %2 = %3").arg(whereClause.size() ? "and" : "where").arg(escapeKey(key)).arg(QString("'%1'").arg(value.toString())));
+    whereClause.append(QString(" %1 %2 = %3").arg(whereClause.size() ? "and" : "where",escapeKey(key),QString("'%1'").arg(value.toString())));
     return *this;
 }
 
 Builder &Builder::where(QString key, QString op, QVariant value)
 {
-    whereClause.append(QString(" %1 %2 %3 %4").arg(whereClause.size() ? "and" : "where").arg(escapeKey(key)).arg(op).arg(QString("'%1'").arg(value.toString())));
+    whereClause.append(QString(" %1 %2 %3 %4").arg(whereClause.size() ? "and" : "where",escapeKey(key),op,QString("'%1'").arg(value.toString())));
 
     return *this;
 }
 
 Builder &Builder::orWhere(QString key, QVariant value)
 {
-    whereClause.append(QString(" %1 %2 = %3").arg(whereClause.size() ? "or" : "where").arg(escapeKey(key)).arg(QString("'%1'").arg(value.toString())));
+    whereClause.append(QString(" %1 %2 = %3").arg(whereClause.size() ? "or" : "where",escapeKey(key),QString("'%1'").arg(value.toString())));
     return *this;
 }
 
 Builder &Builder::orWhere(QString key, QString op, QVariant value)
 {
-    whereClause.append(QString(" %1 %2 %3 %4").arg(whereClause.size() ? "or" : "where").arg(escapeKey(key)).arg(op).arg(QString("'%1'").arg(value.toString())));
+    whereClause.append(QString(" %1 %2 %3 %4").arg(whereClause.size() ? "or" : "where",escapeKey(key),op,QString("'%1'").arg(value.toString())));
 
     return *this;
 }
@@ -59,14 +57,14 @@ Builder &Builder::orWhere(QString key, QString op, QVariant value)
 Builder &Builder::whereRaw(QString clause)
 {
 
-    whereClause.append(QString(" %1 %2").arg(whereClause.size() ? "and" : "where").arg(clause));
+    whereClause.append(QString(" %1 %2").arg(whereClause.size() ? "and" : "where",clause));
 
     return *this;
 }
 
 Builder &Builder::orWhereRaw(QString clause)
 {
-    whereClause.append(QString(" %1 %2").arg(whereClause.size() ? "or" : "where").arg(clause));
+    whereClause.append(QString(" %1 %2").arg(whereClause.size() ? "or" : "where",clause));
 
     return *this;
 }
@@ -79,8 +77,8 @@ Builder &Builder::whereIn(QString key, QVariantList values)
 
     QString valuesString;
     for (const QVariant &value : values) {
-        if(value.type()==QMetaType::Int || value.type()==QMetaType::Double || value.type()==QMetaType::Float || value.type()==QMetaType::Long
-                || value.type()==QMetaType::LongLong || value.type()==QMetaType::UInt || value.type()==QMetaType::UShort)
+        if(value.typeId()==QMetaType::Int || value.typeId()==QMetaType::Double || value.typeId()==QMetaType::Float || value.typeId()==QMetaType::Long
+                || value.typeId()==QMetaType::LongLong || value.typeId()==QMetaType::UInt || value.typeId()==QMetaType::UShort)
             valuesString.append(value.toString()+",");
         else{
             valuesString.append("'"+value.toString()+"'"+",");
@@ -89,7 +87,7 @@ Builder &Builder::whereIn(QString key, QVariantList values)
     }
     valuesString.chop(1);
 
-    whereClause.append(QString(" %1 %2 in ( %3 )").arg(whereClause.size() ? "and" : "where").arg(escapeKey(key)).arg(valuesString));
+    whereClause.append(QString(" %1 %2 in ( %3 )").arg(whereClause.size() ? "and" : "where",escapeKey(key),valuesString));
 
 
     return *this;
@@ -99,8 +97,8 @@ Builder &Builder::orWhereIn(QString key, QVariantList values)
 {
     QString valuesString;
     for (const QVariant &value : values) {
-        if(value.type()==QMetaType::Int || value.type()==QMetaType::Double || value.type()==QMetaType::Float || value.type()==QMetaType::Long
-                || value.type()==QMetaType::LongLong || value.type()==QMetaType::UInt || value.type()==QMetaType::UShort)
+        if(value.typeId()==QMetaType::Int || value.typeId()==QMetaType::Double || value.typeId()==QMetaType::Float || value.typeId()==QMetaType::Long
+                || value.typeId()==QMetaType::LongLong || value.typeId()==QMetaType::UInt || value.typeId()==QMetaType::UShort)
             valuesString.append(value.toString()+",");
         else{
             valuesString.append("'"+value.toString()+"'"+",");
@@ -109,7 +107,7 @@ Builder &Builder::orWhereIn(QString key, QVariantList values)
     }
     valuesString.chop(1);
 
-    whereClause.append(QString(" %1 %2 in ( %3 )").arg(whereClause.size() ? "or" : "where").arg(escapeKey(key)).arg(valuesString));
+    whereClause.append(QString(" %1 %2 in ( %3 )").arg(whereClause.size() ? "or" : "where",escapeKey(key),valuesString));
 
 
     return *this;
@@ -117,14 +115,14 @@ Builder &Builder::orWhereIn(QString key, QVariantList values)
 
 Builder &Builder::whereIn(QString key, QString subQuery)
 {
-    whereClause.append(QString(" %1 %2 in ( %3 )").arg(whereClause.size() ? "and" : "where").arg(escapeKey(key)).arg(subQuery));
+    whereClause.append(QString(" %1 %2 in ( %3 )").arg(whereClause.size() ? "and" : "where",escapeKey(key),subQuery));
 
     return *this;
 }
 
 Builder &Builder::orWhereIn(QString key, QString subQuery)
 {
-    whereClause.append(QString(" %1 %2 in ( %3 )").arg(whereClause.size() ? "or" : "where").arg(escapeKey(key)).arg(subQuery));
+    whereClause.append(QString(" %1 %2 in ( %3 )").arg(whereClause.size() ? "or" : "where",escapeKey(key),subQuery));
 
     return *this;
 }
@@ -133,8 +131,8 @@ Builder &Builder::whereNotIn(QString key, QVariantList values)
 {
     QString valuesString;
     for (const QVariant &value : values) {
-        if(value.type()==QMetaType::Int || value.type()==QMetaType::Double || value.type()==QMetaType::Float || value.type()==QMetaType::Long
-                || value.type()==QMetaType::LongLong || value.type()==QMetaType::UInt || value.type()==QMetaType::UShort)
+        if(value.typeId()==QMetaType::Int || value.typeId()==QMetaType::Double || value.typeId()==QMetaType::Float || value.typeId()==QMetaType::Long
+                || value.typeId()==QMetaType::LongLong || value.typeId()==QMetaType::UInt || value.typeId()==QMetaType::UShort)
             valuesString.append(value.toString()+",");
         else{
             valuesString.append("'"+value.toString()+"'"+",");
@@ -143,7 +141,7 @@ Builder &Builder::whereNotIn(QString key, QVariantList values)
     }
     valuesString.chop(1);
 
-    whereClause.append(QString(" %1 %2 not in ( %3 )").arg(whereClause.size() ? "and" : "where").arg(escapeKey(key)).arg(valuesString));
+    whereClause.append(QString(" %1 %2 not in ( %3 )").arg(whereClause.size() ? "and" : "where",escapeKey(key),valuesString));
 
 
     return *this;
@@ -151,7 +149,7 @@ Builder &Builder::whereNotIn(QString key, QVariantList values)
 
 Builder &Builder::whereNotIn(QString key, QString subQuery)
 {
-    whereClause.append(QString(" %1 %2 not in ( %3 )").arg(whereClause.size() ? "and" : "where").arg(escapeKey(key)).arg(subQuery));
+    whereClause.append(QString(" %1 %2 not in ( %3 )").arg(whereClause.size() ? "and" : "where",escapeKey(key),subQuery));
 
     return *this;
 }
@@ -164,7 +162,7 @@ Builder &Builder::groupBy(QString column)
 
 Builder &Builder::orderBy(QString column, const QString &direction)
 {
-    orderByClause=QString("%1 %2").arg(column).arg(direction);
+    orderByClause=QString("%1 %2").arg(column,direction);
     return *this;
 }
 
@@ -189,10 +187,10 @@ Builder &Builder::simplePaginate(int page, int count)
 
 Builder &Builder::join(const QString &table, const QString &first, const QString op, const QString &second)
 {
-    joinClause+=QString(" inner join %1 on %2 %3 %4").arg(escapeTable(table))
-            .arg(first)
-            .arg(op)
-            .arg(second);
+    joinClause+=QString(" inner join %1 on %2 %3 %4").arg(escapeTable(table),
+            first,
+            op,
+            second);
 
     return *this;
 }
@@ -204,7 +202,7 @@ QSqlQuery Builder::get()
 
 QVariant Builder::sum(const QString &field)
 {
-    QString statement=QString("select sum(%1) from %2").arg(field).arg(tableClause);
+    QString statement=QString("select sum(%1) from %2").arg(field,tableClause);
     if(whereClause.size())
         statement.append(whereClause);
 
@@ -215,7 +213,7 @@ QVariant Builder::sum(const QString &field)
 
 QVariant Builder::max(const QString &field)
 {
-    QString statement=QString("select max(%1) from %2").arg(field).arg(tableClause);
+    QString statement=QString("select max(%1) from %2").arg(field,tableClause);
     if(whereClause.size())
         statement.append(whereClause);
 
@@ -226,7 +224,7 @@ QVariant Builder::max(const QString &field)
 
 int Builder::count(const QString &field)
 {
-    QString statement=QString("select count(%1) from %2").arg(field).arg(tableClause);
+    QString statement=QString("select count(%1) from %2").arg(field,tableClause);
     if(whereClause.size())
         statement.append(whereClause);
 
@@ -239,7 +237,7 @@ QString Builder::generateSql()
 {
 // qDebug()<<"Columns: " << columnsClause;
 //    qDebug()<<"Table: " << tableClause;
-    QString qry=QString("select %1 from %2").arg(columnsClause).arg(tableClause);
+    QString qry=QString("select %1 from %2").arg(columnsClause,tableClause);
 
     if(joinClause.size())
         qry.append(joinClause);
@@ -287,16 +285,17 @@ bool Builder::insert(const QVariantMap &map)
 {
     QStringList columns, bindValues;
 
-    for(const QString &key : map.keys())
+    const auto &keys = map.keys();
+    for(const QString &key : keys)
     {
         columns << escapeKey(key);
         bindValues << QString(":%1").arg(key);
     }
 
 
-    QString statement=QString("insert into %1 (%2) values(%3);").arg(tableClause).
-            arg(columns.join(",")).
-            arg(bindValues.join(","));;
+    QString statement=QString("insert into %1 (%2) values(%3);").arg(tableClause,
+            columns.join(","),
+            bindValues.join(","));;
 
     QSqlQuery query=DB::exec(statement,map);
 
@@ -312,11 +311,13 @@ bool Builder::update(const QVariantMap &map)
 {
     QStringList assignments;
 
-    for(const QString &key : map.keys())
-        assignments << QString("%1=%2").arg(escapeKey(key)).arg(QString(":%1").arg(key));
+    const auto &keys = map.keys();
+
+    for(const QString &key : keys)
+        assignments << QString("%1=%2").arg(escapeKey(key),QString(":%1").arg(key));
 
 
-    QString statement=QString("update %1 set %2 ").arg(tableClause).arg(assignments.join(","));
+    QString statement=QString("update %1 set %2 ").arg(tableClause,assignments.join(","));
 
     if(!whereClause.isEmpty())
         statement.append(whereClause); //must set bind values too
@@ -376,7 +377,7 @@ QString Builder::escapeKey(const QString &key) const
 {
     return dbDriver == "QSQLITE" ?
                 QString("`%1`").arg(key):
-                QString("`%1`.`%2`").arg(tableClause).arg(key);
+                QString("`%1`.`%2`").arg(tableClause,key);
 }
 
 QString Builder::escapeTable(const QString &table) const
