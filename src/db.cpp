@@ -13,6 +13,8 @@
 #include <QSqlRecord>
 #include <QJsonObject>
 QSqlError DB::_lastError;
+QThreadStorage<QString> DB::connectionStr;
+
 //QVariant DB::m_lastInsertId;
 
 DB::DB()
@@ -109,7 +111,7 @@ bool DB::transaction(const QString &connection)
 QSqlDatabase DB::database(const QString &connection)
 {
     //should it be QLatin1String(defaultConnection) ?
-    return connection.isNull()? QSqlDatabase::database(QThread::currentThread()->property("SORM_DB_CONNECTION_STR").toString())
+    return connection.isNull()? QSqlDatabase::database(connectionStr.localData())
                               : QSqlDatabase::database(connection);
 }
 
