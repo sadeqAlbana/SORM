@@ -14,7 +14,7 @@ class QString;
 #include <QSqlQuery>
 #include <QVariantMap>
 #include <QThread>
-
+#include <QThreadStorage>
 
 class DB
 {
@@ -38,12 +38,12 @@ public:
     static bool commit(const QString &connection=QString());
     static bool rollback(const QString &connection=QString());
 
+    static QThreadStorage<QString> connectionStr;
 private:
     friend class Builder;
     static void setLastError(const QSqlError &lastError);
     static QSqlError _lastError;
     static QVariant m_lastInsertId;
-
 
 };
 
