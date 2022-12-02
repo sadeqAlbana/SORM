@@ -41,6 +41,14 @@ Builder &Builder::where(QString key, QString op, QVariant value)
     return *this;
 }
 
+Builder &Builder::whereBetween(QString key, QVariant op1, QVariant op2)
+{
+    whereClause.append(QString(" %1 %2 between %3 and %4").arg(whereClause.size() ? "and" : "where",
+                                                            escapeKey(key),
+                                                               op1.toString(),op2.toString()));
+    return *this;
+}
+
 Builder &Builder::orWhere(QString key, QVariant value)
 {
     whereClause.append(QString(" %1 %2 = %3").arg(whereClause.size() ? "or" : "where",escapeKey(key),QString("'%1'").arg(value.toString())));
@@ -51,6 +59,14 @@ Builder &Builder::orWhere(QString key, QString op, QVariant value)
 {
     whereClause.append(QString(" %1 %2 %3 %4").arg(whereClause.size() ? "or" : "where",escapeKey(key),op,QString("'%1'").arg(value.toString())));
 
+    return *this;
+}
+
+Builder &Builder::orWhereBetween(QString key, QVariant op1, QVariant op2)
+{
+    whereClause.append(QString(" %1 %2 between %3 and %4").arg(whereClause.size() ? "or" : "where",
+                                                            escapeKey(key),
+                                                               op1.toString(),op2.toString()));
     return *this;
 }
 
