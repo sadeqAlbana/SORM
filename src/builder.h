@@ -26,9 +26,13 @@ public:
     ~Builder();
     Builder &where(QString key, QVariant value); //not perfect
     Builder &where(QString key,QString op, QVariant value); //not perfect
+    Builder &whereBetween(QString key, QVariant op1, QVariant op2); //not perfect
+
     Builder &whereRaw(QString clause);
     Builder &orWhere(QString key, QVariant value); //not perfect
     Builder &orWhere(QString key,QString op, QVariant value); //not perfect
+    Builder &orWhereBetween(QString key, QVariant op1, QVariant op2); //not perfect
+
     Builder &orWhereRaw(QString clause);
 
     Builder &whereIn(QString key, QVariantList values); //not perfect
