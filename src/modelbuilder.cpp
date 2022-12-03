@@ -16,12 +16,12 @@
 #include <QSharedPointer>
 #include <QSqlError>
 
-ModelBuilder::ModelBuilder(const Model &model) :_model(new Model(model)),_builder(_model->table())
+ModelBuilder::ModelBuilder(const Model &model) : Builder(model.table()),_model(new Model(model))
 {
 
 }
 
-ModelBuilder::ModelBuilder(const ModelBuilder &other) : _model(new Model(*other._model)),_builder(other._builder),relations(other.relations)
+ModelBuilder::ModelBuilder(const ModelBuilder &other) : Builder(other.model().table()), _model(new Model(*other._model)),relations(other.relations)
 {
 
 }
@@ -33,7 +33,8 @@ ModelBuilder::~ModelBuilder()
 }
 
 ModelBuilder::ModelBuilder(const QString &table, const PrimaryKey &primaryKey, const QString &modelName, const bool &usesTimestamps, const bool &usesAutoIncrement) :
-    _model(new Model(table,primaryKey,modelName,usesTimestamps,usesAutoIncrement)),_builder(table)
+    Builder(table),
+    _model(new Model(table,primaryKey,modelName,usesTimestamps,usesAutoIncrement))
 {
 
 }
@@ -50,17 +51,17 @@ Collection ModelBuilder::get(const QVariant &column)
     if(column.isValid())
     {
         switch (column.typeId()) {
-        case QMetaType::QStringList : builder().select(column.toStringList()); break;
-        case QMetaType::QString     : builder().select(column.toString())    ; break;
+        case QMetaType::QStringList : Builder::select(column.toStringList()); break;
+        case QMetaType::QString     : Builder::select(column.toString())    ; break;
         default:                                                               break;
         }
     }
 
     if(model().usesTimestamps()){
-        builder().whereRaw(QString("%1 is null").arg(builder().escapeKey("deleted_at")));
+        Builder::whereRaw(QString("%1 is null").arg(Builder::escapeKey("deleted_at")));
     }
 
-    QSqlQuery query=builder().get();
+    QSqlQuery query=Builder::get();
 
     int lastPage=-1;
     if(m_page!=-1){
@@ -79,7 +80,7 @@ Collection ModelBuilder::get(const QVariant &column)
 
         this->simplePaginate(m_page,m_count);
 
-        query=builder().get();
+        query=Builder::get();
         lastPage=pageCount;
     }
 
@@ -117,64 +118,64 @@ Collection ModelBuilder::get(const QVariant &column)
 
 ModelBuilder &ModelBuilder::where(QString key, QVariant value)
 {
-    builder().where(key,value);
+    Builder::where(key,value);
     return *this;
 }
 
 ModelBuilder &ModelBuilder::where(QString key, QString op, QVariant value)
 {
-    builder().where(key,op,value);
+    Builder::where(key,op,value);
     return *this;
 }
 
 ModelBuilder &ModelBuilder::orWhere(QString key, QVariant value)
 {
-    builder().orWhere(key,value);
+    Builder::orWhere(key,value);
     return *this;
 }
 
 ModelBuilder &ModelBuilder::orWhere(QString key, QString op, QVariant value)
 {
-    builder().orWhere(key,op,value);
+    Builder::orWhere(key,op,value);
     return *this;
 }
 
 ModelBuilder &ModelBuilder::whereRaw(QString clause)
 {
-    builder().whereRaw(clause);
+    Builder::whereRaw(clause);
     return *this;
 }
 
 ModelBuilder &ModelBuilder::orWhereRaw(QString clause)
 {
-    builder().orWhereRaw(clause);
+    Builder::orWhereRaw(clause);
     return *this;
 }
 
 ModelBuilder &ModelBuilder::whereIn(QString key, QVariantList values)
 {
-    builder().whereIn(key,values);
+    Builder::whereIn(key,values);
 
     return *this;
 }
 
 ModelBuilder &ModelBuilder::whereIn(QString key, QString subQuery)
 {
-    builder().whereIn(key,subQuery);
+    Builder::whereIn(key,subQuery);
 
     return *this;
 }
 
 ModelBuilder &ModelBuilder::whereNotIn(QString key, QVariantList values)
 {
-    builder().whereNotIn(key,values);
+    Builder::whereNotIn(key,values);
 
     return *this;
 }
 
 ModelBuilder &ModelBuilder::whereNotIn(QString key, QString subQuery)
 {
-    builder().whereNotIn(key,subQuery);
+    Builder::whereNotIn(key,subQuery);
 
     return *this;
 }
@@ -195,13 +196,13 @@ ModelBuilder &ModelBuilder::with(const RelationList &relations)
 
 ModelBuilder &ModelBuilder::groupBy(QString column)
 {
-    builder().groupBy(column);
+    Builder::groupBy(column);
     return *this;
 }
 
 ModelBuilder &ModelBuilder::orderBy(QString column, const QString &direction)
 {
-    builder().orderBy(column,direction);
+    Builder::orderBy(column,direction);
     return *this;
 }
 
@@ -209,7 +210,7 @@ ModelBuilder &ModelBuilder::orderBy(QString column, const QString &direction)
 
 Model ModelBuilder::first()
 {
-    builder().take(1);
+    Builder::take(1);
     return get().value(0);
 }
 
@@ -222,9 +223,9 @@ bool ModelBuilder::insert(Model &mdl)
         //mdl.set("updated_at",now);
     }
 
-    bool success= builder().insert(mdl.data);
+    bool success= Builder::insert(mdl.data);
     if(success){
-        QVariant lastInsertId=builder().lastInsertId();
+        QVariant lastInsertId=Builder::lastInsertId();
         if(lastInsertId.isValid() && mdl._incrementing){
             mdl.set(mdl.primaryKey().toString(),lastInsertId);
         }
@@ -260,15 +261,15 @@ bool ModelBuilder::update(Model &mdl)
     {
         QStringList primaryKeys=mdl.primaryKey().toStringList();
         for(const QString &key : primaryKeys){
-            builder().where(key,mdl.get(key));
+            Builder::where(key,mdl.get(key));
         }
     }
     else{
-       builder().where(model().primaryKey().toString(),mdl.get(model().primaryKey().toString()));
+       Builder::where(model().primaryKey().toString(),mdl.get(model().primaryKey().toString()));
     }
 
 
-    bool result=builder().update(updateData);
+    bool result=Builder::update(updateData);
     mdl.setSaved();
 
     return result;
@@ -282,11 +283,11 @@ bool ModelBuilder::remove(Model &model)
     if(model.primaryKey().isList()){
         QStringList primaryKeys=model.primaryKey().toStringList();
         for(const QString &key : primaryKeys){
-            builder().where(key,model.get(key));
+            Builder::where(key,model.get(key));
         }
     }
     else
-        builder().where(model.primaryKey().toString(),model.get(model.primaryKey().toString()));
+        Builder::where(model.primaryKey().toString(),model.get(model.primaryKey().toString()));
 
 
     bool success=false;
@@ -294,7 +295,7 @@ bool ModelBuilder::remove(Model &model)
         model.set("deleted_at",QDateTime::currentDateTime());
         success=update(model);
     }else{
-        success=builder().remove();
+        success=Builder::remove();
     }
 
     if(success){
@@ -306,7 +307,7 @@ bool ModelBuilder::remove(Model &model)
 
 ModelBuilder &ModelBuilder::simplePaginate(int page, int count)
 {
-    builder().simplePaginate(page,count);
+    Builder::simplePaginate(page,count);
 
     return *this;
 }
