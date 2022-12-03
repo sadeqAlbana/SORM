@@ -14,7 +14,10 @@
 
 class Model;
 class Collection;
+//look for method chaining and named parameter idiom
 
+//https://stackoverflow.com/questions/551263/method-chaining-inheritance-dont-play-well-together
+//look for c++ return value covariance
 class ModelBuilder : public Builder
 {
 public:
@@ -27,10 +30,13 @@ public:
     Collection get(const QVariant &column=QVariant());
     ModelBuilder &where(QString key, QVariant value);
     ModelBuilder &where(QString key,QString op, QVariant value);
+    ModelBuilder &whereBetween(QString key, QVariant op1, QVariant op2); //not perfect
+
     ModelBuilder &orWhere(QString key, QVariant value);
     ModelBuilder &orWhere(QString key,QString op, QVariant value);
     ModelBuilder &whereRaw(QString clause);
     ModelBuilder &orWhereRaw(QString clause);
+    ModelBuilder &orWhereBetween(QString key, QVariant op1, QVariant op2); //not perfect
 
     ModelBuilder &whereIn(QString key, QVariantList values);
     ModelBuilder &whereIn(QString key, QString subQuery);

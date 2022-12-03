@@ -128,6 +128,12 @@ ModelBuilder &ModelBuilder::where(QString key, QString op, QVariant value)
     return *this;
 }
 
+ModelBuilder &ModelBuilder::whereBetween(QString key, QVariant op1, QVariant op2)
+{
+    Builder::whereBetween(key,op1,op2);
+    return *this;
+}
+
 ModelBuilder &ModelBuilder::orWhere(QString key, QVariant value)
 {
     Builder::orWhere(key,value);
@@ -149,6 +155,12 @@ ModelBuilder &ModelBuilder::whereRaw(QString clause)
 ModelBuilder &ModelBuilder::orWhereRaw(QString clause)
 {
     Builder::orWhereRaw(clause);
+    return *this;
+}
+
+ModelBuilder &ModelBuilder::orWhereBetween(QString key, QVariant op1, QVariant op2)
+{
+    Builder::orWhereBetween(key,op1,op2);
     return *this;
 }
 
