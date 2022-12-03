@@ -15,7 +15,7 @@
 class Model;
 class Collection;
 
-class ModelBuilder
+class ModelBuilder : public Builder
 {
 public:
     ModelBuilder(const Model &model);
@@ -45,7 +45,7 @@ public:
     bool insert(Model &mdl);
     bool update(Model &mdl);
     bool remove(Model &model);
-    Builder &builder(){return _builder;}
+    Builder &builder(){return *this;}
     ModelBuilder &simplePaginate(int page, int count);
     ModelBuilder &paginate(int page, int count);
 
@@ -55,7 +55,6 @@ public:
 
 private:
     Model *_model;
-    Builder _builder;
     RelationList relations;
     int m_count=-1;
     int m_page=-1;
