@@ -14,11 +14,8 @@
 
 class Model;
 class Collection;
-//look for method chaining and named parameter idiom
 
-//https://stackoverflow.com/questions/551263/method-chaining-inheritance-dont-play-well-together
-//look for c++ return value covariance
-class ModelBuilder : public Builder
+class ModelBuilder
 {
 public:
     ModelBuilder(const Model &model);
@@ -30,11 +27,12 @@ public:
     Collection get(const QVariant &column=QVariant());
     ModelBuilder &where(QString key, QVariant value);
     ModelBuilder &where(QString key,QString op, QVariant value);
-    ModelBuilder &whereBetween(QString key, QVariant op1, QVariant op2); //not perfect
-
     ModelBuilder &orWhere(QString key, QVariant value);
     ModelBuilder &orWhere(QString key,QString op, QVariant value);
     ModelBuilder &whereRaw(QString clause);
+    ModelBuilder &whereBetween(QString key, QVariant op1, QVariant op2); //not perfect
+
+
     ModelBuilder &orWhereRaw(QString clause);
     ModelBuilder &orWhereBetween(QString key, QVariant op1, QVariant op2); //not perfect
 
@@ -51,7 +49,7 @@ public:
     bool insert(Model &mdl);
     bool update(Model &mdl);
     bool remove(Model &model);
-    Builder &builder(){return *this;}
+    Builder &builder(){return _builder;}
     ModelBuilder &simplePaginate(int page, int count);
     ModelBuilder &paginate(int page, int count);
 
@@ -61,6 +59,7 @@ public:
 
 private:
     Model *_model;
+    Builder _builder;
     RelationList relations;
     int m_count=-1;
     int m_page=-1;
