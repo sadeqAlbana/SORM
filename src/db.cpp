@@ -53,10 +53,12 @@ QSqlQuery DB::exec(const QString &statement, const QVariantMap &bindings, const 
         query.exec(statement);
     }
 
-//    if(!statement.isNull())
-//        qDebug()<<"statement: " << statement;
-//    else
-//        qDebug()<<"query: " << query.executedQuery();
+#ifdef SORM_ENABLE_DEBUG
+    if(!statement.isNull())
+        qDebug()<<"statement: " << statement;
+    else
+        qDebug()<<"query: " << query.executedQuery();
+#endif
 
 
     QSqlError error = query.lastError();

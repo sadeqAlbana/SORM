@@ -45,7 +45,7 @@ Builder &Builder::whereBetween(QString key, QVariant op1, QVariant op2)
 {
     whereClause.append(QString(" %1 %2 between %3 and %4").arg(whereClause.size() ? "and" : "where",
                                                             escapeKey(key),
-                                                               op1.toString(),op2.toString()));
+                                                                QString("'%1'").arg(op1.toString()),QString("'%1'").arg(op2.toString())));
     return *this;
 }
 
