@@ -9,6 +9,8 @@
 #include "../collection.h"
 #include "../model.h"
 #include <QDebug>
+#include "../collection.h"
+#include <QJsonArray>
 Relation::Relation(const ModelBuilder &query, const Model &parent, const QString &name) :
     _parent(new Model(parent)),
     _query(query),m_name(name)

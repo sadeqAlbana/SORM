@@ -10,6 +10,16 @@
 #include <QString>
 #include <QVariant>
 #include "primarykey.h"
+#include "collection.h"
+#include "eloquentmodel.h"
+#include "modelbuilder.h"
+
+#include "relations/relation.h"
+#include "relations/relationlist.h"
+#include "relations/hasmanyrelation.h"
+#include "relations/hasonerelation.h"
+#include "relations/belongstomanyrelation.h"
+#include "relations/belongstorelation.h"
 class HasManyRelation;
 class HasOneRelation;
 class BelongsToRelation;
@@ -110,24 +120,6 @@ public:
 };
 
 
-
-
-
-
-
-
-
-
-
-
-
-#include "modelbuilder.h"
-#include "relations/relation.h"
-#include "relations/relationlist.h"
-#include "relations/hasmanyrelation.h"
-#include "relations/hasonerelation.h"
-#include "relations/belongstomanyrelation.h"
-#include "relations/belongstorelation.h"
 template<class T>
 HasManyRelation Model::hasMany(QString foreignKey, QString localKey,QString name) const
 {
@@ -194,5 +186,4 @@ template<class T>
 }
 
 
-#include "eloquentmodel.h"
 #endif // MODEL_H
