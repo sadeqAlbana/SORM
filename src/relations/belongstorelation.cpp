@@ -10,6 +10,8 @@
 #include "../modelbuilder.h"
 #include "../model.h"
 #include <QDebug>
+#include "../collection.h"
+#include <QJsonArray>
 BelongsToRelation::BelongsToRelation(const ModelBuilder &query,
                                      const Model &child,
                                      const QString &foreignKey,

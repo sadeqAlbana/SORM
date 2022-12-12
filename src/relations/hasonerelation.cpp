@@ -10,6 +10,8 @@
 #include "../modelbuilder.h"
 #include "../model.h"
 #include <QDebug>
+#include "../collection.h"
+#include <QJsonArray>
 HasOneRelation::HasOneRelation(const ModelBuilder &query, const Model &parent, const QString &foreignKey, const QString &localKey, const QString &name) : Relation (query,parent,name),_foreignKey(foreignKey),_localKey(localKey)
 {
     if(foreignKey.isNull())

@@ -8,6 +8,8 @@
 #include "relationlist.h"
 #include "relation.h"
 #include <QDebug>
+#include "../collection.h"
+#include <QJsonArray>
 RelationList::RelationList() : QList<Relation *> ()
 {
 

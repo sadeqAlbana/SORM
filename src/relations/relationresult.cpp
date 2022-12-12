@@ -6,7 +6,8 @@
  */
 
 #include "relationresult.h"
-
+#include "../collection.h"
+#include <QJsonArray>
 RelationResult::RelationResult(const Model &model): m_data(model), m_type(Type::Model)
 {
 
