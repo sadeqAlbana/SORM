@@ -88,6 +88,7 @@ public:
 private:
     QString escapeKey(const QString &key) const;
     QString escapeTable(const QString &table=QString()) const;
+    QString escapeKeyOnly(const QString &key) const;
     QString tableClause;
     QString columnsClause;
     QString orderByClause;

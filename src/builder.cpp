@@ -172,7 +172,7 @@ Builder &Builder::whereNotIn(QString key, QString subQuery)
 
 Builder &Builder::groupBy(QString column)
 {
-    groupByClause=escapeKey(column);
+    groupByClause=escapeKeyOnly(column);
     return *this;
 }
 
@@ -393,11 +393,16 @@ QString Builder::escapeKey(const QString &key) const
 {
     return dbDriver == "QSQLITE" ?
                 QString("`%1`").arg(key):
-                key.contains('.')? QString("`%1`.`%2`").arg(key.split('.').first(),key.split('.')[1]) : //optimize this
+                key.contains('.')? QString("`%1`.`%2`").arg(key.split('.').first(),key.split('.')[1]) : //optimize this, will cause segfault if last character is . !
                 QString("`%1`.`%2`").arg(tableClause,key);
 }
 
 QString Builder::escapeTable(const QString &table) const
 {
     return QString ("`%1`").arg(table.isNull() ? tableClause : table);
+}
+
+QString Builder::escapeKeyOnly(const QString &key) const
+{
+    return key.contains('.')? QString("`%1`.`%2`").arg(key.split('.').first(),key.split('.')[1]) : QString("`%1`").arg(key); //optimize this, will cause segfault if last character is . !
 }
