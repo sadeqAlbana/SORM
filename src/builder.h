@@ -81,6 +81,9 @@ public:
 
     bool executeQuery(QSqlQuery &query, const QString &statement=QString());
 
+    Builder &paginate(int page, int count);
+
+
 
 private:
     QString escapeKey(const QString &key) const;
@@ -99,6 +102,10 @@ private:
     //QSqlQuery _sqlQuery;
 
     friend class ModelBuilder;
+
+protected:
+    int m_count=-1;
+    int m_page=-1;
 };
 
 

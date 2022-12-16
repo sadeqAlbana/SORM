@@ -172,13 +172,13 @@ Builder &Builder::whereNotIn(QString key, QString subQuery)
 
 Builder &Builder::groupBy(QString column)
 {
-    groupByClause=column;
+    groupByClause=escapeKey(column);
     return *this;
 }
 
 Builder &Builder::orderBy(QString column, const QString &direction)
 {
-    orderByClause=QString("%1 %2").arg(column,direction);
+    orderByClause=QString("%1 %2").arg(escapeKey(column),direction);
     return *this;
 }
 
@@ -393,6 +393,7 @@ QString Builder::escapeKey(const QString &key) const
 {
     return dbDriver == "QSQLITE" ?
                 QString("`%1`").arg(key):
+                key.contains('.')? QString("`%1`.`%2`").arg(key.split('.').first(),key.split('.')[1]) : //optimize this
                 QString("`%1`.`%2`").arg(tableClause,key);
 }
 
