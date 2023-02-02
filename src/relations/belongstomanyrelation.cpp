@@ -31,10 +31,10 @@ BelongsToManyRelation::BelongsToManyRelation(const ModelBuilder &query,
         _relatedKey=related().primaryKey().toString();
     }
     if(foreignPivotKey.isNull()){
-        _foreignPivotKey=QString("%1_%2").arg(Relation::parent().modelName().toLower()).arg(Relation::parent().primaryKey().toString());
+        _foreignPivotKey=QString("%1_%2").arg(Relation::parent().modelName().toLower(),Relation::parent().primaryKey().toString());
     }
     if(relatedPivotKey.isNull()){
-        _relatedPivotKey=QString("%1_%2").arg(related().modelName().toLower()).arg(related().primaryKey().toString());
+        _relatedPivotKey=QString("%1_%2").arg(related().modelName().toLower(),related().primaryKey().toString());
     }
 
 
@@ -69,9 +69,9 @@ void BelongsToManyRelation::match(Collection &models)
     Relation::query().builder().join(_table,
                                      related().table()+"."+_relatedKey,
                                      "=",
-                                     QString("%1.%2").arg(_table).arg(_relatedPivotKey));
+                                     QString("%1.%2").arg(_table,_relatedPivotKey));
 
-    Collection results=get(QString("%1.* , %2").arg(related().table()).arg(_foreignPivotKey));
+    Collection results=get(QString("%1.* , %2").arg(related().table(),_foreignPivotKey));
 
 
 
