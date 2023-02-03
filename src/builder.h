@@ -51,6 +51,7 @@ public:
     Builder &skip(int offset);
     Builder &simplePaginate(int page, int count);
     Builder &join(const QString &table,const QString &first,const QString op, const QString &second);
+    Builder &leftJoin(const QString &table,const QString &first,const QString op, const QString &second);
 
     QSqlQuery get();
     QVariant sum(const QString &field);

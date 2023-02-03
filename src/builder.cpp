@@ -211,6 +211,16 @@ Builder &Builder::join(const QString &table, const QString &first, const QString
     return *this;
 }
 
+Builder &Builder::leftJoin(const QString &table, const QString &first, const QString op, const QString &second)
+{
+    joinClause+=QString(" left join %1 on %2 %3 %4").arg(escapeTable(table),
+            first,
+            op,
+            second);
+
+    return *this;
+}
+
 QSqlQuery Builder::get()
 {
     return DB::exec(generateSql());
