@@ -7,11 +7,7 @@
 
 #ifndef ELOQUENTMODEL_H
 #define ELOQUENTMODEL_H
-#include "QString"
-#include "collection.h"
-#include "modelbuilder.h"
-#include "model.h"
-#include "primarykey.h"
+#include <QString>
 #define ELOQUENT_MODEL(_class, tableName, _primaryKey, _useTimeStamps,_useAutoIncrement) \
     public: \
     static QString staticTable(){return QString(#tableName);} \

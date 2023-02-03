@@ -8,7 +8,8 @@
 #include "belongstomanyrelation.h"
 #include "../model.h"
 #include "../builder.h"
-
+#include "../collection.h"
+#include <QJsonArray>
 BelongsToManyRelation::BelongsToManyRelation(const ModelBuilder &query,
                                              const Model &parent,
                                              const QString &table,
