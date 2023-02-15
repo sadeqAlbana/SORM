@@ -45,7 +45,7 @@ Builder &Builder::whereBetween(QString key, QVariant op1, QVariant op2)
 {
     whereClause.append(QString(" %1 %2 between %3 and %4").arg(whereClause.size() ? "and" : "where",
                                                             escapeKey(key),
-                                                               op1.toString(),op2.toString()));
+                                                               quouteValue(op1),quouteValue(op2)));
     return *this;
 }
 
@@ -415,4 +415,11 @@ QString Builder::escapeTable(const QString &table) const
 QString Builder::escapeKeyOnly(const QString &key) const
 {
     return key.contains('.')? QString("`%1`.`%2`").arg(key.split('.').first(),key.split('.')[1]) : QString("`%1`").arg(key); //optimize this, will cause segfault if last character is . !
+
+}
+
+
+QString Builder::quouteValue(const QVariant &value)
+{
+    return QString("'%1'").arg(value.toString());
 }

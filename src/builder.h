@@ -92,6 +92,7 @@ private:
     QString escapeKeyOnly(const QString &key) const;
     QString tableClause;
     QString columnsClause;
+    static QString quouteValue(const QVariant &value);
     QString orderByClause;
     QString whereClause;
     QString groupByClause;
