@@ -27,6 +27,23 @@ class BelongsToManyRelation;
 class ModelBuilder;
 class Relation;
 class RelationList;
+
+class ModelData : public QSharedData{
+public:
+    ModelData(const QString &table, const PrimaryKey &primarykey,const QString &modelName,bool usesTimeStamps,bool usesIncrementing):
+        _table(table),_primaryKey(primarykey),_modelName(modelName),_useTimeStamps(usesTimeStamps),_incrementing(usesIncrementing)
+    {}
+    QString _table;
+    QString _modelName;
+    bool _useTimeStamps;
+    bool _incrementing;
+    bool _exists;
+    PrimaryKey _primaryKey;
+    QMap<QString, QVariant> data;
+    QMap<QString, QVariant> original;
+
+};
+
 class Model  //consider using the Q_GADGET macro for furuture improvments !
 {
     friend class ModelBuilder;
@@ -38,18 +55,18 @@ public:
     ~Model();
     void set(QString key, QVariant value);
     QVariant get(QString key) const;
-    QStringList keys() const {return data.keys();}
+    QStringList keys() const {return d->data.keys();}
     QStringList dirtyKeys() const;
     QDateTime created_at() const;
     QDateTime updated_at() const;
-    bool exists() const{return _exists;}
+    bool exists() const{return d->_exists;}
     bool usesTimestamps() const;
-    void setUseTimestamps(bool use=true){_useTimeStamps=use;}
-    bool incrementing() const {return _incrementing;}
+    void setUseTimestamps(bool use=true){d->_useTimeStamps=use;}
+    bool incrementing() const {return d->_incrementing;}
     QVariant operator[](const QString key);
-    QString table()const {return _table;}
-    PrimaryKey primaryKey() const {return _primaryKey;}
-    QString modelName() const {return _modelName;}
+    QString table()const {return d->_table;}
+    PrimaryKey primaryKey() const {return d->_primaryKey;}
+    QString modelName() const {return d->_modelName;}
     ModelBuilder builder() const;
     bool save();
     bool remove();
@@ -61,17 +78,13 @@ public:
     operator QVariant() const;
 
 protected:
-    bool _exists;
     void setSaved();
-    QMap<QString, QVariant> data;
-    QMap<QString, QVariant> original;
-    QString _table;
-    PrimaryKey _primaryKey;
-    QString _modelName;
-    bool _useTimeStamps;
-    bool _incrementing;
+
+    QSharedDataPointer<ModelData> d;
 
 public:
+    static int m_counter;
+
       template<class T>
       HasManyRelation hasMany(QString foreignKey=QString(),
                          QString localKey=QString(), QString name=QString()) const;
@@ -185,5 +198,6 @@ template<class T>
            return HasOneRelation(T::with(relations),*this,foreignKey,localKey,name);
 }
 
+Q_DECLARE_TYPEINFO(Model, Q_MOVABLE_TYPE);
 
 #endif // MODEL_H

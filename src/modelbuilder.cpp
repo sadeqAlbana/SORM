@@ -234,10 +234,10 @@ bool ModelBuilder::insert(Model &mdl)
         //mdl.set("updated_at",now);
     }
 
-    bool success= builder().insert(mdl.data);
+    bool success= builder().insert(mdl.d->data);
     if(success){
         QVariant lastInsertId=builder().lastInsertId();
-        if(lastInsertId.isValid() && mdl._incrementing){
+        if(lastInsertId.isValid() && mdl.d->_incrementing){
             mdl.set(mdl.primaryKey().toString(),lastInsertId);
         }
         mdl.setSaved();
@@ -310,7 +310,7 @@ bool ModelBuilder::remove(Model &model)
     }
 
     if(success){
-        model._exists=false;
+        model.d->_exists=false;
     }
 
     return success;

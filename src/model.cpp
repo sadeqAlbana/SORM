@@ -8,10 +8,11 @@
 #include "model.h"
 #include <QJsonObject>
 #include <QDateTime>
-Model::Model(const QString &table, const PrimaryKey &primarykey, const QString &modelName, bool usesTimeStamps, bool usesIncrementing) : _exists(false),
-    _table(table),_primaryKey(primarykey),_modelName(modelName),_useTimeStamps(usesTimeStamps),_incrementing(usesIncrementing)
-{
+int Model::m_counter;
+Model::Model(const QString &table, const PrimaryKey &primarykey, const QString &modelName, bool usesTimeStamps, bool usesIncrementing) :
+    d(new ModelData(table,primarykey,modelName,usesTimeStamps,usesIncrementing))
 
+{
 }
 
 //Model::Model(const QMap<QString, QVariant> &map) : _exists(false),data(map)
@@ -21,29 +22,30 @@ Model::Model(const QString &table, const PrimaryKey &primarykey, const QString &
 Model::~Model()
 {
     //qDebug()<<Q_FUNC_INFO;
+    ++m_counter;
 
 }
 
 void Model::set(QString key, QVariant value)
 {
-    data.insert(key,value);
+    d->data.insert(key,value);
 }
 
 QVariant Model::get(QString key) const
 {
-    return data.value(key);
+    return d->data.value(key);
 }
 
 
 void Model::setSaved()
 {
-    _exists=true;
-    original=data;
+    d->_exists=true;
+    d->original=d->data;
 }
 
 bool Model::usesTimestamps() const
 {
-    return _useTimeStamps;
+    return d->_useTimeStamps;
 }
 
 
@@ -80,7 +82,7 @@ Model::operator QVariant() const
 
 Model::operator QJsonObject()  const
 {
-    return QJsonObject::fromVariantMap(data);
+    return QJsonObject::fromVariantMap(d->data);
 }
 
 //ModelBuilder Model::with(const Relation &relation)
@@ -92,7 +94,7 @@ QStringList Model::dirtyKeys() const
 {
     QStringList dirtyKeys;
     for (const QString &key : keys()) {
-     if((original[key]!=data[key]) || original.count(key) == 0)
+     if((d->original[key]!=d->data[key]) || d->original.count(key) == 0)
          dirtyKeys << key;
     }
     return dirtyKeys;
