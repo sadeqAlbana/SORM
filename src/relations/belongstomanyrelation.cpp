@@ -73,18 +73,22 @@ void BelongsToManyRelation::match(Collection &models)
                                      QString("%1.%2").arg(_table,_relatedPivotKey));
 
     Collection results=get(QString("%1.* , %2").arg(related().table(),_foreignPivotKey));
+    QListIterator it(results);
 
 
-
+    QString parentKey=parent().primaryKey().toString();
     for (Model &mainModel : models){
         if(results.isEmpty()){
             mainModel.set(m_name,QJsonArray());
             continue;
         }
+
         Collection inserts;
-        for (Model &relationModel : results)
+        it.toFront();
+        while(it.hasNext())
         {
-            if(mainModel.get(parent().primaryKey().toString())==relationModel.get(_foreignPivotKey)){
+            const auto &relationModel=it.next();
+            if(mainModel.get(parentKey)==relationModel.get(_foreignPivotKey)){
                 inserts << relationModel;
             }
         }
@@ -92,3 +96,6 @@ void BelongsToManyRelation::match(Collection &models)
         //mainModel.setSaved();
     }
 }
+
+
+

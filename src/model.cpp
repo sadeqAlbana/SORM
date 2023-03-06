@@ -31,7 +31,7 @@ void Model::set(QString key, QVariant value)
     d->data.insert(key,value);
 }
 
-QVariant Model::get(QString key) const
+QVariant Model::get(const QString &key) const
 {
     return d->data.value(key);
 }

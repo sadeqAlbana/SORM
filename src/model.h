@@ -31,7 +31,7 @@ class RelationList;
 class ModelData : public QSharedData{
 public:
     ModelData(const QString &table, const PrimaryKey &primarykey,const QString &modelName,bool usesTimeStamps,bool usesIncrementing):
-        _table(table),_primaryKey(primarykey),_modelName(modelName),_useTimeStamps(usesTimeStamps),_incrementing(usesIncrementing)
+        _table(table),_modelName(modelName),_useTimeStamps(usesTimeStamps),_incrementing(usesIncrementing),_exists(false),_primaryKey(primarykey)
     {}
     QString _table;
     QString _modelName;
@@ -54,7 +54,7 @@ public:
     //Model(const QMap<QString, QVariant> &map);
     ~Model();
     void set(QString key, QVariant value);
-    QVariant get(QString key) const;
+    QVariant get(const QString &key) const;
     QStringList keys() const {return d->data.keys();}
     QStringList dirtyKeys() const;
     QDateTime created_at() const;

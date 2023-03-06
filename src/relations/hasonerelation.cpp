@@ -59,7 +59,7 @@ void HasOneRelation::match(Collection &models)
     for (Model &mainModel : models){
         if(results.isEmpty()){
             mainModel.set(m_name,Model());
-            continue;;
+            continue;
         }
 
         for (Model &relationModel : results)
