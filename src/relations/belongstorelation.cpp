@@ -18,7 +18,7 @@ BelongsToRelation::BelongsToRelation(const ModelBuilder &query,
                                      const QString &ownerKey) : Relation (query,child),_foreignKey(foreignKey),_ownerKey(ownerKey)
 {
     if(foreignKey.isNull())
-        _foreignKey=QString("%1_%2").arg(Relation::parent().modelName().toLower()).arg(Relation::parent().primaryKey().toString());
+        _foreignKey=QString("%1_%2").arg(Relation::parent().modelName().toLower(),Relation::parent().primaryKey().toString());
 
     if(ownerKey.isNull())
         _ownerKey=Relation::query().model().primaryKey().toString();

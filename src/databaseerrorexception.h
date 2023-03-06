@@ -18,6 +18,7 @@ public:
 private:
     QString _function;
     QSqlError _error;
+    QByteArray m_errorStr;
 
 };
 
