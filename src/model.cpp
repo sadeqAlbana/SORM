@@ -49,12 +49,15 @@ bool Model::usesTimestamps() const
 }
 
 
-
-QVariant Model::operator[](const QString key)
+QVariant Model::operator [](const QString key) const
 {
-    return get(key);
+    return d->data[key];
 }
 
+QVariant& Model::operator [](const QString key)
+{
+    return d->data[key];
+}
 ModelBuilder Model::builder() const
 {
     return ModelBuilder(*this);

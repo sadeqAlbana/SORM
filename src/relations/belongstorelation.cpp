@@ -63,14 +63,14 @@ void BelongsToRelation::match(Collection &models)
     Collection results=get();
     for (Model &mainModel : models){
         if(results.isEmpty()){
-            mainModel.set(m_name,Model());
+            mainModel.set(d->m_name,Model());
             continue;
         }
 
         for (Model &relationModel : results)
         {
             if(mainModel.get(foreignKey())==relationModel.get(ownerKey())){
-                mainModel.set(m_name,relationModel);
+                mainModel.set(d->m_name,relationModel);
                 break;
             }
         }

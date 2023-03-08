@@ -3,7 +3,7 @@
 #include <model.h>
 class User : public Model
 {
-    ELOQUENT_MODEL(User, users, "id",true,true)
+    ELOQUENT_MODEL(User, "users", "id",true,true)
 public:
     void setID(const int &id){set("id",id);}
     void setUsername(const QString &username){set("username",username);}

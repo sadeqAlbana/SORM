@@ -63,7 +63,9 @@ public:
     bool usesTimestamps() const;
     void setUseTimestamps(bool use=true){d->_useTimeStamps=use;}
     bool incrementing() const {return d->_incrementing;}
-    QVariant operator[](const QString key);
+    QVariant  operator[](const QString key) const;
+    QVariant& operator[](const QString key);
+
     QString table()const {return d->_table;}
     PrimaryKey primaryKey() const {return d->_primaryKey;}
     QString modelName() const {return d->_modelName;}

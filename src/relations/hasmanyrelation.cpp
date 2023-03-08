@@ -57,7 +57,7 @@ void HasManyRelation::match(Collection &models)
         for (Model &relationModel : results)
         {
             if(results.isEmpty()){
-                mainModel.set(m_name,QJsonArray());
+                mainModel.set(d->m_name,QJsonArray());
                 continue;
             }
 
@@ -65,7 +65,7 @@ void HasManyRelation::match(Collection &models)
                 inserts << relationModel;
             }
         }
-        mainModel.set(m_name,QJsonArray(inserts));
+        mainModel.set(d->m_name,QJsonArray(inserts));
         //mainModel.setSaved();
     }
 }

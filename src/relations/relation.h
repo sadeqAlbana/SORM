@@ -10,29 +10,37 @@
 #include "../modelbuilder.h"
 
 //https://stackoverflow.com/questions/36208460/hasmany-vs-belongstomany-in-laravel-5-x
+
+class RelationData : public QSharedData{
+public:
+    RelationData(const ModelBuilder &query, const Model &parent, const QString &name=QString());
+    ~RelationData();
+    Model *_parent;
+    ModelBuilder _query;
+    QString m_name;
+
+};
+
 class Relation
 {
 public:
     Relation(const ModelBuilder &query, const Model &parent, const QString &name=QString());
-    Relation(const Relation &other);
     virtual ~Relation();
     Collection get(const QVariant &columns=QVariant());
 
-    Model parent();
-    Model related();
+    Model parent() const;
+    Model related() const;
     virtual Relation *clone() const=0;
     virtual void      addConstraints(Collection &models)=0;
     virtual void      match(Collection &models)=0;
     //Relation &where(QString key, QVariant value);
+    ModelBuilder& query();
+    ModelBuilder  query() const;
+
 
 protected:
-    Model *_parent;
-    ModelBuilder _query;
-    ModelBuilder& query();
-    QString m_name;
+    QSharedDataPointer<RelationData> d;
     //void setContraints(const QStringList &constrains);
-
-
 };
 
 #define EloquentRelation(_class) \
@@ -40,5 +48,6 @@ protected:
     _class &where(QString key, QVariant value){query().where(key,value); return *this;} \
     _class & select(QStringList args){query().select(args); return *this;}
 
+Q_DECLARE_TYPEINFO(Relation, Q_MOVABLE_TYPE);
 
 #endif // RELATION_H

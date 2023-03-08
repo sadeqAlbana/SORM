@@ -79,7 +79,7 @@ void BelongsToManyRelation::match(Collection &models)
     QString parentKey=parent().primaryKey().toString();
     for (Model &mainModel : models){
         if(results.isEmpty()){
-            mainModel.set(m_name,QJsonArray());
+            mainModel.set(d->m_name,QJsonArray());
             continue;
         }
 
@@ -92,7 +92,7 @@ void BelongsToManyRelation::match(Collection &models)
                 inserts << relationModel;
             }
         }
-        mainModel.set(m_name,QJsonArray(inserts));
+        mainModel.set(d->m_name,QJsonArray(inserts));
         //mainModel.setSaved();
     }
 }

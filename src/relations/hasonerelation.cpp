@@ -58,14 +58,14 @@ void HasOneRelation::match(Collection &models)
 
     for (Model &mainModel : models){
         if(results.isEmpty()){
-            mainModel.set(m_name,Model());
+            mainModel.set(d->m_name,Model());
             continue;
         }
 
         for (Model &relationModel : results)
         {
             if(mainModel.get(localKey())==relationModel.get(foreignKey())){
-                mainModel.set(m_name,relationModel);
+                mainModel.set(d->m_name,relationModel);
                 break;
             }
         }

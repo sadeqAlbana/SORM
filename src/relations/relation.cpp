@@ -12,35 +12,32 @@
 #include "../collection.h"
 #include <QJsonArray>
 Relation::Relation(const ModelBuilder &query, const Model &parent, const QString &name) :
-    _parent(new Model(parent)),
-    _query(query),m_name(name)
+    d(new RelationData(query,parent,name))
 {
-    if(m_name.isEmpty())
-        m_name=related().table();
+
 
 }
 
-Relation::Relation(const Relation &other): _parent(new Model(*other._parent)),_query(other._query), m_name(other.m_name)
-{
-    //qDebug()<<Q_FUNC_INFO;
-}
+
+
+
 
 Relation::~Relation()
 {
-    delete _parent;
+//    delete _parent;
 }
 
 Collection Relation::get(const QVariant &columns)
 {
-    return _query.get(columns);
+    return d->_query.get(columns);
 }
 
-Model Relation::parent()
+Model Relation::parent() const
 {
-    return *_parent;
+    return *d->_parent;
 }
 
-Model Relation::related()
+Model Relation::related() const
 {
     return query().model();
 }
@@ -54,7 +51,26 @@ Model Relation::related()
 
 ModelBuilder &Relation::query()
 {
-    return _query;
+    return d->_query;
+}
+
+ModelBuilder Relation::query() const
+{
+    return d->_query;
 }
 
 
+
+RelationData::RelationData(const ModelBuilder &query, const Model &parent, const QString &name): QSharedData(),    _parent(new Model(parent)),
+   _query(query),m_name(name)
+
+{
+    if(m_name.isEmpty())
+        m_name=_query.model().table();
+}
+
+RelationData::~RelationData()
+{
+    if(_parent)
+        delete _parent;
+}
