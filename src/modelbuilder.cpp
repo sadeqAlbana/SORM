@@ -96,7 +96,7 @@ Collection ModelBuilder::get(const QVariant &column)
                 m.set(record.fieldName(i),query.value(i));
                 m.setSaved();
             }
-            collection.push_back(m);
+            collection << m;
 
         }
 

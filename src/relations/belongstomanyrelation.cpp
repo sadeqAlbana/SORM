@@ -91,7 +91,7 @@ void BelongsToManyRelation::match(Collection &models)
         for(int i=0; i<results.size(); i++){
             const auto &relationModel=results[i];
             if(mainModel.get(parentKey)==relationModel.get(_foreignPivotKey)){
-                inserts.push_back(relationModel);
+                inserts << relationModel;
             }
         }
 

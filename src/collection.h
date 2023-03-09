@@ -26,7 +26,6 @@ public:
     operator QJsonValue();
     operator QJsonObject();
 
-    bool isEmpty() const{return this->empty();}
 
     QVariantList primaryKeys() const;
 
