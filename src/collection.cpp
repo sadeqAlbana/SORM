@@ -9,7 +9,14 @@
 #include <QJsonObject>
 #include "model.h"
 #include <QDebug>
-Collection::Collection()
+
+
+Collection::Collection() : QList<Model>()
+{
+
+}
+
+Collection::Collection(qsizetype size) : QList<Model>(size)
 {
 
 }
@@ -100,7 +107,7 @@ Collection::operator QJsonArray()
 
 QDebug operator <<(QDebug dbg, const Collection &collection)
 {
-    Model model=collection.value(0);
+    Model model=collection[0];
     QStringList columns=model.keys();
     QList<int> lengths;
 
@@ -108,7 +115,7 @@ QDebug operator <<(QDebug dbg, const Collection &collection)
         lengths << columns[i].length();
     }
 
-        for (int r=0; r<collection.count(); r++) {
+        for (int r=0; r<collection.size(); r++) {
             Model tmp=collection[r];
             for (int c=0; c<columns.size(); c++) {
              QString value=tmp[columns.at(c)].toString();

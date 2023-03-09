@@ -62,7 +62,7 @@ void HasManyRelation::match(Collection &models)
             }
 
             if(mainModel.get(localKey())==relationModel.get(foreignKey())){
-                inserts << relationModel;
+                inserts.push_back(relationModel);
             }
         }
         mainModel.set(d->m_name,QJsonArray(inserts));

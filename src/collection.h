@@ -9,18 +9,24 @@
 #define COLLECTION_H
 #include <QList>
 #include <QJsonArray>
-class Model;
-
+#include <list>
+#include <vector>
+#include "model.h"
+#include <QVarLengthArray>
 class Collection : public QList<Model>
 {
 public:
     Collection();
+    Collection(qsizetype size);
+
     ~Collection();
     operator bool();
     operator QJsonArray();
     operator QVariant();
     operator QJsonValue();
     operator QJsonObject();
+
+    bool isEmpty() const{return this->empty();}
 
     QVariantList primaryKeys() const;
 
@@ -29,6 +35,9 @@ public:
 
     int lastPage() const;
     void setLastPage(int newLastPage);
+
+
+
 
 private:
     int m_page=-1;

@@ -10,8 +10,6 @@
 #include <QString>
 #include <QVariant>
 #include "primarykey.h"
-#include "collection.h"
-#include "eloquentmodel.h"
 #include "modelbuilder.h"
 
 #include "relations/relation.h"
@@ -201,3 +199,4 @@ template<class T>
 Q_DECLARE_TYPEINFO(Model, Q_MOVABLE_TYPE);
 
 #endif // MODEL_H
+#include "eloquentmodel.h"

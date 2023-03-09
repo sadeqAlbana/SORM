@@ -85,7 +85,7 @@ Collection ModelBuilder::get(const QVariant &column)
 
     if(query.lastError().type()==QSqlError::NoError) //was if(query.exec()).........possible bug ?
     {
-        Collection collection;
+        Collection collection(query.size());
         collection.setLastPage(lastPage);
         collection.setPage(m_page);
         QSqlRecord record=query.record();
@@ -96,7 +96,7 @@ Collection ModelBuilder::get(const QVariant &column)
                 m.set(record.fieldName(i),query.value(i));
                 m.setSaved();
             }
-            collection << m;
+            collection.push_back(m);
 
         }
 
