@@ -8,7 +8,6 @@
 #include "model.h"
 #include <QJsonObject>
 #include <QDateTime>
-int Model::m_counter;
 Model::Model(const QString &table, const PrimaryKey &primarykey, const QString &modelName, bool usesTimeStamps, bool usesIncrementing) :
     d(new ModelData(table,primarykey,modelName,usesTimeStamps,usesIncrementing))
 
@@ -19,12 +18,7 @@ Model::Model(const QString &table, const PrimaryKey &primarykey, const QString &
 //{
 
 //}
-Model::~Model()
-{
-    //qDebug()<<Q_FUNC_INFO;
-    ++m_counter;
 
-}
 
 void Model::set(QString key, QVariant value)
 {

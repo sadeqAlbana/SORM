@@ -19,14 +19,6 @@ Relation::Relation(const ModelBuilder &query, const Model &parent, const QString
 }
 
 
-
-
-
-Relation::~Relation()
-{
-//    delete _parent;
-}
-
 Collection Relation::get(const QVariant &columns)
 {
     return d->_query.get(columns);
@@ -61,7 +53,7 @@ ModelBuilder Relation::query() const
 
 
 
-RelationData::RelationData(const ModelBuilder &query, const Model &parent, const QString &name): QSharedData(),    _parent(new Model(parent)),
+RelationData::RelationData(const ModelBuilder &query, const Model &parent, const QString &name): QSharedData(), _parent(new Model(parent)),
    _query(query),m_name(name)
 
 {
@@ -69,8 +61,15 @@ RelationData::RelationData(const ModelBuilder &query, const Model &parent, const
         m_name=_query.model().table();
 }
 
+RelationData::RelationData(const RelationData &other) : QSharedData(), _parent(new Model(*other._parent)),
+    _query(other._query),m_name(other.m_name)
+{
+
+}
+
 RelationData::~RelationData()
 {
-    if(_parent)
+    if(_parent){
         delete _parent;
+    }
 }

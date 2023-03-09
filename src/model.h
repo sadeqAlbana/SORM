@@ -52,7 +52,6 @@ public:
     Model(const QString &table=QString(), const PrimaryKey &primarykey=QString(),const QString &modelName=QString(),bool usesTimeStamps=true,bool usesIncrementing=true);
 
     //Model(const QMap<QString, QVariant> &map);
-    ~Model();
     void set(QString key, QVariant value);
     QVariant get(const QString &key) const;
     QStringList keys() const {return d->data.keys();}
@@ -85,7 +84,6 @@ protected:
     QSharedDataPointer<ModelData> d;
 
 public:
-    static int m_counter;
 
       template<class T>
       HasManyRelation hasMany(QString foreignKey=QString(),

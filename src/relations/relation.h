@@ -14,8 +14,9 @@
 class RelationData : public QSharedData{
 public:
     RelationData(const ModelBuilder &query, const Model &parent, const QString &name=QString());
+    RelationData(const RelationData &other);
     ~RelationData();
-    Model *_parent;
+    Model *_parent; //memory leak
     ModelBuilder _query;
     QString m_name;
 
@@ -25,7 +26,6 @@ class Relation
 {
 public:
     Relation(const ModelBuilder &query, const Model &parent, const QString &name=QString());
-    virtual ~Relation();
     Collection get(const QVariant &columns=QVariant());
 
     Model parent() const;
@@ -43,11 +43,12 @@ protected:
     //void setContraints(const QStringList &constrains);
 };
 
+Q_DECLARE_TYPEINFO(Relation, Q_MOVABLE_TYPE);
+
 #define EloquentRelation(_class) \
     virtual Relation* clone() const override{return new _class(*this);} \
     _class &where(QString key, QVariant value){query().where(key,value); return *this;} \
     _class & select(QStringList args){query().select(args); return *this;}
 
-Q_DECLARE_TYPEINFO(Relation, Q_MOVABLE_TYPE);
 
 #endif // RELATION_H
