@@ -3,8 +3,10 @@
 #include <QSqlRecord>
 #include <QJsonArray>
 #include <QJsonObject>
-Array::Array(QSqlQuery query)
+Array::Array(QSqlQuery query) : m_data()
 {
+
+    m_data.reserve(query.size());
     QSqlRecord record=query.record();
     while(query.next()){
         QVariantMap row;

@@ -74,22 +74,27 @@ void BelongsToManyRelation::match(Collection &models)
                                      QString("%1.%2").arg(_table,_relatedPivotKey));
 
     Collection results=get(QString("%1.* , %2").arg(related().table(),_foreignPivotKey));
+    Collection inserts;
+    inserts.reserve(results.size());
+
 //    QListIterator it(results);
     QElapsedTimer timer;
 
     timer.start();
     QString parentKey=parent().primaryKey().toString();
-    for (Model &mainModel : models){
+    int x=0;
+//    for (Model &mainModel : models){
+    for(int k=0; k<models.size(); k++){
+        Model &mainModel=models[k];
         if(results.isEmpty()){
-            mainModel.set(d->m_name,QJsonArray());
+            mainModel.set(d->m_name,QVariant());
             continue;
         }
 
-        Collection inserts;
-        //inserts.reserve(5000*8);
-
+        inserts.clear();
         for(int i=0; i<results.size(); i++){
-            const auto &relationModel=results[i];
+            x++;
+            const auto &relationModel=results.at(i);
             if(mainModel.get(parentKey)==relationModel.get(_foreignPivotKey)){
                 inserts << relationModel;
             }
@@ -103,6 +108,7 @@ void BelongsToManyRelation::match(Collection &models)
     }
 
     qDebug() << "op took " << timer.elapsed() << "milliseconds";
+    qDebug()<<"x: " << x;
 
 }
 

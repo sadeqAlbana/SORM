@@ -85,19 +85,20 @@ Collection ModelBuilder::get(const QVariant &column)
 
     if(query.lastError().type()==QSqlError::NoError) //was if(query.exec()).........possible bug ?
     {
-        Collection collection(query.size());
+        Collection collection;
+        collection.reserve(query.size());
         collection.setLastPage(lastPage);
         collection.setPage(m_page);
         QSqlRecord record=query.record();
+        Model baseModel=model();
         while (query.next()) {
-            Model m(model());
+            Model m(baseModel.table(),baseModel.primaryKey(),baseModel.modelName(),baseModel.usesTimestamps(),baseModel.incrementing());
             for(int i=0; i<record.count(); i++)
             {
                 m.set(record.fieldName(i),query.value(i));
                 m.setSaved();
             }
             collection << m;
-
         }
 
         if(!collection.isEmpty()){
