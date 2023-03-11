@@ -55,17 +55,23 @@ void HasOneRelation::addConstraints(Collection &models)
 void HasOneRelation::match(Collection &models)
 {
     Collection results=get();
-
+    QList< QVariant> pks;
+    pks.reserve(results.size());
+    for(int i=0; i<results.size(); i++){
+        pks << results.at(i)[_foreignKey];
+    }
     for (Model &mainModel : models){
+        const QVariant mainModelPkValue=mainModel.get(_localKey);
         if(results.isEmpty()){
             mainModel.set(d->m_name,Model());
             continue;
         }
 
-        for (Model &relationModel : results)
+        for(int i=0; i<results.size(); i++)
         {
-            if(mainModel.get(localKey())==relationModel.get(foreignKey())){
-                mainModel.set(d->m_name,relationModel);
+            //Model &relationModel
+            if(mainModelPkValue==pks.at(i)){
+                mainModel.set(d->m_name,results.at(i));
                 break;
             }
         }

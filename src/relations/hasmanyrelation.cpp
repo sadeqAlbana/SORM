@@ -52,17 +52,28 @@ void HasManyRelation::addConstraints(Collection &models)
 void HasManyRelation::match(Collection &models)
 {
     Collection results=get();
+
+    QList< QVariant> pks;
+    pks.reserve(results.size());
+    for(int i=0; i<results.size(); i++){
+        pks << results.at(i)[_foreignKey];
+    }
+
+    Collection inserts;
+    inserts.reserve(results.size());
     for (Model &mainModel : models){
-        Collection inserts;
-        for (Model &relationModel : results)
+        const QVariant mainModelPkValue=mainModel.get(_localKey);
+
+        inserts.clear();
+        for(int i=0; i<results.size(); i++)
         {
             if(results.isEmpty()){
                 mainModel.set(d->m_name,QJsonArray());
                 continue;
             }
 
-            if(mainModel.get(localKey())==relationModel.get(foreignKey())){
-                inserts << relationModel;
+            if(mainModelPkValue==pks.at(i)){
+                inserts << results.at(i);;
             }
         }
         mainModel.set(d->m_name,QJsonArray(inserts));
