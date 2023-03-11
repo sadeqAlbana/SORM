@@ -73,7 +73,12 @@ void BelongsToManyRelation::match(Collection &models)
                                      "=",
                                      QString("%1.%2").arg(_table,_relatedPivotKey));
 
-    Collection results=get(QString("%1.* , %2").arg(related().table(),_foreignPivotKey));
+    const Collection results=get(QString("%1.* , %2").arg(related().table(),_foreignPivotKey));
+    QList<QVariant> pks;
+    pks.resize(results.size());
+    for(int i=0; i<results.size(); i++){
+        pks << results.at(i).get(_foreignPivotKey);
+    }
     Collection inserts;
     inserts.reserve(results.size());
 
@@ -82,10 +87,9 @@ void BelongsToManyRelation::match(Collection &models)
 
     timer.start();
     QString parentKey=parent().primaryKey().toString();
-    int x=0;
 //    for (Model &mainModel : models){
-    for(int k=0; k<models.size(); k++){
-        Model &mainModel=models[k];
+    for(Model &mainModel : models){
+        const QVariant mainModelPkValue=mainModel.get(parentKey);
         if(results.isEmpty()){
             mainModel.set(d->m_name,QVariant());
             continue;
@@ -93,22 +97,18 @@ void BelongsToManyRelation::match(Collection &models)
 
         inserts.clear();
         for(int i=0; i<results.size(); i++){
-            x++;
             const auto &relationModel=results.at(i);
-            if(mainModel.get(parentKey)==relationModel.get(_foreignPivotKey)){
+            if(mainModelPkValue==pks.at(i)){
                 inserts << relationModel;
             }
         }
 
-
-
-
         mainModel.set(d->m_name,QJsonArray(inserts));
-        //mainModel.setSaved();
+
     }
 
     qDebug() << "op took " << timer.elapsed() << "milliseconds";
-    qDebug()<<"x: " << x;
+
 
 }
 
