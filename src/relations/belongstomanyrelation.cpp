@@ -75,7 +75,7 @@ void BelongsToManyRelation::match(Collection &models)
 
     const Collection results=get(QString("%1.* , %2").arg(related().table(),_foreignPivotKey));
     QList<QVariant> pks;
-    pks.resize(results.size());
+    pks.reserve(results.size());
     for(int i=0; i<results.size(); i++){
         pks << results.at(i).get(_foreignPivotKey);
     }
@@ -97,9 +97,8 @@ void BelongsToManyRelation::match(Collection &models)
 
         inserts.clear();
         for(int i=0; i<results.size(); i++){
-            const auto &relationModel=results.at(i);
             if(mainModelPkValue==pks.at(i)){
-                inserts << relationModel;
+                inserts << results.at(i);
             }
         }
 
