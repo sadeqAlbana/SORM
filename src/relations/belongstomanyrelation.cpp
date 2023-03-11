@@ -74,7 +74,7 @@ void BelongsToManyRelation::match(Collection &models)
                                      QString("%1.%2").arg(_table,_relatedPivotKey));
 
     const Collection results=get(QString("%1.* , %2").arg(related().table(),_foreignPivotKey));
-    QList<QVariant> pks;
+    QList< QVariant> pks;
     pks.reserve(results.size());
     for(int i=0; i<results.size(); i++){
         pks << results.at(i)[_foreignPivotKey];
@@ -89,7 +89,7 @@ void BelongsToManyRelation::match(Collection &models)
     QString parentKey=parent().primaryKey().toString();
 //    for (Model &mainModel : models){
     for(Model &mainModel : models){
-        const QVariant mainModelPkValue=mainModel[parentKey];
+        const QVariant mainModelPkValue=mainModel.get(parentKey);
         if(results.isEmpty()){
             mainModel.set(d->m_name,QVariant());
             continue;
@@ -107,6 +107,7 @@ void BelongsToManyRelation::match(Collection &models)
     }
 
     qDebug() << "op took " << timer.elapsed() << "milliseconds";
+    qDebug() << "total iterations: " << results.count()*models.count();
 
 
 }
