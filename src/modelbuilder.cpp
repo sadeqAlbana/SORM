@@ -287,6 +287,16 @@ bool ModelBuilder::update(Model &mdl)
     return result;
 }
 
+bool ModelBuilder::update(QVariantMap map)
+{
+
+    if(this->_model->usesTimestamps()){
+       map["updated_at"]=QDateTime::currentDateTime(); //may cause the container to detach !
+    }
+
+    return builder().update(map);
+}
+
 bool ModelBuilder::remove(Model &model)
 {
     if(!model.exists())

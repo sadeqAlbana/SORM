@@ -47,6 +47,8 @@ public:
     Model first();
     bool insert(Model &mdl);
     bool update(Model &mdl);
+    bool update(QVariantMap map);
+
     bool remove(Model &model);
     Builder &builder(){return _builder;}
     ModelBuilder &simplePaginate(int page, int count);
