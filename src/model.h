@@ -123,6 +123,15 @@ public:
                                                                     const QString &relatedKey=QString(),
                                                                     const QString &name=QString()) const;
 
+      template<class T>
+      BelongsToManyRelation belongsToMany(const QString &table,
+                                                 const QString &foreignPivotKey,
+                                                 const QString &relatedPivotKey,
+                                                 const QString &parentKey,
+                                                 const QString &relatedKey,
+                                                 const QString &name,
+                                                 const Relation &relation) const;
+
 
       template<class T>
       BelongsToRelation belongsTo(QString foreignKey=QString(),
@@ -169,6 +178,12 @@ template<class T>
 BelongsToManyRelation Model::belongsToMany(const QString &table, const QString &foreignPivotKey, const QString &relatedPivotKey, const QString &parentKey, const QString &relatedKey, const QString &name) const
 {
     return BelongsToManyRelation(T::staticBuilder(),*this,table,foreignPivotKey,relatedPivotKey,parentKey,relatedKey,name);
+}
+
+template<class T>
+BelongsToManyRelation Model::belongsToMany(const QString &table, const QString &foreignPivotKey, const QString &relatedPivotKey, const QString &parentKey, const QString &relatedKey, const QString &name, const Relation &relation) const
+{
+    return BelongsToManyRelation(T::with(relation),*this,table,foreignPivotKey,relatedPivotKey,parentKey,relatedKey,name);
 }
 
 template<class T>
