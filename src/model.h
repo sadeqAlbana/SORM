@@ -48,7 +48,6 @@ class Model  //consider using the Q_GADGET macro for furuture improvments !
     friend class Relation;
 public:
     Model(const QString &table=QString(), const PrimaryKey &primarykey=QString(),const QString &modelName=QString(),bool usesTimeStamps=true,bool usesIncrementing=true);
-
     //Model(const QMap<QString, QVariant> &map);
     void set(QString key, QVariant value);
     QVariant get(const QString &key) const;

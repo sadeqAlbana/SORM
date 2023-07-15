@@ -14,6 +14,8 @@ Model::Model(const QString &table, const PrimaryKey &primarykey, const QString &
 {
 }
 
+
+
 //Model::Model(const QMap<QString, QVariant> &map) : _exists(false),data(map)
 //{
 

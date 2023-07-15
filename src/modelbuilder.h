@@ -45,7 +45,6 @@ public:
     ModelBuilder &groupBy(QString column);
     ModelBuilder &orderBy(QString column,const QString &direction=QStringLiteral("asc"));
     Model first();
-    Model find();
     bool insert(Model &mdl);
     bool update(Model &mdl);
     bool update(QVariantMap map);
