@@ -42,6 +42,8 @@ private:
     int m_page=-1;
     int m_lastPage=-1;
 };
+Q_DECLARE_METATYPE(Collection);
+
 QDebug operator <<(QDebug dbg, const Collection &collection);
 
 #endif // COLLECTION_H

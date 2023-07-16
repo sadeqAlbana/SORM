@@ -76,12 +76,23 @@ Model::operator QJsonValue() const
 
 Model::operator QVariant() const
 {
-    return operator QJsonObject();
+    return QVariant::fromValue<Model>(*this);
 }
 
 Model::operator QJsonObject()  const
 {
-    return QJsonObject::fromVariantMap(d->data);
+    QJsonObject object;
+    QMapIterator it(d->data);
+    while (it.hasNext()){
+        it.next();
+        if(it.value().canConvert<Model>()){
+            object.insert(it.key(),it.value().value<Model>().operator QJsonObject());
+        }else{
+            object.insert(it.key(),QJsonValue::fromVariant(it.value()));
+        }
+    }
+    return object;
+//    return QJsonObject::fromVariantMap(d->data);
 }
 
 //ModelBuilder Model::with(const Relation &relation)
@@ -104,3 +115,12 @@ QDateTime Model::created_at() const
     return get("created_at").toDateTime();
 }
 
+QDebug operator<<(QDebug dbg, const Model &model)
+{
+    QDebugStateSaver saver(dbg);
+    for(int i=0; i<model.keys().count(); i++){
+     dbg.nospace()<<QString("%1:%2, ").arg(model.keys().at(i),model[model.keys().at(i)].toString());
+    }
+
+    return dbg;
+}

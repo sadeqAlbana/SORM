@@ -211,6 +211,7 @@ template<class T>
 }
 
 Q_DECLARE_TYPEINFO(Model, Q_MOVABLE_TYPE);
-
+Q_DECLARE_METATYPE(Model);
+QDebug operator<<(QDebug dbg, const Model &model);
 #endif // MODEL_H
 #include "eloquentmodel.h"
