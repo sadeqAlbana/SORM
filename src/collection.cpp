@@ -84,7 +84,8 @@ Collection::operator QJsonObject()
 
 Collection::operator QVariant()
 {
-    return operator QJsonValue();
+//    return  QVariant(*this);
+    return operator QJsonObject();
 }
 
 Collection::operator bool()
