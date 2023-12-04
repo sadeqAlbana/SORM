@@ -178,7 +178,7 @@ Builder &Builder::groupBy(QString column)
 
 Builder &Builder::orderBy(QString column, const QString &direction)
 {
-    orderByClause=QString("%1 %2").arg(escapeKey(column),direction);
+    orderByClause=QString("%1 %2").arg(escapeKeyOnly(column),direction);
     return *this;
 }
 
