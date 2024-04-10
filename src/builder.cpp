@@ -371,6 +371,7 @@ bool Builder::remove()
     return false;
 }
 
+
 QVariant Builder::lastInsertId() const
 {
     return m_lastInsertId;

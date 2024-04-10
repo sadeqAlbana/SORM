@@ -90,11 +90,18 @@ Collection ModelBuilder::get(const QVariant &column)
         collection.setLastPage(lastPage);
         collection.setPage(m_page);
         QSqlRecord record=query.record();
+        for(auto column : m_pluckList){
+            record.remove(record.indexOf(column)); //this will create inconsistensies between this and the QSqlRecord !
+        }
         Model baseModel=model();
         while (query.next()) {
             Model m(baseModel.table(),baseModel.primaryKey(),baseModel.modelName(),baseModel.usesTimestamps(),baseModel.incrementing());
             for(int i=0; i<record.count(); i++)
             {
+                //no need for the below commented code
+                // if(m_pluckList.contains(record.fieldName(i))){
+                //     continue;
+                // }
                 m.set(record.fieldName(i),query.value(i));
                 m.setSaved();
             }
@@ -342,4 +349,15 @@ ModelBuilder &ModelBuilder::paginate(int page, int count)
 }
 
 
+ModelBuilder &ModelBuilder::pluck(const QString &column)
+{
+    m_pluckList << column;
+    return *this;
+}
+
+ModelBuilder &ModelBuilder::pluck(const QStringList &columns)
+{
+    m_pluckList << columns;
+    return *this;
+}
 

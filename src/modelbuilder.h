@@ -56,7 +56,8 @@ public:
 
     ModelBuilder & take(int l){builder().take(l); return *this;}
     ModelBuilder & select(QStringList args){builder().select(args); return *this;}
-
+    ModelBuilder &pluck(const QString &column);
+    ModelBuilder &pluck(const QStringList &columns);
 
 private:
     Model *_model;
@@ -64,6 +65,8 @@ private:
     RelationList relations;
     int m_count=-1;
     int m_page=-1;
+    QStringList m_pluckList;
+
 };
 
 #endif // MODELBUILDER_H

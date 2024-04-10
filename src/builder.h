@@ -78,6 +78,9 @@ public:
     bool update(const QVariantMap &map);
     bool remove();
 
+
+
+
     QVariant lastInsertId() const;
 
     bool executeQuery(QSqlQuery &query, const QString &statement=QString());
