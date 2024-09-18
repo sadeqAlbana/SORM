@@ -102,7 +102,8 @@ Collection ModelBuilder::get(const QVariant &column)
                 // if(m_pluckList.contains(record.fieldName(i))){
                 //     continue;
                 // }
-                m.set(record.fieldName(i),query.value(i));
+
+                m.set(record.fieldName(i),query.value(record.fieldName(i)));
                 m.setSaved();
             }
             collection << m;
