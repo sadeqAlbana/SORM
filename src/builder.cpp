@@ -85,6 +85,14 @@ Builder &Builder::orWhereRaw(QString clause)
     return *this;
 }
 
+Builder &Builder::whereNull(QString key)
+{
+    whereClause.append(QString(" %1 %2 is null").arg(whereClause.size() ? "and" : "where",
+                                                   escapeKey(key)));
+
+    return *this;
+}
+
 
 
 

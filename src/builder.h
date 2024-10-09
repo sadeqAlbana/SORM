@@ -34,6 +34,7 @@ public:
     Builder &orWhereBetween(QString key, QVariant op1, QVariant op2); //not perfect
 
     Builder &orWhereRaw(QString clause);
+    Builder &whereNull(QString key);
 
     Builder &whereIn(QString key, QVariantList values); //not perfect
     Builder &orWhereIn(QString key, QVariantList values); //not perfect
